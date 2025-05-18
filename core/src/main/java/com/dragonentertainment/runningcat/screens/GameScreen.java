@@ -5,36 +5,39 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.Struct.AssetName;
 import com.dragonentertainment.runningcat.components.ParallaxComponent;
 import com.dragonentertainment.runningcat.entities.ParallaxFactory;
 import com.dragonentertainment.runningcat.systems.ParallaxSystems;
+import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class GameScreen extends BaseScreen{
     private Engine engine;
-    private Texture background;
     public GameScreen(AppGame game) {
         super(game);
+        // Initail Engine
         this.engine = new Engine();
+        // Get Background
+        this.background = this.game.assetManager.get(AssetName.BACKGROUND_GAME, Texture.class);
+
+        // Parallax background
+        this.engine.addSystem(new ParallaxSystems(this.viewport, this.batch, this.camera));
+        this.engine.addEntity(new ParallaxFactory().createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_1), 0, 1));
+        this.engine.addEntity(new ParallaxFactory().createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_2), 6, 1));
+        this.engine.addEntity(new ParallaxFactory().createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_3), -2, 1));
+        this.engine.addEntity(new ParallaxFactory().createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_4), 5, 1));
+        this.engine.addEntity(new ParallaxFactory().createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_5), 7, 1));
+        this.engine.addEntity(new ParallaxFactory().createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_6), 0, 1));
     }
 
     @Override
     public void show() {
         super.show();
-        this.background = new Texture("backgrounds/bgGame_day.jpg");
-
-        this.engine.addSystem(new ParallaxSystems(this.viewport, this.batch, this.camera, this.background));
-
-        this.engine.addEntity(ParallaxFactory.createEntity(new Texture("backgrounds/mountain_6.png"), 0.0f, 0f));
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-
-        // Simulate camera movement to test parallax
-        camera.position.x += delta * 1f; // Move to the right
-        camera.update();
-
         this.engine.update(delta);
     }
 
@@ -46,13 +49,13 @@ public class GameScreen extends BaseScreen{
     @Override
     public void hide() {
         super.hide();
-        this.background.dispose();
+        AssetLoader.unlodGameScreenAssets(this.game.assetManager);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        this.background.dispose();
+        AssetLoader.unlodGameScreenAssets(this.game.assetManager);
     }
 
 }

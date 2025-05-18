@@ -17,16 +17,13 @@ public class ParallaxSystems extends EntitySystem {
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
     private final Viewport viewport;
-    private final Texture background;
-
     private ImmutableArray<Entity> entities;
     private final ComponentMapper<ParallaxComponent> pm = ComponentMapper.getFor(ParallaxComponent.class);
 
-    public ParallaxSystems(Viewport viewport, SpriteBatch batch, OrthographicCamera camera, Texture background) {
+    public ParallaxSystems(Viewport viewport, SpriteBatch batch, OrthographicCamera camera) {
         this.viewport = viewport;
         this.batch = batch;
         this.camera = camera;
-        this.background = background;
     }
 
     @Override
@@ -39,19 +36,18 @@ public class ParallaxSystems extends EntitySystem {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // Draw static background (full screen)
-        batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-
         for (Entity entity : entities) {
             ParallaxComponent pc = pm.get(entity);
 
             float textureWidth = pc.texture.getWidth();
             float textureHeight = pc.texture.getHeight();
 
-            float x = camera.position.x - pc.texture.getWidth() / 2f;
-            float y = camera.position.y - pc.texture.getHeight() / 2f;
+            int width = GameGrid.toGridWidth(textureWidth);
+            int height = GameGrid.toGridHeight(textureHeight);
 
-            batch.draw(pc.texture, 0, 0, textureWidth / 120, textureHeight / 120);
+            if(pc.texture != null) {
+                batch.draw(pc.texture, pc.parallaxRatioX, pc.parallaxRatioY, width, height);
+            }
 
             /*float camX = camera.position.x;
             float camY = camera.position.y;
