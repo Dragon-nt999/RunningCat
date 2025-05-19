@@ -7,7 +7,7 @@ import com.dragonentertainment.runningcat.Struct.AssetName;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class LoadingScreen extends BaseScreen {
-    private ScreenType targetScreen;
+    private final ScreenType targetScreen;
     public LoadingScreen(AppGame game, ScreenType screenType) {
         super(game);
         this.targetScreen = screenType;

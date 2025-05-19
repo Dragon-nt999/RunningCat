@@ -8,4 +8,5 @@ public class AssetName {
     public static final String MOUNTAIN_4 = "backgrounds/mountain_4.png";
     public static final String MOUNTAIN_5 = "backgrounds/mountain_5.png";
     public static final String MOUNTAIN_6 = "backgrounds/mountain_6.png";
+    public static final String BRICK = "items/brick.png";
 }

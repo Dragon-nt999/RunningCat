@@ -15,6 +15,8 @@ public class AssetLoader {
         assetManager.load(AssetName.MOUNTAIN_4, Texture.class);
         assetManager.load(AssetName.MOUNTAIN_5, Texture.class);
         assetManager.load(AssetName.MOUNTAIN_6, Texture.class);
+        assetManager.load(AssetName.MOUNTAIN_6, Texture.class);
+        assetManager.load(AssetName.BRICK, Texture.class);
     }
 
     public static void unlodGameScreenAssets(AssetManager assetManager){
@@ -25,5 +27,6 @@ public class AssetLoader {
         assetManager.unload(AssetName.MOUNTAIN_4);
         assetManager.unload(AssetName.MOUNTAIN_5);
         assetManager.unload(AssetName.MOUNTAIN_6);
+        assetManager.unload(AssetName.BRICK);
     }
 }

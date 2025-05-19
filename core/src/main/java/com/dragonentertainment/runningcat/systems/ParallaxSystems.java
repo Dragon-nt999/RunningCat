@@ -16,12 +16,10 @@ import com.dragonentertainment.runningcat.utils.GameGrid;
 public class ParallaxSystems extends EntitySystem {
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
-    private final Viewport viewport;
     private ImmutableArray<Entity> entities;
     private final ComponentMapper<ParallaxComponent> pm = ComponentMapper.getFor(ParallaxComponent.class);
 
-    public ParallaxSystems(Viewport viewport, SpriteBatch batch, OrthographicCamera camera) {
-        this.viewport = viewport;
+    public ParallaxSystems(SpriteBatch batch, OrthographicCamera camera) {
         this.batch = batch;
         this.camera = camera;
     }
