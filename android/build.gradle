@@ -132,3 +132,27 @@ tasks.register('run', Exec) {
 }
 
 eclipse.project.name = appName + "-android"
+
+// Generate Assets src
+tasks.register('generateAssetsTxt') {
+  def assetDir = file("android/assets")
+  def outputFile = new File(assetDir, "assets.txt")
+
+  doLast {
+    if (!assetDir.exists()) {
+      println "Folder Asset not found"
+      return
+    }
+
+    def writer = outputFile.newWriter()
+    assetDir.eachFileRecurse { file ->
+      if (file.isFile() && file.name != "assets.txt") {
+        def relPath = assetDir.toPath().relativize(file.toPath()).toString().replace("\\", "/")
+        writer.write(relPath + "\n")
+      }
+    }
+    writer.close()
+    println "assets.txt had created ${outputFile.path}"
+  }
+}
+
