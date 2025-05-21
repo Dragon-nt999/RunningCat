@@ -1,27 +1,30 @@
 package com.dragonentertainment.runningcat.systems;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.ParallaxComponent;
-import com.dragonentertainment.runningcat.utils.GameGrid;
+import com.dragonentertainment.runningcat.components.TextureComponent;
+import com.dragonentertainment.runningcat.components.TransformComponent;
+import com.dragonentertainment.runningcat.factory.ParallaxFactory;
+import com.dragonentertainment.runningcat.struct.AssetsName;
+import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class ParallaxSystems extends EntitySystem {
+    private final AppGame game;
+    private final PooledEngine engine;
     private final SpriteBatch batch;
-    private final OrthographicCamera camera;
     private ImmutableArray<Entity> entities;
-    private final ComponentMapper<ParallaxComponent> pm = ComponentMapper.getFor(ParallaxComponent.class);
 
-    public ParallaxSystems(SpriteBatch batch, OrthographicCamera camera) {
+    public ParallaxSystems(AppGame game, PooledEngine engine, SpriteBatch batch) {
+        this.game = game;
+        this.engine = engine;
         this.batch = batch;
-        this.camera = camera;
     }
 
     @Override
@@ -31,39 +34,42 @@ public class ParallaxSystems extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        for (Entity entity : entities) {
-            ParallaxComponent pc = pm.get(entity);
+        for(Entity e : this.entities) {
+            TransformComponent transform = MappersComponent.transform.get(e);
+            TextureComponent texture = MappersComponent.texture.get(e);
 
-            float textureWidth = pc.texture.getWidth();
-            float textureHeight = pc.texture.getHeight();
-
-            int width = GameGrid.toGridWidth(textureWidth);
-            int height = GameGrid.toGridHeight(textureHeight);
-
-            if(pc.texture != null) {
-                batch.draw(pc.texture, pc.parallaxRatioX, pc.parallaxRatioY, width, height);
-            }
-
-            /*float camX = camera.position.x;
-            float camY = camera.position.y;
-
-            float x = -camX * pc.parallaxRatioX + pc.offsetX;
-            float y = -camY * pc.parallaxRatioY + pc.offsetY;
-
-            // Repeat texture in 3x3 grid to cover camera area
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    float drawX = x % textureWidth + dx * textureWidth;
-                    float drawY = y % textureHeight + dy * textureHeight;
-
-                    batch.draw(pc.texture, drawX, drawY);
-                }
-            }*/
+            this.batch.draw(texture.texture, transform.position.x,
+                                    transform.position.y, transform.width, transform.height);
         }
 
         batch.end();
+    }
+
+    public void generateParallax_layer01() {
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_1), 2, -0.5f, 1);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_2), -2, -0.5f,2);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_3), 15, -0.5f,3);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_4), 3, -0.5f,4);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_5), 7, -0.5f,5);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_6), 0, -0.5f,6);
+    }
+
+    public void generateParallax_layer02() {
+        float addSpeed = 0.5f;
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_1), 0, -2f,1 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_2), 7, -2f,2 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_3), 4, -2f,3 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_4), 3, -2f,4 + addSpeed);
+    }
+
+    public void generateParallax_layer03() {
+        float addSpeed = 10f;
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_5), 0, -4.5f,1 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_6), 7, -4.5f,2 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_7), 12, -4.5f,3 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_8), 10, -4.5f,4 + addSpeed);
+        ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_9), 5, -4.5f,5 + addSpeed);
     }
 }
