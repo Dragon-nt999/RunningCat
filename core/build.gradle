@@ -11,3 +11,72 @@ dependencies {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
 }
+
+// Generate Asset Constants
+tasks.register('generateGroupedAssetConstants') {
+  def assetFile = file("../assets/assets.txt")
+  def outputDir = file("${project.rootDir}/core/src/main/java/com/dragonentertainment/runningcat/struct")
+  def outputFile = new File(outputDir, "AssetsName.java")
+
+  doLast {
+    if (!assetFile.exists()) {
+      println "⚠️ assets.txt không tồn tại!"
+      return
+    }
+
+    if (!outputDir.exists()) {
+      outputDir.mkdirs()
+    }
+
+    def lines = assetFile.readLines().findAll { it?.trim() }
+    def tree = [:] // lưu cấu trúc thư mục theo map lồng nhau
+
+    // Xây dựng cây thư mục
+    for (line in lines) {
+      def parts = line.split("/")
+      def current = tree
+      for (int i = 0; i < parts.length - 1; i++) {
+        current = current.computeIfAbsent(parts[i], { [:] })
+      }
+      def fileName = parts.last().replaceFirst(/\.[^.]+$/, "")
+
+      current[fileName] = line // lưu path gốc
+    }
+
+    def builder = new StringBuilder()
+    builder.append("package com.dragonentertainment.runningcat.struct;\n\n")
+    builder.append("public class AssetsName {\n")
+
+    def indent = "    "
+
+    // Hàm đệ quy để sinh mã
+    def writeNode
+    writeNode = { node, level ->
+      node.each { key, value ->
+        def indentStr = indent * level
+        if (value instanceof Map) {
+          // Là thư mục con
+          builder.append("${indentStr}public static class ${capitalize(key)} {\n")
+          writeNode(value, level + 1)
+          builder.append("${indentStr}}\n")
+        } else {
+          // Là file asset
+          def varName = key.replaceAll("[^a-zA-Z0-9]", "_").toUpperCase()
+          builder.append("${indentStr}public static final String ${varName} = \"${value}\";\n")
+        }
+      }
+    }
+
+    writeNode(tree, 1)
+
+    builder.append("}\n")
+
+    outputFile.text = builder.toString()
+    println "✅ Assets.java đã được tạo tại ${outputFile.path}"
+  }
+}
+
+// Hàm viết hoa chữ cái đầu
+String capitalize(String input) {
+  return input.substring(0, 1).toUpperCase() + input.substring(1)
+}

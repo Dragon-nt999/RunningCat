@@ -1,42 +1,37 @@
 package com.dragonentertainment.runningcat.screens;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
-import com.dragonentertainment.runningcat.Struct.AssetName;
-import com.dragonentertainment.runningcat.components.ParallaxComponent;
-import com.dragonentertainment.runningcat.entities.ParallaxFactory;
-import com.dragonentertainment.runningcat.systems.BrickPoolSystem;
-import com.dragonentertainment.runningcat.systems.BrickRenderSystem;
+import com.dragonentertainment.runningcat.struct.AssetsName;
+import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.ParallaxSystems;
+import com.dragonentertainment.runningcat.systems.brick.BrickRenderSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class GameScreen extends BaseScreen{
-    private PooledEngine engine;
+    private final PooledEngine engine;
     public GameScreen(AppGame game) {
         super(game);
         // Initial Engine
         this.engine = new PooledEngine();
         // Get Background
-        this.background = this.game.assetManager.get(AssetName.BACKGROUND_GAME, Texture.class);
+        this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY, Texture.class);
 
-        // Brick Texture
-        Texture brickTexture = this.game.assetManager.get(AssetName.BRICK);
+        // Parallax Entity
+        ParallaxSystems parallaxSystems = new ParallaxSystems(this.game, this.engine, this.batch);
+        parallaxSystems.generateParallax_layer01();
+        parallaxSystems.generateParallax_layer02();
 
-        this.engine.addSystem(new BrickPoolSystem(this.engine, brickTexture));
-        this.engine.addSystem(new BrickRenderSystem(this.batch, this.engine));
+        // Get Brick Texture
+        Texture brick = this.game.assetManager.get(AssetsName.Game.Items.BRICK, Texture.class);
+        this.engine.addSystem(parallaxSystems);
+        // Add System
+        this.engine.addSystem(new BrickRenderSystem(this.engine, this.batch, brick));
+        parallaxSystems.generateParallax_layer03();
 
-        // Parallax background
-        /*this.engine.addSystem(new ParallaxSystems(this.batch, this.camera));
-        this.engine.addEntity(ParallaxFactory.createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_1), 0, 1));
-        this.engine.addEntity(ParallaxFactory.createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_2), 6, 1));
-        this.engine.addEntity(ParallaxFactory.createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_3), -2, 1));
-        this.engine.addEntity(ParallaxFactory.createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_4), 5, 1));
-        this.engine.addEntity(ParallaxFactory.createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_5), 7, 1));
-        this.engine.addEntity(ParallaxFactory.createEntity(this.game.assetManager.get(AssetName.MOUNTAIN_6), 0, 1));*/
+        // Movement System
+        this.engine.addSystem(new MovementSystem(this.viewport));
     }
 
     @Override
@@ -58,13 +53,13 @@ public class GameScreen extends BaseScreen{
     @Override
     public void hide() {
         super.hide();
-        AssetLoader.unlodGameScreenAssets(this.game.assetManager);
+        AssetLoader.unloadGameScreenAssets(this.game.assetManager);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        AssetLoader.unlodGameScreenAssets(this.game.assetManager);
+        AssetLoader.unloadGameScreenAssets(this.game.assetManager);
     }
 
 }

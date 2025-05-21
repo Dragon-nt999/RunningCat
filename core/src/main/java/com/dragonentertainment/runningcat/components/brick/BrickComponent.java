@@ -1,7 +1,15 @@
-package com.dragonentertainment.runningcat.components;
+package com.dragonentertainment.runningcat.components.brick;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Pool;
 
-public class BrickComponent implements Component {
+public class BrickComponent implements Component, Pool.Poolable {
     public boolean active = false;
+    public int index = 0;
+
+    @Override
+    public void reset() {
+        this.active = false;
+        this.index = 0;
+    }
 }

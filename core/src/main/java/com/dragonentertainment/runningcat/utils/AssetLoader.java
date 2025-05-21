@@ -1,32 +1,58 @@
 package com.dragonentertainment.runningcat.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.dragonentertainment.runningcat.Struct.AssetName;
 
-import java.awt.TextArea;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AssetLoader {
-    public static void loadGameScreenAssets(AssetManager assetManager){
-        assetManager.load(AssetName.BACKGROUND_GAME, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_1, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_2, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_3, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_4, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_5, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_6, Texture.class);
-        assetManager.load(AssetName.MOUNTAIN_6, Texture.class);
-        assetManager.load(AssetName.BRICK, Texture.class);
+
+    private static final String GAME = "GAME";
+    private static final String HOME = "HOME";
+
+    private static Map<String, List<String>> getAssetNames(String name) {
+        Map<String, List<String>> assetNames = new HashMap<>();
+        FileHandle file = Gdx.files.internal("assets.txt");
+
+        if(file.exists()) {
+            String fileContent = file.readString();
+            String[] lines = fileContent.split("\\r?\\n");
+            List<String> src = new ArrayList<>();
+            for(String l : lines) {
+                if(!l.trim().isEmpty()) {
+                    String[] f = l.split("/");
+                    if(f[0].equalsIgnoreCase(name)) {
+                        src.add(l);
+                    }
+                }
+            }
+            assetNames.put(name, src);
+        }
+
+        return assetNames;
     }
 
-    public static void unlodGameScreenAssets(AssetManager assetManager){
-        assetManager.unload(AssetName.BACKGROUND_GAME);
-        assetManager.unload(AssetName.MOUNTAIN_1);
-        assetManager.unload(AssetName.MOUNTAIN_2);
-        assetManager.unload(AssetName.MOUNTAIN_3);
-        assetManager.unload(AssetName.MOUNTAIN_4);
-        assetManager.unload(AssetName.MOUNTAIN_5);
-        assetManager.unload(AssetName.MOUNTAIN_6);
-        assetManager.unload(AssetName.BRICK);
+    public static void loadGameScreenAssets(AssetManager assetManager){
+        Map<String, List<String>> gameSrcs = getAssetNames(GAME);
+        if(!gameSrcs.isEmpty()) {
+            for(String src : gameSrcs.get(GAME)) {
+                assetManager.load(src, Texture.class);
+            }
+        }
+
+    }
+
+    public static void unloadGameScreenAssets(AssetManager assetManager){
+        Map<String, List<String>> gameSrcs = getAssetNames(GAME);
+        if(!gameSrcs.isEmpty()) {
+            for(String src : gameSrcs.get(GAME)) {
+                assetManager.unload(src);
+            }
+        }
     }
 }

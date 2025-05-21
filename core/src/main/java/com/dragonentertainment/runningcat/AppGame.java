@@ -3,8 +3,8 @@ package com.dragonentertainment.runningcat;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.dragonentertainment.runningcat.Enum.ScreenType;
-import com.dragonentertainment.runningcat.screens.GameScreen;
 import com.dragonentertainment.runningcat.screens.LoadingScreen;
+import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class AppGame extends Game {
     public AssetManager assetManager;
