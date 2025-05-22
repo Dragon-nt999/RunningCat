@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.struct.AssetsName;
-import com.dragonentertainment.runningcat.systems.MovementSystem;
-import com.dragonentertainment.runningcat.systems.ParallaxSystems;
+import com.dragonentertainment.runningcat.systems.parallax.ParallaxMovementSystem;
+import com.dragonentertainment.runningcat.systems.parallax.ParallaxRenderSystems;
 import com.dragonentertainment.runningcat.systems.brick.BrickRenderSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
@@ -19,7 +19,7 @@ public class GameScreen extends BaseScreen{
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY, Texture.class);
 
         // Parallax Entity
-        ParallaxSystems parallaxSystems = new ParallaxSystems(this.game, this.engine, this.batch);
+        ParallaxRenderSystems parallaxSystems = new ParallaxRenderSystems(this.game, this.engine, this.batch);
         parallaxSystems.generateParallax_layer01();
         parallaxSystems.generateParallax_layer02();
 
@@ -31,7 +31,7 @@ public class GameScreen extends BaseScreen{
         parallaxSystems.generateParallax_layer03();
 
         // Movement System
-        this.engine.addSystem(new MovementSystem(this.viewport));
+        this.engine.addSystem(new ParallaxMovementSystem(this.viewport));
     }
 
     @Override

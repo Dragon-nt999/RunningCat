@@ -1,6 +1,5 @@
 package com.dragonentertainment.runningcat.systems.brick;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;

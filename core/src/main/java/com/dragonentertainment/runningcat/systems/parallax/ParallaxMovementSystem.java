@@ -1,4 +1,4 @@
-package com.dragonentertainment.runningcat.systems;
+package com.dragonentertainment.runningcat.systems.parallax;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -9,11 +9,11 @@ import com.dragonentertainment.runningcat.utils.MappersComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 
-public class MovementSystem extends IteratingSystem {
+public class ParallaxMovementSystem extends IteratingSystem {
 
     private final Viewport viewport;
 
-    public MovementSystem(Viewport viewport) {
+    public ParallaxMovementSystem(Viewport viewport) {
         super(Family.all(TransformComponent.class, VelocityComponent.class).get());
         this.viewport = viewport;
     }
@@ -28,7 +28,8 @@ public class MovementSystem extends IteratingSystem {
         float width = trans.width;
 
         if((trans.position.x + width) < 0) {
-            trans.position.x = this.viewport.getWorldWidth() + width * 2;
+            trans.position.x = MathUtils.random(this.viewport.getWorldWidth(),
+                                                            this.viewport.getWorldWidth() * 2);
         }
     }
 }
