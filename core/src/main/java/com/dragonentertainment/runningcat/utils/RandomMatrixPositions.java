@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomMatrixPositions {
-    public static List<List<Vector2>> getBlockPositions(int total, int nextPos) {
+    public static List<List<Vector2>> getBlockPositions(int total) {
         List<Vector2> allPositions = new ArrayList<>();
         List<List<Vector2>> results = new ArrayList<>();
         Random random = new Random();
@@ -27,14 +27,11 @@ public class RandomMatrixPositions {
 
             List<Vector2> collects = new ArrayList<>();
             collects.add(start);
+
             int j = 1;
             do {
-                collects.add(new Vector2((start.x + nextPos) + j, start.y));
-                if(nextPos != 0) {
-                    Gdx.app.log("ERROR", "" + nextPos);
-                    Gdx.app.log("ERROR", "" + (start.x + nextPos) + j);
-                }
-            }while(j++ < 2);
+                collects.add(new Vector2(start.x + j, start.y % 2));
+            }while(j++ < 4);
 
             results.add(collects);
         }

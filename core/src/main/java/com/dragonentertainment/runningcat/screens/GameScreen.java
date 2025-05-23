@@ -29,11 +29,11 @@ public class GameScreen extends BaseScreen{
         this.engine.addSystem(parallaxSystems);
         // Add System
         this.engine.addSystem(new BrickRenderSystem(this.engine, this.batch, brick));
-        parallaxSystems.generateParallax_layer03();
+        this.engine.addSystem(new BrickMovementSystem(this.engine));
 
         // Movement System
         this.engine.addSystem(new ParallaxMovementSystem(this.viewport));
-        this.engine.addSystem(new BrickMovementSystem(this.engine));
+        parallaxSystems.generateParallax_layer03();
     }
 
     @Override

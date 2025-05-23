@@ -1,6 +1,5 @@
 package com.dragonentertainment.runningcat.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.Enum.ScreenType;
 import com.dragonentertainment.runningcat.utils.AssetLoader;

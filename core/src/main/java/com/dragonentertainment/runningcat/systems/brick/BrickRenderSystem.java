@@ -14,6 +14,7 @@ import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.brick.BrickComponent;
 import com.dragonentertainment.runningcat.factory.BrickFactory;
+import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 import com.dragonentertainment.runningcat.utils.RandomMatrixPositions;
 
@@ -25,8 +26,8 @@ public class BrickRenderSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
     private final Texture texture;
     private boolean brickInitialed = false;
-
     private static int nextPos = 0;
+
     public BrickRenderSystem(PooledEngine engine, SpriteBatch batch, Texture texture) {
         this.engine = engine;
         this.batch = batch;
@@ -36,12 +37,14 @@ public class BrickRenderSystem extends EntitySystem {
     @Override
     public void addedToEngine(Engine engine) {
         this.entities = engine.getEntitiesFor(Family.one(BrickComponent.class).get());
-        // Create Bricks
-        this.generateBricks();
+        // Create Bricks for first time
+        this.generateBricks(false);
     }
 
     @Override
     public void update(float deltaTime) {
+
+        // Draw Bricks
         this.batch.begin();
 
         for(Entity e : this.entities) {
@@ -53,23 +56,22 @@ public class BrickRenderSystem extends EntitySystem {
 
         this.batch.end();
 
+        // Re-spawn bricks
         int brickRemain = this.engine.getEntitiesFor(Family.one(BrickComponent.class).get()).size();
-
-        if( brickRemain == 0) {
-            this.generateBricks();
+        if( brickRemain < 40 ) {
+            this.generateBricks(true);
         }
-        //Gdx.app.log("ERROR", "" + brickRemain);
+
+        Gdx.app.log("INFO-GAME", brickRemain + "");
     }
 
-    private void generateBricks() {
-        List<List<Vector2>> randoomPositions = RandomMatrixPositions.getBlockPositions(10, nextPos);
-        for(List<Vector2> positions : randoomPositions) {
-            for(int i = 0; i < positions.size(); i++) {
-                BrickFactory.createBrick(this.engine, this.texture, positions.get(i).x, positions.get(i).y);
-
-                if(i == positions.size() - 1) {
-                    nextPos = (int)positions.get(i).x;
-                }
+    private void generateBricks(boolean isReSpawn) {
+        List<List<Vector2>> randoomPositions = RandomMatrixPositions.getBlockPositions(20);
+        for(int i = 0; i < randoomPositions.size(); i++) {
+            List<Vector2> positions = randoomPositions.get(i);
+            for(int j = 0; j < positions.size(); j++) {
+                int w = isReSpawn ? GameGrid.WORLD_WIDTH : 0;
+                BrickFactory.createBrick(this.engine, this.texture, positions.get(j).x + w, positions.get(j).y);
             }
         }
     }
