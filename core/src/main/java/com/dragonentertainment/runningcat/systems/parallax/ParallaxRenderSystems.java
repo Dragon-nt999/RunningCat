@@ -30,7 +30,7 @@ public class ParallaxRenderSystems extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        this.entities = engine.getEntitiesFor(Family.all(ParallaxComponent.class).get());
+        this.entities = engine.getEntitiesFor(Family.one(ParallaxComponent.class).get());
     }
 
     @Override

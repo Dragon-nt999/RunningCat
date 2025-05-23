@@ -38,8 +38,6 @@ public class LoadingScreen extends BaseScreen {
 
         } else {
             float progress = this.game.assetManager.getProgress();
-
-            Gdx.app.log("Asset Loading", progress + "");
         }
     }
 
