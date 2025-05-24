@@ -20,7 +20,7 @@ import com.dragonentertainment.runningcat.utils.RandomMatrixPositions;
 
 import java.util.List;
 
-public class BrickRenderSystem extends EntitySystem {
+public class BrickCreateSystem extends EntitySystem {
     private final PooledEngine engine;
     private final SpriteBatch batch;
     private ImmutableArray<Entity> entities;
@@ -28,7 +28,7 @@ public class BrickRenderSystem extends EntitySystem {
     private boolean brickInitialed = false;
     private static int nextPos = 0;
 
-    public BrickRenderSystem(PooledEngine engine, SpriteBatch batch, Texture texture) {
+    public BrickCreateSystem(PooledEngine engine, SpriteBatch batch, Texture texture) {
         this.engine = engine;
         this.batch = batch;
         this.texture = texture;
@@ -66,13 +66,14 @@ public class BrickRenderSystem extends EntitySystem {
     }
 
     private void generateBricks(boolean isReSpawn) {
-        List<List<Vector2>> randoomPositions = RandomMatrixPositions.getBlockPositions(20);
-        for(int i = 0; i < randoomPositions.size(); i++) {
-            List<Vector2> positions = randoomPositions.get(i);
+       /* List<List<Vector2>> randPositions = RandomMatrixPositions.getBlockPositions(20);
+        for(int i = 0; i < randPositions.size(); i++) {
+            List<Vector2> positions = randPositions.get(i);
             for(int j = 0; j < positions.size(); j++) {
                 int w = isReSpawn ? GameGrid.WORLD_WIDTH : 0;
-                BrickFactory.createBrick(this.engine, this.texture, positions.get(j).x + w, positions.get(j).y);
+                BrickFactory.createBrick(this.engine, this.texture,
+                                                positions.get(j).x + w, positions.get(j).y);
             }
-        }
+        } */
     }
 }

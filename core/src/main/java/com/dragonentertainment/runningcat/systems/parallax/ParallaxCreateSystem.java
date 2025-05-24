@@ -6,49 +6,88 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.AppGame;
-import com.dragonentertainment.runningcat.components.ParallaxComponent;
-import com.dragonentertainment.runningcat.components.TextureComponent;
-import com.dragonentertainment.runningcat.components.TransformComponent;
+import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.factory.ParallaxFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
-import com.dragonentertainment.runningcat.utils.MappersComponent;
+import com.dragonentertainment.runningcat.utils.GameGrid;
 
-public class ParallaxRenderSystems extends EntitySystem {
-    private final AppGame game;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ParallaxCreateSystem extends EntitySystem {
     private final PooledEngine engine;
-    private final SpriteBatch batch;
-    private ImmutableArray<Entity> entities;
+    private final Map<Integer, Texture> mountains;
 
-    public ParallaxRenderSystems(AppGame game, PooledEngine engine, SpriteBatch batch) {
-        this.game = game;
+    public ParallaxCreateSystem(AppGame game, PooledEngine engine) {
         this.engine = engine;
-        this.batch = batch;
+        AssetManager assetManager = game.assetManager;
+
+        // Mountains
+        this.mountains = new HashMap<>();
+        mountains.put(1, assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_1));
+        mountains.put(2, assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_2));
+        mountains.put(3, assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_3));
+        mountains.put(4, assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_4));
+        mountains.put(5, assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_5));
+        mountains.put(6, assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_6));
     }
 
     @Override
     public void addedToEngine(Engine engine) {
-        this.entities = engine.getEntitiesFor(Family.one(ParallaxComponent.class).get());
+        this.createMountain(false);
     }
 
     @Override
     public void update(float deltaTime) {
-        batch.begin();
 
-        for(Entity e : this.entities) {
-            TransformComponent transform = MappersComponent.transform.get(e);
-            TextureComponent texture = MappersComponent.texture.get(e);
+        // Get total Entity
+        int totalRemain = this.engine.getEntitiesFor(Family.all(
+                                                        ParallaxComponent.class).get()
+                                                    ).size();
 
-            this.batch.draw(texture.texture, transform.position.x,
-                                    transform.position.y, transform.width, transform.height);
+        if(totalRemain == 1) {
+            this.createMountain(true);
         }
-
-        batch.end();
+        Gdx.app.log(
+            "ERROR",
+             totalRemain + "");
     }
 
-    public void generateParallax_layer01() {
+    /*
+    * Create Mountains
+    * */
+    private void createMountain(boolean reSpawn) {
+
+        // Shuffle
+        List<Map.Entry<Integer, Texture>> mountainList = new ArrayList<>(this.mountains.entrySet());
+        Collections.shuffle(mountainList);
+        for(Map.Entry<Integer, Texture> mountain : mountainList) {
+
+            // Random X
+            int xPos = reSpawn ? MathUtils.random(0, GameGrid.WORLD_WIDTH * 5)
+                : MathUtils.random(GameGrid.WORLD_WIDTH, GameGrid.WORLD_WIDTH * 5);
+
+            // Create Entity
+            ParallaxFactory.createParallax(
+                                this.engine,
+                                mountain.getValue(),
+                                xPos,
+                                -0.5f,
+                                mountain.getKey()
+                );
+        }
+    }
+
+    /*public void generateParallax_layer01() {
         ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.CLOUD_1), MathUtils.random(-2, 20), 10f, 1);
         ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.MOUNTAIN_1), MathUtils.random(-2, 20), -0.5f, 1);
         ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.CLOUD_2), MathUtils.random(-2, 20), 5f, 2);
@@ -78,5 +117,5 @@ public class ParallaxRenderSystems extends EntitySystem {
         ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_7), MathUtils.random(-2, 20), -4.5f,3 + addSpeed);
         ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_8), MathUtils.random(-2, 20), -4.5f,4 + addSpeed);
         ParallaxFactory.createParallax(this.engine, this.game.assetManager.get(AssetsName.Game.Backgrounds.LOTUS_9), MathUtils.random(-2, 20), -4.5f,5 + addSpeed);
-    }
+    }*/
 }

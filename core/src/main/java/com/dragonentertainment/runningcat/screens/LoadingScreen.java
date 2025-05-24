@@ -1,7 +1,7 @@
 package com.dragonentertainment.runningcat.screens;
 
 import com.dragonentertainment.runningcat.AppGame;
-import com.dragonentertainment.runningcat.Enum.ScreenType;
+import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class LoadingScreen extends BaseScreen {

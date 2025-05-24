@@ -4,10 +4,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.struct.AssetsName;
-import com.dragonentertainment.runningcat.systems.brick.BrickMovementSystem;
-import com.dragonentertainment.runningcat.systems.parallax.ParallaxMovementSystem;
-import com.dragonentertainment.runningcat.systems.parallax.ParallaxRenderSystems;
-import com.dragonentertainment.runningcat.systems.brick.BrickRenderSystem;
+import com.dragonentertainment.runningcat.systems.MovementSystem;
+import com.dragonentertainment.runningcat.systems.RenderSystem;
+import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class GameScreen extends BaseScreen{
@@ -17,10 +16,20 @@ public class GameScreen extends BaseScreen{
         // Initial Engine
         this.engine = new PooledEngine();
         // Get Background
-        this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY, Texture.class);
+        this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
+                                                    Texture.class);
+
+        // Parallax
+        this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
+        this.engine.addSystem(new RenderSystem(this.batch));
+
+        // Movement
+        this.engine.addSystem(new MovementSystem(this.engine));
 
         // Parallax Entity
-        ParallaxRenderSystems parallaxSystems = new ParallaxRenderSystems(this.game, this.engine, this.batch);
+        /*ParallaxRenderSystems parallaxSystems = new ParallaxRenderSystems(
+                                                    this.game,
+                                                    this.engine, this.batch);
         parallaxSystems.generateParallax_layer01();
         parallaxSystems.generateParallax_layer02();
 
@@ -33,7 +42,7 @@ public class GameScreen extends BaseScreen{
 
         // Movement System
         this.engine.addSystem(new ParallaxMovementSystem(this.viewport));
-        parallaxSystems.generateParallax_layer03();
+        parallaxSystems.generateParallax_layer03();*/
     }
 
     @Override
