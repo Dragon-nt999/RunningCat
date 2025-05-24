@@ -1,6 +1,5 @@
 package com.dragonentertainment.runningcat.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.Enum.ScreenType;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
@@ -38,8 +37,6 @@ public class LoadingScreen extends BaseScreen {
 
         } else {
             float progress = this.game.assetManager.getProgress();
-
-            Gdx.app.log("Asset Loading", progress + "");
         }
     }
 
