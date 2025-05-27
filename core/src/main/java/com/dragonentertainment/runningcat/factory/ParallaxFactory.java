@@ -3,45 +3,59 @@ package com.dragonentertainment.runningcat.factory;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
-import com.dragonentertainment.runningcat.components.ParallaxComponent;
+import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
-import com.dragonentertainment.runningcat.components.brick.BrickComponent;
+import com.dragonentertainment.runningcat.components.ZIndexComponent;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public class ParallaxFactory {
-    private static final float POS_Y = -0.5f;
-    private static final float VELOCITY = -0.05f;
 
-    public static void createParallax(PooledEngine engine, Texture texture, float x, float y, float zIndex) {
+    public static void createParallax(PooledEngine engine,
+                                      Texture texture,
+                                      float x,
+                                      float y,
+                                      int zIndex,
+                                      RenderTypeComponent.Type pType
+    ) {
         Entity entity = engine.createEntity();
 
-        TransformComponent tc = engine.createComponent(TransformComponent.class);
-        TextureComponent rc = engine.createComponent(TextureComponent.class);
-        ParallaxComponent pc = engine.createComponent(ParallaxComponent.class);
-        VelocityComponent vc = engine.createComponent(VelocityComponent.class);
+        TransformComponent transform = engine.createComponent(TransformComponent.class);
+        TextureComponent text = engine.createComponent(TextureComponent.class);
+        VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
+        ZIndexComponent zI = engine.createComponent(ZIndexComponent.class);
+        RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
+        ParallaxComponent parallax = engine.createComponent(ParallaxComponent.class);
 
         // Set Transform
-        tc.position.set(x, y);
-        tc.width = GameGrid.toGridWidth(texture.getWidth());
-        tc.height = GameGrid.toGridHeight(texture.getHeight());
+        transform.position.set(x, y);
+        transform.width = GameGrid.toGridWidth(texture.getWidth());
+        transform.height = GameGrid.toGridHeight(texture.getHeight());
 
         // Set Texture
-        rc.texture = texture;
-
-        // Set parallax
-        pc.zIndex = zIndex;
+        text.texture = texture;
 
         // Set velocity
-        vc.velocity.set(VELOCITY * zIndex, 0);
+        velocity.velocity.set(Config.VELOCITY * zIndex, 0);
+
+        // Set zIndex
+        zI.zIndex = zIndex;
+
+        // Set Type
+        type.type = pType;
 
         // Add component
-        entity.add(tc);
-        entity.add(rc);
-        entity.add(vc);
-        entity.add(pc);
+        entity.add(transform);
+        entity.add(text);
+        entity.add(velocity);
+        entity.add(zI);
+        entity.add(type);
+        entity.add(parallax);
 
+        // Add Entity
         engine.addEntity(entity);
 
     }

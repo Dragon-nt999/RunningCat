@@ -1,4 +1,4 @@
-package com.dragonentertainment.runningcat.Enum;
+package com.dragonentertainment.runningcat.enums;
 
 public enum ScreenType {
     GAME,

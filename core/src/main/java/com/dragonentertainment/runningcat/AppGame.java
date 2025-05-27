@@ -2,7 +2,7 @@ package com.dragonentertainment.runningcat;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.dragonentertainment.runningcat.Enum.ScreenType;
+import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.screens.LoadingScreen;
 
 public class AppGame extends Game {
