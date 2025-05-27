@@ -9,11 +9,10 @@ import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.brick.BrickComponent;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public class BrickFactory {
-
-    private static final float VELOCITY = -1.5f;
 
     public static void createBrick(PooledEngine engine,
                                    Texture texture,
@@ -28,6 +27,7 @@ public class BrickFactory {
         VelocityComponent velocity  = engine.createComponent(VelocityComponent.class);
         ZIndexComponent zI    = engine.createComponent(ZIndexComponent.class);
         RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
+        BrickComponent bc = engine.createComponent(BrickComponent.class);
 
         // Set Transform
         trans.position.set(x, y);
@@ -37,7 +37,7 @@ public class BrickFactory {
         text.texture = texture;
 
         // Set velocity
-        velocity.velocity.set(VELOCITY, 0);
+        velocity.velocity.set(Config.VELOCITY * zIndex, 0);
 
         // Set zIndex
         zI.zIndex = zIndex;
@@ -51,6 +51,7 @@ public class BrickFactory {
         entity.add(velocity);
         entity.add(zI);
         entity.add(type);
+        entity.add(bc);
 
         engine.addEntity(entity);
 

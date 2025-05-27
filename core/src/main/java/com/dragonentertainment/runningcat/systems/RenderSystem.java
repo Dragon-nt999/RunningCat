@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
@@ -34,7 +35,6 @@ public class RenderSystem extends SortedIteratingSystem {
 
         TextureComponent text = MappersComponent.texture.get(entity);
         TransformComponent trans = MappersComponent.transform.get(entity);
-        RenderTypeComponent type = MappersComponent.type.get(entity);
 
         // Draw Entity
         this.batch.draw(
@@ -46,5 +46,7 @@ public class RenderSystem extends SortedIteratingSystem {
         );
 
         this.batch.end();
+
+        Gdx.app.log("FRAME PER SECOND",Gdx.graphics.getFramesPerSecond() + "");
     }
 }

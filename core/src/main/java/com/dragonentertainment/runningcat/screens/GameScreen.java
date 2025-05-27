@@ -6,6 +6,7 @@ import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.RenderSystem;
+import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
@@ -21,28 +22,16 @@ public class GameScreen extends BaseScreen{
 
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
+
+        // Brick
+        Texture brick = this.game.assetManager.get(AssetsName.Game.Items.BRICK, Texture.class);
+        this.engine.addSystem(new BrickCreateSystem(this.engine, brick));
+
+        // Render
         this.engine.addSystem(new RenderSystem(this.batch));
 
         // Movement
         this.engine.addSystem(new MovementSystem(this.engine));
-
-        // Parallax Entity
-        /*ParallaxRenderSystems parallaxSystems = new ParallaxRenderSystems(
-                                                    this.game,
-                                                    this.engine, this.batch);
-        parallaxSystems.generateParallax_layer01();
-        parallaxSystems.generateParallax_layer02();
-
-        // Get Brick Texture
-        Texture brick = this.game.assetManager.get(AssetsName.Game.Items.BRICK, Texture.class);
-        this.engine.addSystem(parallaxSystems);
-        // Add System
-        this.engine.addSystem(new BrickRenderSystem(this.engine, this.batch, brick));
-        this.engine.addSystem(new BrickMovementSystem(this.engine));
-
-        // Movement System
-        this.engine.addSystem(new ParallaxMovementSystem(this.viewport));
-        parallaxSystems.generateParallax_layer03();*/
     }
 
     @Override

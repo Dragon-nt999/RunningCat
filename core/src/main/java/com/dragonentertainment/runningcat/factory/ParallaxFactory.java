@@ -9,16 +9,17 @@ import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public class ParallaxFactory {
-    private static final float VELOCITY = -0.5f;
 
     public static void createParallax(PooledEngine engine,
                                       Texture texture,
                                       float x,
                                       float y,
-                                      int zIndex
+                                      int zIndex,
+                                      RenderTypeComponent.Type pType
     ) {
         Entity entity = engine.createEntity();
 
@@ -38,13 +39,13 @@ public class ParallaxFactory {
         text.texture = texture;
 
         // Set velocity
-        velocity.velocity.set(VELOCITY * zIndex, 0);
+        velocity.velocity.set(Config.VELOCITY * zIndex, 0);
 
         // Set zIndex
         zI.zIndex = zIndex;
 
         // Set Type
-        type.type = RenderTypeComponent.Type.PARALLAX;
+        type.type = pType;
 
         // Add component
         entity.add(transform);
