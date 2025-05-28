@@ -30,8 +30,9 @@ public class RandomMatrixPositions {
 
             int j = 1;
             do {
-                collects.add(new Vector2(start.x + j, start.y % 2));
-            }while(j++ < 4);
+                //collects.add(new Vector2(start.x + j, start.y % 2));
+                collects.add(new Vector2(start.x + j, start.y));
+            }while(j++ < 2);
 
             results.add(collects);
         }

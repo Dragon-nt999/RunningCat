@@ -6,21 +6,15 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
-import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.factory.ParallaxFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.GameGrid;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -52,12 +46,12 @@ public class ParallaxCreateSystem extends EntitySystem {
 
         // Clouds
         this.clouds = new HashMap<>();
-        this.clouds.put(-1, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_1));
-        this.clouds.put(-2, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_2));
-        this.clouds.put(-3, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_3));
-        this.clouds.put(7, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_4));
-        this.clouds.put(8, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_5));
-        this.clouds.put(9, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_6));
+        this.clouds.put(1, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_1));
+        this.clouds.put(2, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_2));
+        this.clouds.put(3, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_3));
+        this.clouds.put(4, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_4));
+        this.clouds.put(5, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_5));
+        this.clouds.put(6, assetManager.get(AssetsName.Game.Backgrounds.CLOUD_6));
 
         // Lotus Back
         String[] lotusB = new String[]{
@@ -68,7 +62,8 @@ public class ParallaxCreateSystem extends EntitySystem {
         };
         this.lotusLayerBack = new HashMap<>();
         for(int i = 0; i < 20; i++) {
-            this.lotusLayerBack.put(i * 2, assetManager.get(lotusB[MathUtils.random(0, lotusB.length - 1)]));
+            this.lotusLayerBack.put(i * 2,
+                assetManager.get(lotusB[MathUtils.random(0, lotusB.length - 1)]));
         }
         // Lotus Front
         String[] lotusF = new String[]{
@@ -80,7 +75,8 @@ public class ParallaxCreateSystem extends EntitySystem {
         };
         this.lotusLayerFront = new HashMap<>();
         for(int i = 0; i < 20; i++) {
-            this.lotusLayerFront.put(i * 2, assetManager.get(lotusF[MathUtils.random(0, lotusF.length - 1)]));
+            this.lotusLayerFront.put(i * 2,
+                assetManager.get(lotusF[MathUtils.random(0, lotusF.length - 1)]));
         }
 
     }
@@ -137,7 +133,7 @@ public class ParallaxCreateSystem extends EntitySystem {
         }
 
         // Respawn Parallax Cloud
-        if(this.parallaxCloud.size() < 2) {
+        if(this.parallaxCloud.size() < 3) {
             this.createClouds(true);
         }
 
@@ -190,7 +186,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 this.engine,
                 cloud.getValue(),
                 xPos,
-                MathUtils.random(1, 4) + cloud.getKey(),
+                MathUtils.random(1, 6) + cloud.getKey(),
                 cloud.getKey(),
                 RenderTypeComponent.Type.PARALLAX_CLOUD
             );
@@ -216,7 +212,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 this.engine,
                 lotus.getValue(),
                 xPos + 1,
-                -1f,
+                MathUtils.random(-3, -1),
                 7,
                 RenderTypeComponent.Type.PARALLAX_LOTUS
             );
@@ -229,20 +225,21 @@ public class ParallaxCreateSystem extends EntitySystem {
      * */
     private void createLotusLayerFront(boolean reSpawn) {
         // Shuffle
-        List<Map.Entry<Integer, Texture>> lotusList = new ArrayList<>(this.lotusLayerFront.entrySet());
+        List<Map.Entry<Integer, Texture>> lotusList =
+                                        new ArrayList<>(this.lotusLayerFront.entrySet());
         Collections.shuffle(lotusList);
+
         for(Map.Entry<Integer, Texture> lotus : lotusList) {
             // Random X
             int xPos = reSpawn ? MathUtils.random(GameGrid.WORLD_WIDTH, GameGrid.WORLD_WIDTH + 50)
                 : lotus.getKey();
-
             // Create Entity
             ParallaxFactory.createParallax(
                 this.engine,
                 lotus.getValue(),
                 xPos + 6,
-                -5f,
-                10,
+                MathUtils.random(-7, -4),
+                11,
                 RenderTypeComponent.Type.PARALLAX_LOTUS
             );
         }

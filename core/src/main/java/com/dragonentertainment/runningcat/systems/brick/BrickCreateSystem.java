@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.components.brick.BrickComponent;
@@ -34,8 +33,6 @@ public class BrickCreateSystem extends EntitySystem {
         if( brickRemain < 30 ) {
             this.generateBricks(true);
         }
-
-        Gdx.app.log("BRICK", brickRemain + "");
     }
 
     private void generateBricks(boolean isReSpawn) {
