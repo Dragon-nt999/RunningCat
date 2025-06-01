@@ -36,7 +36,7 @@ public class BrickCreateSystem extends EntitySystem {
     }
 
     private void generateBricks(boolean isReSpawn) {
-       List<List<Vector2>> randPositions = RandomMatrixPositions.getBlockPositions(5);
+       List<List<Vector2>> randPositions = RandomMatrixPositions.getBlockPositions(5, isReSpawn);
         for(int i = 0; i < randPositions.size(); i++) {
             List<Vector2> positions = randPositions.get(i);
             for(int j = 0; j < positions.size(); j++) {
