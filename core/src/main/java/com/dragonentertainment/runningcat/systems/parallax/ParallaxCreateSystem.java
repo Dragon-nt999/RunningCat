@@ -30,6 +30,7 @@ public class ParallaxCreateSystem extends EntitySystem {
     private final List<Entity> parallaxMountain = new ArrayList<>();
     private final List<Entity> parallaxCloud = new ArrayList<>();
     private final List<Entity> parallaxLotusBack = new ArrayList<>();
+    private final List<Entity> parallaxLotusFront = new ArrayList<>();
 
     public ParallaxCreateSystem(AppGame game, PooledEngine engine) {
         this.engine = engine;
@@ -76,7 +77,8 @@ public class ParallaxCreateSystem extends EntitySystem {
         this.lotusLayerFront = new HashMap<>();
         for(int i = 0; i < 20; i++) {
             this.lotusLayerFront.put(i * 2,
-                assetManager.get(lotusF[MathUtils.random(0, lotusF.length - 1)]));
+                assetManager.get(lotusF[MathUtils.random(0, lotusF.length - 1)])
+                );
         }
 
     }
@@ -103,14 +105,15 @@ public class ParallaxCreateSystem extends EntitySystem {
         this.parallaxMountain.clear();
         this.parallaxCloud.clear();
         this.parallaxLotusBack.clear();
+        this.parallaxLotusFront.clear();
 
         // Get all Parallax Entity
-        ImmutableArray<Entity> parallaxs = this.engine.getEntitiesFor(
+        ImmutableArray<Entity> parallax = this.engine.getEntitiesFor(
             Family.all(RenderTypeComponent.class).get()
         );
 
         // Get Parallax Entity on Screen and count it
-        for(Entity entity: parallaxs) {
+        for(Entity entity: parallax) {
             RenderTypeComponent rtc = entity.getComponent(RenderTypeComponent.class);
             switch (rtc.type){
                 case PARALLAX_MOUNTAIN:
@@ -119,8 +122,11 @@ public class ParallaxCreateSystem extends EntitySystem {
                 case PARALLAX_CLOUD:
                     this.parallaxCloud.add(entity);
                     break;
-                case PARALLAX_LOTUS:
+                case PARALLAX_LOTUS_BACK:
                     this.parallaxLotusBack.add(entity);
+                    break;
+                case PARALLAX_LOTUS_FRONT:
+                    this.parallaxLotusFront.add(entity);
                     break;
                 default:
                     break;
@@ -140,6 +146,10 @@ public class ParallaxCreateSystem extends EntitySystem {
         // Respawn Parallax Lotus back
         if(this.parallaxLotusBack.size() < 10) {
             this.createLotusLayerBack(true);
+        }
+
+        // Respawn Parallax Lotus front
+        if(this.parallaxLotusFront.size() < 5) {
             this.createLotusLayerFront(true);
         }
 
@@ -205,7 +215,7 @@ public class ParallaxCreateSystem extends EntitySystem {
 
             // Random X
             int xPos = reSpawn ? MathUtils.random(GameGrid.WORLD_WIDTH, GameGrid.WORLD_WIDTH + 50)
-                : lotus.getKey();
+                                : lotus.getKey();
 
             // Create Entity
             ParallaxFactory.createParallax(
@@ -214,7 +224,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 xPos + 1,
                 MathUtils.random(-3, -1),
                 7,
-                RenderTypeComponent.Type.PARALLAX_LOTUS
+                RenderTypeComponent.Type.PARALLAX_LOTUS_BACK
             );
         }
     }
@@ -225,8 +235,7 @@ public class ParallaxCreateSystem extends EntitySystem {
      * */
     private void createLotusLayerFront(boolean reSpawn) {
         // Shuffle
-        List<Map.Entry<Integer, Texture>> lotusList =
-                                        new ArrayList<>(this.lotusLayerFront.entrySet());
+        List<Map.Entry<Integer, Texture>> lotusList = new ArrayList<>(this.lotusLayerFront.entrySet());
         Collections.shuffle(lotusList);
 
         for(Map.Entry<Integer, Texture> lotus : lotusList) {
@@ -240,7 +249,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 xPos + 6,
                 MathUtils.random(-7, -4),
                 11,
-                RenderTypeComponent.Type.PARALLAX_LOTUS
+                RenderTypeComponent.Type.PARALLAX_LOTUS_FRONT
             );
         }
     }
