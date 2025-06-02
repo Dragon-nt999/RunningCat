@@ -1,6 +1,7 @@
 package com.dragonentertainment.runningcat.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -9,29 +10,42 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomMatrixPositions {
-    public static List<List<Vector2>> getBlockPositions(int total) {
-        List<Vector2> allPositions = new ArrayList<>();
+    private static int firstCount = 12;
+    public static List<List<Vector2>> getBlockPositions(int total, boolean isRespawn) {
         List<List<Vector2>> results = new ArrayList<>();
-        Random random = new Random();
 
-        for(int y = 0; y < GameGrid.WORLD_HEIGHT; y++) {
-            for(int x = 0; x < (GameGrid.WORLD_WIDTH * 2); x++) {
-                allPositions.add(new Vector2(x, y));
+        // First Render Bricks
+        if(firstCount > 0 && !isRespawn) {
+            List<Vector2> firstCollects = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < 6; j++) {
+                    firstCollects.add(new Vector2(j, i));
+                    firstCount--;
+                }
             }
+
+            results.add(firstCollects);
         }
 
-        Collections.shuffle(allPositions, random);
+        // Shuffle GameGrid.allPositions
+        Collections.shuffle(GameGrid.allPositions);
 
-        for(int i = 0; i < Math.min(total, allPositions.size()); i++) {
-            Vector2 start = allPositions.get(i);
-
+        for(int i = 0; i < Math.min(total, GameGrid.allPositions.size()); i++) {
             List<Vector2> collects = new ArrayList<>();
-            collects.add(start);
 
-            int j = 1;
+            Vector2 start = GameGrid.allPositions.get(i);
+
+            int x = 0;
+            int y;
+            // random y
+            do{
+                y = MathUtils.random(GameGrid.WORLD_HEIGHT + 1);
+            }while(y % 4 != 0);
+
+            // increase x
             do {
-                collects.add(new Vector2(start.x + j, start.y % 2));
-            }while(j++ < 4);
+                collects.add(new Vector2(start.x + x, y));
+            }while(x++ < 2);
 
             results.add(collects);
         }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.screens.LoadingScreen;
+import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public class AppGame extends Game {
     public AssetManager assetManager;
@@ -14,6 +15,9 @@ public class AppGame extends Game {
         this.assetManager = new AssetManager();
         this.loadingScreen = new LoadingScreen(this, ScreenType.GAME);
         this.setScreen(this.loadingScreen);
+
+        // Create allPosition on Game Grid
+        GameGrid.allPosition();
     }
 
     @Override
