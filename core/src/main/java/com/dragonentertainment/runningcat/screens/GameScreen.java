@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.struct.AssetsName;
+import com.dragonentertainment.runningcat.systems.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.RenderSystem;
 import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
@@ -26,6 +27,9 @@ public class GameScreen extends BaseScreen{
         // Brick
         Texture brick = this.game.assetManager.get(AssetsName.Game.Items.BRICK, Texture.class);
         this.engine.addSystem(new BrickCreateSystem(this.engine, brick));
+
+        // Cat
+        this.engine.addSystem(new AnimationSystem(this.game, this.engine));
 
         // Render
         this.engine.addSystem(new RenderSystem(this.batch));

@@ -1,13 +1,13 @@
 package com.dragonentertainment.runningcat.systems;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
-import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
@@ -20,8 +20,7 @@ public class RenderSystem extends SortedIteratingSystem {
     private final SpriteBatch batch;
 
     public RenderSystem(SpriteBatch batch) {
-        super(Family.all(TextureComponent.class,
-                         TransformComponent.class,
+        super(Family.all(RenderTypeComponent.class,
                          ZIndexComponent.class
                         ).get(),
                 Comparator.comparing(e -> e.getComponent(ZIndexComponent.class).zIndex)
@@ -35,10 +34,24 @@ public class RenderSystem extends SortedIteratingSystem {
 
         TextureComponent text = MappersComponent.texture.get(entity);
         TransformComponent trans = MappersComponent.transform.get(entity);
+        AnimationComponent anim = MappersComponent.animation.get(entity);
+        RenderTypeComponent type = MappersComponent.type.get(entity);
+
+        Texture texture = null;
+
+        if(type.type == RenderTypeComponent.Type.CAT) {
+            try {
+                texture = anim.currentFrame;
+            } catch (RuntimeException e) {
+                Gdx.app.log("ERROR", e.getLocalizedMessage());
+            }
+        } else {
+            texture = text.texture;
+        }
 
         // Draw Entity
         this.batch.draw(
-            text.texture,
+            texture,
             trans.position.x,
             trans.position.y,
             trans.width,
@@ -46,7 +59,5 @@ public class RenderSystem extends SortedIteratingSystem {
         );
 
         this.batch.end();
-
-        Gdx.app.log("FRAME PER SECOND",Gdx.graphics.getFramesPerSecond() + "");
     }
 }
