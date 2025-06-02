@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.factory.ParallaxFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.GameGrid;
@@ -31,7 +32,6 @@ public class ParallaxCreateSystem extends EntitySystem {
     private final List<Entity> parallaxCloud = new ArrayList<>();
     private final List<Entity> parallaxLotusBack = new ArrayList<>();
     private final List<Entity> parallaxLotusFront = new ArrayList<>();
-
     public ParallaxCreateSystem(AppGame game, PooledEngine engine) {
         this.engine = engine;
         AssetManager assetManager = game.assetManager;
@@ -63,8 +63,7 @@ public class ParallaxCreateSystem extends EntitySystem {
         };
         this.lotusLayerBack = new HashMap<>();
         for(int i = 0; i < 20; i++) {
-            this.lotusLayerBack.put(i * 2,
-                assetManager.get(lotusB[MathUtils.random(0, lotusB.length - 1)]));
+            this.lotusLayerBack.put(i * 2, assetManager.get(lotusB[MathUtils.random(0, lotusB.length - 1)]));
         }
         // Lotus Front
         String[] lotusF = new String[]{
@@ -76,9 +75,7 @@ public class ParallaxCreateSystem extends EntitySystem {
         };
         this.lotusLayerFront = new HashMap<>();
         for(int i = 0; i < 20; i++) {
-            this.lotusLayerFront.put(i * 2,
-                assetManager.get(lotusF[MathUtils.random(0, lotusF.length - 1)])
-                );
+            this.lotusLayerFront.put(i * 2, assetManager.get(lotusF[MathUtils.random(0, lotusF.length - 1)]));
         }
 
     }
@@ -108,9 +105,7 @@ public class ParallaxCreateSystem extends EntitySystem {
         this.parallaxLotusFront.clear();
 
         // Get all Parallax Entity
-        ImmutableArray<Entity> parallax = this.engine.getEntitiesFor(
-            Family.all(RenderTypeComponent.class).get()
-        );
+        ImmutableArray<Entity> parallax = this.engine.getEntitiesFor(Family.one(ParallaxComponent.class).get());
 
         // Get Parallax Entity on Screen and count it
         for(Entity entity: parallax) {
@@ -242,6 +237,7 @@ public class ParallaxCreateSystem extends EntitySystem {
             // Random X
             int xPos = reSpawn ? MathUtils.random(GameGrid.WORLD_WIDTH, GameGrid.WORLD_WIDTH + 50)
                 : lotus.getKey();
+
             // Create Entity
             ParallaxFactory.createParallax(
                 this.engine,
