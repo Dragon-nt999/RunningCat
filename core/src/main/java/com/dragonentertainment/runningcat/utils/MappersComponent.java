@@ -1,6 +1,7 @@
 package com.dragonentertainment.runningcat.utils;
 
 import com.badlogic.ashley.core.ComponentMapper;
+import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
@@ -24,4 +25,6 @@ public class MappersComponent {
                                             ComponentMapper.getFor(ZIndexComponent.class);
     public static final ComponentMapper<RenderTypeComponent> type =
                                             ComponentMapper.getFor(RenderTypeComponent.class);
+    public static final ComponentMapper<AnimationComponent> animation =
+                                            ComponentMapper.getFor(AnimationComponent.class);
 }
