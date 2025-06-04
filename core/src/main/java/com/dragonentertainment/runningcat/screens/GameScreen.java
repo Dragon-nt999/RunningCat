@@ -5,11 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.AnimationSystem;
-<<<<<<< HEAD
 import com.dragonentertainment.runningcat.systems.CollisionSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
-=======
->>>>>>> 4bcc6474e61c45cb99aaafaeac28845780e8adf8
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.RenderSystem;
 import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
