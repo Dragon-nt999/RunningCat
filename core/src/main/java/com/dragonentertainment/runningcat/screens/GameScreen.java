@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.AnimationSystem;
+import com.dragonentertainment.runningcat.systems.CollisionSystem;
+import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.RenderSystem;
 import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
@@ -36,6 +38,12 @@ public class GameScreen extends BaseScreen{
 
         // Movement
         this.engine.addSystem(new MovementSystem(this.engine));
+
+        // Gravity
+        this.engine.addSystem(new GravitySystem());
+
+        // Collision
+        this.engine.addSystem(new CollisionSystem());
     }
 
     @Override

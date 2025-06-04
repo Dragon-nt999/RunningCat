@@ -3,6 +3,7 @@ package com.dragonentertainment.runningcat.factory;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
+import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -28,6 +29,7 @@ public class BrickFactory {
         ZIndexComponent zI    = engine.createComponent(ZIndexComponent.class);
         RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
         BrickComponent bc = engine.createComponent(BrickComponent.class);
+        CollisionComponent cc = engine.createComponent(CollisionComponent.class);
 
         // Set Transform
         trans.position.set(x, y);
@@ -37,13 +39,16 @@ public class BrickFactory {
         text.texture = texture;
 
         // Set velocity
-        velocity.velocity.set(Config.VELOCITY * zIndex, 0);
+        velocity.velocity.set(Config.X_VELOCITY * zIndex, 0);
 
         // Set zIndex
         zI.zIndex = zIndex;
 
         // Set Type
         type.type = RenderTypeComponent.Type.BRICK;
+
+        // Set Brick index
+        bc.index.set(x, y);
 
         // Add component
         entity.add(trans);
@@ -52,6 +57,7 @@ public class BrickFactory {
         entity.add(zI);
         entity.add(type);
         entity.add(bc);
+        entity.add(cc);
 
         engine.addEntity(entity);
 
