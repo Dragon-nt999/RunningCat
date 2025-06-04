@@ -28,6 +28,7 @@ public class MovementSystem extends IteratingSystem {
 
         // Moving
         trans.position.x += velocity.velocity.x * deltaTime;
+        trans.position.y += velocity.velocity.y * deltaTime;
 
         // Get width Brick
         float width = trans.width;

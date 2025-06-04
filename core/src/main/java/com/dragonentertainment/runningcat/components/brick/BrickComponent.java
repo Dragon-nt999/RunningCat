@@ -6,11 +6,10 @@ import com.badlogic.gdx.utils.Pool;
 
 public class BrickComponent implements Component, Pool.Poolable {
     public boolean active = false;
-    public int index = 0;
+    public Vector2 index = new Vector2();
 
     @Override
     public void reset() {
         this.active = false;
-        this.index = 0;
     }
 }
