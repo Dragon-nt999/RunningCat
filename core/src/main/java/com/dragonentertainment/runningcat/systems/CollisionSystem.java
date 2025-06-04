@@ -11,6 +11,7 @@ import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
+import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class CollisionSystem extends EntitySystem {
@@ -61,9 +62,11 @@ public class CollisionSystem extends EntitySystem {
                                             brickTransform.height);
 
                 if(Intersector.overlaps(this.catBounds, brickCollider.bounds)) {
-                    catVelocity.velocity.y = 0;
-                    catTransform.position.y = brickTransform.position.y + brickTransform.height;
-                    break;
+                    if(CalculateCollision.isStillOnBrick(catTransform, brickTransform)) {
+                        catVelocity.velocity.y = 0;
+                        catTransform.position.y = brickTransform.position.y + brickTransform.height;
+                        break;
+                    }
                 }
             }
         }
