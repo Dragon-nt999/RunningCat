@@ -5,12 +5,14 @@ import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.brick.BrickComponent;
+import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 
 public class MappersComponent {
@@ -36,4 +38,8 @@ public class MappersComponent {
                                             ComponentMapper.getFor(CollisionComponent.class);
     public static final ComponentMapper<GravityComponent> gravity =
                                             ComponentMapper.getFor(GravityComponent.class);
+    public static final ComponentMapper<TouchComponent> touch =
+                                            ComponentMapper.getFor(TouchComponent.class);
+    public static final ComponentMapper<JumpComponent> jump =
+                                            ComponentMapper.getFor(JumpComponent.class);
 }

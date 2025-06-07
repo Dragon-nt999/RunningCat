@@ -1,4 +1,4 @@
-package com.dragonentertainment.runningcat.systems;
+package com.dragonentertainment.runningcat.systems.player;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -23,7 +23,8 @@ public class AnimationSystem extends IteratingSystem {
     private final PooledEngine engine;
     private final List<String> assetName = new ArrayList<>();
 
-    public AnimationSystem(AppGame game, PooledEngine engine) {
+    public AnimationSystem(AppGame game, PooledEngine engine)
+    {
         super(Family.all(AnimationComponent.class, RenderTypeComponent.class).get());
         this.game = game;
         this.engine = engine;
@@ -39,32 +40,37 @@ public class AnimationSystem extends IteratingSystem {
     }
 
     @Override
-    public void addedToEngine(Engine engine) {
+    public void addedToEngine(Engine engine)
+    {
         super.addedToEngine(engine);
         this.generatePlayer();
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTime) {
+    protected void processEntity(Entity entity, float deltaTime)
+    {
         AnimationComponent anim = MappersComponent.animation.get(entity);
 
         anim.stateTime += deltaTime;
         int frameIndex = (int)(anim.stateTime / anim.frameDuration);
 
-        if(anim.loop){
+        if(anim.loop && !anim.stop)
+        {
             frameIndex %= anim.frames.size();
-        } else {
+        } else
+        {
             frameIndex = Math.min(frameIndex, anim.frames.size() - 1);
         }
 
         anim.currentFrame = anim.frames.get(frameIndex);
 
-        Gdx.app.log("ANIMATION", anim.currentFrame + "");
     }
 
-    private void generatePlayer() {
+    private void generatePlayer()
+    {
         List<Texture> animations = new ArrayList<>();
-        for(int i = 0; i < assetName.size(); i++) {
+        for(int i = 0; i < assetName.size(); i++)
+        {
             animations.add(this.game.assetManager.get(assetName.get(i), Texture.class));
         }
 

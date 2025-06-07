@@ -1,18 +1,26 @@
 package com.dragonentertainment.runningcat.utils;
 
+import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 
 public class CalculateCollision {
     private static final float MARGIN = 0.05f;
 
-    public static boolean isStillOnBrick(TransformComponent trans1, TransformComponent trans2) {
+    public static boolean aabbOverlap(TransformComponent aTransform, CollisionComponent aCollider,
+                                      TransformComponent bTransform, CollisionComponent bCollider)
 
-        float obj1Center = trans1.position.x + trans1.width / 2f;
-        float object2Right = trans2.position.x + trans2.width;
+    {
+        float ax = aTransform.position.x;
+        float ay = aTransform.position.y;
+        float aw = aCollider.bounds.width / 2f;
+        float ah = aCollider.bounds.height;
 
-        boolean isOnTop = Math.abs(trans1.position.y - (trans2.position.y + trans2.height)) <= MARGIN;
-        boolean isOnSide = object2Right >= trans2.position.x + MARGIN && obj1Center <= object2Right - MARGIN;
+        float bx = bTransform.position.x;
+        float by = bTransform.position.y;
+        float bw = bCollider.bounds.width;
+        float bh = bCollider.bounds.height;
 
-        return isOnTop && isOnSide;
+        return ax < bx + bw + MARGIN && ax + aw > bx - MARGIN &&
+            ay < by + bh + MARGIN && ay + ah > by - MARGIN;
     }
 }

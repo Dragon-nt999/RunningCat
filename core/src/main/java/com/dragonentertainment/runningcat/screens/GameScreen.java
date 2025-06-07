@@ -1,16 +1,20 @@
 package com.dragonentertainment.runningcat.screens;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.struct.AssetsName;
-import com.dragonentertainment.runningcat.systems.AnimationSystem;
+import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.CollisionSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.RenderSystem;
+import com.dragonentertainment.runningcat.systems.TouchSystem;
 import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
+import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class GameScreen extends BaseScreen{
@@ -44,6 +48,12 @@ public class GameScreen extends BaseScreen{
 
         // Collision
         this.engine.addSystem(new CollisionSystem());
+
+        // Jump
+        this.engine.addSystem(new JumpSystem());
+
+        // Touch
+        this.engine.addSystem(new TouchSystem(this.engine));
     }
 
     @Override

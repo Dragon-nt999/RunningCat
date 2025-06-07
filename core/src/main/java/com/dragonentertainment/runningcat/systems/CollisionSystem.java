@@ -7,20 +7,24 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
+import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
-public class CollisionSystem extends EntitySystem {
+public class CollisionSystem extends EntitySystem
+{
     private Entity cat;
     private Rectangle catBounds;
     private ImmutableArray<Entity> entities;
 
     @Override
-    public void addedToEngine(Engine engine) {
+    public void addedToEngine(Engine engine)
+    {
         // Get Cat
         this.entities = engine.getEntitiesFor(Family.all(CollisionComponent.class).get());
         for(Entity entity : entities) {
@@ -35,21 +39,26 @@ public class CollisionSystem extends EntitySystem {
     }
 
     @Override
-    public void update(float deltaTime) {
+    public void update(float deltaTime)
+    {
         if(this.cat != null) {
             // Set Cat bound
             TransformComponent catTransform = MappersComponent.transform.get(this.cat);
             CollisionComponent catCollider = MappersComponent.collider.get(this.cat);
             VelocityComponent catVelocity = MappersComponent.velocity.get(this.cat);
+            PlayerComponent cat = MappersComponent.player.get(this.cat);
+            AnimationComponent catAnim = MappersComponent.animation.get(this.cat);
 
             catCollider.bounds.set(catTransform.position.x,
                                     catTransform.position.y,
                                     catTransform.width,
                                     catTransform.height);
+
             this.catBounds = catCollider.bounds;
 
             // Check cat with bricks
-            for(Entity brick : this.entities) {
+            for(Entity brick : this.entities)
+            {
                 RenderTypeComponent type = MappersComponent.type.get(brick);
                 if(type.type != RenderTypeComponent.Type.BRICK) continue;
 
@@ -61,13 +70,21 @@ public class CollisionSystem extends EntitySystem {
                                             brickTransform.width,
                                             brickTransform.height);
 
-                if(Intersector.overlaps(this.catBounds, brickCollider.bounds)) {
-                    if(CalculateCollision.isStillOnBrick(catTransform, brickTransform)) {
-                        catVelocity.velocity.y = 0;
-                        catTransform.position.y = brickTransform.position.y + brickTransform.height;
-                        break;
-                    }
+                if(CalculateCollision.aabbOverlap(
+                                        catTransform, catCollider,
+                                        brickTransform, brickCollider))
+                {
+                    catVelocity.velocity.y = 0;
+                    catTransform.position.y = brickTransform.position.y + brickTransform.height;
+                    cat.isOnBrick = true;
+                    catAnim.stop = false;
+                    break;
+                } else
+                {
+                    //cat.isOnBrick = false;
+                    catAnim.stop = true;
                 }
+
             }
         }
     }
