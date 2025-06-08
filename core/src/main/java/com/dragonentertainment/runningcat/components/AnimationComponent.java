@@ -10,5 +10,6 @@ public class AnimationComponent implements Component {
     public float frameDuration = 0.1f;
     public float stateTime = 0.0f;
     public boolean loop = true;
+    public boolean stop = false;
     public Texture currentFrame;
 }

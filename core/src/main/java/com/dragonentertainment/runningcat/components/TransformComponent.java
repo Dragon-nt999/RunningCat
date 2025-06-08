@@ -12,4 +12,9 @@ public class TransformComponent implements Component, Pool.Poolable {
     public void reset() {
         position.set(0, 0);
     }
+
+    @Override
+    public String toString() {
+        return "Transform[pos=" + position + ", width=" + width + ", height=" + height + "]";
+    }
 }

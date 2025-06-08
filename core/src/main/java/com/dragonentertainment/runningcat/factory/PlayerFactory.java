@@ -7,10 +7,13 @@ import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
+import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
+import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
@@ -37,6 +40,8 @@ public class PlayerFactory {
         VelocityComponent velocityComponent = engine.createComponent(VelocityComponent.class);
         CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
         GravityComponent gravityComponent = engine.createComponent(GravityComponent.class);
+        JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
+        TouchComponent touchComponent = engine.createComponent(TouchComponent.class);
 
         // Set values of components
         animationComponent.frames = frames;
@@ -47,7 +52,7 @@ public class PlayerFactory {
         transformComponent.height = GameGrid.toGridHeight(frames.get(0).getHeight()) * 1.3f;
         zIndexComponent.zIndex    = zIndex;
         renderTypeComponent.type  = type;
-        playerComponent.initialPosition.set(x, y);
+        playerComponent.state = CatState.RUNNING;
 
         // Add component to entity
         entity.add(transformComponent);
@@ -58,6 +63,8 @@ public class PlayerFactory {
         entity.add(velocityComponent);
         entity.add(collisionComponent);
         entity.add(gravityComponent);
+        entity.add(jumpComponent);
+        entity.add(touchComponent);
 
         // Add entity to component
         engine.addEntity(entity);

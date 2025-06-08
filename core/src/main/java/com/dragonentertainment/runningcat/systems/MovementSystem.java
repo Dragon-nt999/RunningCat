@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
+import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class MovementSystem extends IteratingSystem {
@@ -36,6 +37,11 @@ public class MovementSystem extends IteratingSystem {
         // Remove entity when out of Screen
         if((trans.position.x + width) < 0) {
             this.engine.removeEntity(entity);
+        }
+
+        // Check y entity not out of screen by screen height
+        if(trans.position.y + trans.width >= GameGrid.WORLD_HEIGHT) {
+            trans.position.y = GameGrid.WORLD_HEIGHT - trans.width;
         }
     }
 }

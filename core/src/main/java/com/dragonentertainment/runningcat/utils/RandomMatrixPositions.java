@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomMatrixPositions {
-    private static int firstCount = 12;
+    private static int firstCount = 18;
     public static List<List<Vector2>> getBlockPositions(int total, boolean isRespawn) {
         List<List<Vector2>> results = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public class RandomMatrixPositions {
         if(firstCount > 0 && !isRespawn) {
             List<Vector2> firstCollects = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < 6; j++) {
+                for (int j = 0; j < 9; j++) {
                     firstCollects.add(new Vector2(j, i));
                     firstCount--;
                 }

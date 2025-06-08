@@ -4,9 +4,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.dragonentertainment.runningcat.components.AnimationComponent;
+import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -15,11 +20,13 @@ import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 import java.util.Comparator;
 
-public class RenderSystem extends SortedIteratingSystem {
+public class RenderSystem extends SortedIteratingSystem
+{
 
     private final SpriteBatch batch;
 
-    public RenderSystem(SpriteBatch batch) {
+    public RenderSystem(SpriteBatch batch)
+    {
         super(Family.all(RenderTypeComponent.class,
                          ZIndexComponent.class
                         ).get(),
@@ -29,7 +36,8 @@ public class RenderSystem extends SortedIteratingSystem {
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTime) {
+    protected void processEntity(Entity entity, float deltaTime)
+    {
         this.batch.begin();
 
         TextureComponent text = MappersComponent.texture.get(entity);
@@ -59,5 +67,6 @@ public class RenderSystem extends SortedIteratingSystem {
         );
 
         this.batch.end();
+
     }
 }
