@@ -1,14 +1,13 @@
 package com.dragonentertainment.runningcat.screens;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
-import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.struct.AssetsName;
+import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
+import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.CollisionSystem;
-import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.systems.RenderSystem;
 import com.dragonentertainment.runningcat.systems.TouchSystem;
@@ -19,6 +18,7 @@ import com.dragonentertainment.runningcat.utils.AssetLoader;
 
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
+
     public GameScreen(AppGame game) {
         super(game);
         // Initial Engine
@@ -37,17 +37,20 @@ public class GameScreen extends BaseScreen{
         // Cat
         this.engine.addSystem(new AnimationSystem(this.game, this.engine));
 
+        // Collision
+        this.engine.addSystem(new CollisionSystem());
+
         // Render
         this.engine.addSystem(new RenderSystem(this.batch));
 
         // Movement
         this.engine.addSystem(new MovementSystem(this.engine));
 
+        // Render Bounds for text Collision
+        this.engine.addSystem(new BoundsRenderSystem(this.camera));
+
         // Gravity
         this.engine.addSystem(new GravitySystem());
-
-        // Collision
-        this.engine.addSystem(new CollisionSystem());
 
         // Jump
         this.engine.addSystem(new JumpSystem());

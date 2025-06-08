@@ -7,25 +7,37 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
-import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
-public class TouchSystem extends EntitySystem implements InputProcessor {
-    private final Entity cat;
-    public TouchSystem(PooledEngine engine) {
+public class TouchSystem extends EntitySystem implements InputProcessor
+{
+    private Entity cat;
+    public TouchSystem(PooledEngine engine)
+    {
+        ImmutableArray<Entity> entities
+            = engine.getEntitiesFor(Family.one(PlayerComponent.class).get());
+
+        for(Entity entity : entities)
+        {
+            RenderTypeComponent type = MappersComponent.type.get(entity);
+            if(type.type == RenderTypeComponent.Type.CAT) {
+                this.cat = entity;
+                break;
+            }
+        }
+
         Gdx.input.setInputProcessor(this);
-        this.cat = engine.getEntitiesFor(Family.one(PlayerComponent.class).get()).get(0);
     }
 
     @Override
-    public void update(float deltaTime) {
+    public void update(float deltaTime)
+    {
         TouchComponent touch = MappersComponent.touch.get(this.cat);
-        JumpComponent jump = MappersComponent.jump.get(this.cat);
         if(touch.isPressed) {
             touch.pressDuration += deltaTime;
-            jump.jumpForce = touch.pressDuration * 10;
         }
     }
 

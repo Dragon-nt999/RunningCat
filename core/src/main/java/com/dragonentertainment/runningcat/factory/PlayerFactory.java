@@ -13,6 +13,7 @@ import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
+import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
@@ -51,7 +52,7 @@ public class PlayerFactory {
         transformComponent.height = GameGrid.toGridHeight(frames.get(0).getHeight()) * 1.3f;
         zIndexComponent.zIndex    = zIndex;
         renderTypeComponent.type  = type;
-        playerComponent.initialPosition.set(x, y);
+        playerComponent.state = CatState.RUNNING;
 
         // Add component to entity
         entity.add(transformComponent);

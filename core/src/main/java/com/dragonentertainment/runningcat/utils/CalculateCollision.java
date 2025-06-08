@@ -1,26 +1,23 @@
 package com.dragonentertainment.runningcat.utils;
 
 import com.dragonentertainment.runningcat.components.CollisionComponent;
-import com.dragonentertainment.runningcat.components.TransformComponent;
 
 public class CalculateCollision {
     private static final float MARGIN = 0.05f;
 
-    public static boolean aabbOverlap(TransformComponent aTransform, CollisionComponent aCollider,
-                                      TransformComponent bTransform, CollisionComponent bCollider)
+    public static boolean aabbOverlapTop(CollisionComponent aCollider,
+                                         CollisionComponent bCollider) {
 
-    {
-        float ax = aTransform.position.x;
-        float ay = aTransform.position.y;
-        float aw = aCollider.bounds.width / 2f;
-        float ah = aCollider.bounds.height;
+        float aLeft = aCollider.bounds.x;
+        float aBott = aCollider.bounds.y;
 
-        float bx = bTransform.position.x;
-        float by = bTransform.position.y;
-        float bw = bCollider.bounds.width;
-        float bh = bCollider.bounds.height;
+        float bLeft = bCollider.bounds.x;
+        float bRight = bLeft + bCollider.bounds.width;
+        float bBott = bCollider.bounds.y;
+        float bTop = bBott + bCollider.bounds.height;
 
-        return ax < bx + bw + MARGIN && ax + aw > bx - MARGIN &&
-            ay < by + bh + MARGIN && ay + ah > by - MARGIN;
+        return aLeft <= bRight + MARGIN && aLeft >= bLeft
+                            && aBott <= bTop + MARGIN && aBott >= bTop - MARGIN;
+
     }
 }

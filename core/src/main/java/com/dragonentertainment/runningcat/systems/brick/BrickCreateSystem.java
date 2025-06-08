@@ -30,13 +30,14 @@ public class BrickCreateSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         int brickRemain = this.engine.getEntitiesFor(Family.one(BrickComponent.class).get()).size();
-        if( brickRemain < 30 ) {
+        if( brickRemain < 40 ) {
             this.generateBricks(true);
         }
     }
 
     private void generateBricks(boolean isReSpawn) {
-       List<List<Vector2>> randPositions = RandomMatrixPositions.getBlockPositions(5, isReSpawn);
+       List<List<Vector2>> randPositions =
+                                    RandomMatrixPositions.getBlockPositions(5, isReSpawn);
         for(int i = 0; i < randPositions.size(); i++) {
             List<Vector2> positions = randPositions.get(i);
             for(int j = 0; j < positions.size(); j++) {
