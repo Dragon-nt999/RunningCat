@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Pool;
 import com.dragonentertainment.runningcat.enums.CatState;
 
 public class PlayerComponent implements Component, Pool.Poolable {
-    public float jumpForce = 0.0f;
     public CatState state;
+    public boolean isOnBrick = false;
     @Override
     public void reset() {
 

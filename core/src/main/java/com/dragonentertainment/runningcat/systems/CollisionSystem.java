@@ -6,14 +6,10 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
-import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
-import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
@@ -68,15 +64,22 @@ public class CollisionSystem extends EntitySystem
                                             brickTransform.width,
                                             brickTransform.height);
 
-                if(cat.state != CatState.JUMPING) {
-                    if (CalculateCollision.aabbOverlapTop(catCollider, brickCollider)) {
+                boolean isFalling = catTransform.position.y < catTransform.previous_y;
+
+                if (CalculateCollision.aabbOverlapTop(catCollider, brickCollider)) {
                         catVelocity.velocity.y = 0;
                         catTransform.position.y = brickTransform.position.y + brickTransform.height;
                         cat.state = CatState.RUNNING;
+                        cat.isOnBrick = true;
                         break;
-                    }
                 }
+
+                /*-----------------------------------------------
+                 * Trick check Cat falling
+                 *-----------------------------------------------*/
+                catTransform.previous_y = catTransform.position.y;
             }
+
         }
     }
 

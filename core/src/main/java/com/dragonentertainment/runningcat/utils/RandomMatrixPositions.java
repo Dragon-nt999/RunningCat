@@ -27,7 +27,10 @@ public class RandomMatrixPositions {
             results.add(firstCollects);
         }
 
-        // Shuffle GameGrid.allPositions
+        /*-----------------------------------------------
+         * Shuffle GameGrid.allPositions
+         *-----------------------------------------------*/
+
         Collections.shuffle(GameGrid.allPositions);
 
         for(int i = 0; i < Math.min(total, GameGrid.allPositions.size()); i++) {
@@ -49,6 +52,17 @@ public class RandomMatrixPositions {
 
             results.add(collects);
         }
+
+        /*-----------------------------------------------
+        * Code for Testing
+        *-----------------------------------------------*/
+        /*for(int i = 0; i < 2; i++) {
+            List<Vector2> collects = new ArrayList<>();
+            for(int j = GameGrid.WORLD_WIDTH; j < GameGrid.WORLD_WIDTH * 2; j++) {
+                collects.add(new Vector2(j, i));
+            }
+            results.add(collects);
+        }*/
 
         return results;
     }
