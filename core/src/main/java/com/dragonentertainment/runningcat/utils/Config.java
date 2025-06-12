@@ -9,7 +9,7 @@ public class Config {
     /*-----------------------------------------------
      * Params for JUMP
      *----------------------------------------------*/
-    public static final float MAX_DURATION = 0.5f;
+    public static final float MAX_PRESS_DURATION = 1f;
     public static final float MAX_FORCE = 10f;
     public static final float BASE_FORCE = 5f;
 }

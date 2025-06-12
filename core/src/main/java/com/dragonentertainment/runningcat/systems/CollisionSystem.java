@@ -6,10 +6,12 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Intersector;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
+import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
@@ -44,6 +46,7 @@ public class CollisionSystem extends EntitySystem
             CollisionComponent catCollider = MappersComponent.collider.get(this.cat);
             VelocityComponent catVelocity = MappersComponent.velocity.get(this.cat);
             PlayerComponent cat = MappersComponent.player.get(this.cat);
+            JumpComponent catJump = MappersComponent.jump.get(this.cat);
 
             catCollider.bounds.set(catTransform.position.x + 0.5f,
                                     catTransform.position.y,
@@ -64,20 +67,47 @@ public class CollisionSystem extends EntitySystem
                                             brickTransform.width,
                                             brickTransform.height);
 
-                boolean isFalling = catTransform.position.y < catTransform.previous_y;
+                if (cat.state != CatState.JUMPING &&
+                        Intersector.overlaps(catCollider.bounds, brickCollider.bounds)) {
+                    catVelocity.velocity.y = 0;
+                    catTransform.position.y = brickTransform.position.y + brickTransform.height;
+                    cat.state = CatState.RUNNING;
 
-                if (CalculateCollision.aabbOverlapTop(catCollider, brickCollider)) {
-                        catVelocity.velocity.y = 0;
-                        catTransform.position.y = brickTransform.position.y + brickTransform.height;
-                        cat.state = CatState.RUNNING;
-                        cat.isOnBrick = true;
-                        break;
+                    /*----------------------------------------
+                     *   Tracking cat 's position y before jump
+                     * ---------------------------------------- */
+                    catJump.startY = catJump.endY = catTransform.position.y;
+
+                    cat.isOnBrick = true;
+
+                    break;
                 }
 
-                /*-----------------------------------------------
-                 * Trick check Cat falling
-                 *-----------------------------------------------*/
-                catTransform.previous_y = catTransform.position.y;
+                if(cat.state == CatState.JUMPING &&
+                        Intersector.overlaps(catCollider.bounds, brickCollider.bounds)) {
+
+                    catVelocity.velocity.y = 0;
+                    catTransform.position.y = brickTransform.position.y + brickTransform.height;
+                    cat.state = CatState.RUNNING;
+
+                    /*----------------------------------------
+                     *   Tracking cat 's position y before jump
+                     * ---------------------------------------- */
+                    catJump.startY = catJump.endY = catTransform.position.y;
+
+                    cat.isOnBrick = true;
+
+                    break;
+                }
+
+                if(!Intersector.overlaps(catCollider.bounds, brickCollider.bounds)) {
+                    /*----------------------------------------
+                     *   Tracking cat 's position y before jump
+                     * ---------------------------------------- */
+                    catJump.startY = -1;
+                    catJump.endY = 0;
+                }
+
             }
 
         }
