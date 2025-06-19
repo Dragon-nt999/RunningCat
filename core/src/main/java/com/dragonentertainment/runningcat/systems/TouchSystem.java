@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class TouchSystem extends EntitySystem implements InputProcessor

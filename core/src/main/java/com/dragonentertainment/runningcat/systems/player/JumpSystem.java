@@ -17,7 +17,6 @@ public class JumpSystem extends IteratingSystem {
 
     public JumpSystem() {
         super(Family.all(PlayerComponent.class).get());
-
     }
 
     @Override
@@ -29,26 +28,47 @@ public class JumpSystem extends IteratingSystem {
         TransformComponent catTransform = MappersComponent.transform.get(entity);
 
         /*----------------------------------------
-         *   JUMP
+         *   JUMP Cat When touching
          * ---------------------------------------- */
-        if(touch.isPressed) {
-            if(touch.pressDuration < Config.MAX_PRESS_DURATION) {
-                velocity.velocity.y = touch.pressDuration * 10;
-                cat.state = CatState.JUMPING;
+        if(touch.isPressed && touch.pressDuration < Config.MAX_PRESS_DURATION) {
+            velocity.velocity.y = touch.pressDuration * 10f;
+            cat.state = CatState.JUMPING;
+            cat.isOnBrick = false;
+        }
+
+        /*----------------------------------------
+         *  Tracking cat 's position y during jump and falling
+         * ---------------------------------------- */
+        if(!touch.isPressed || touch.pressDuration >= Config.MAX_PRESS_DURATION) {
+            if(catJump.endY < catTransform.position.y) {
+                catJump.endY = catTransform.position.y;
             }
         }
 
         /*----------------------------------------
-         *  Tracking cat 's position y after jump
-         * ---------------------------------------- */
-        catJump.endY = catTransform.position.y;
+        * If cat is Jump and has maxJump > endY => cat is falling
+        * ----------------------------------------*/
+        if(catJump.endY > 0 && catTransform.position.y < catJump.endY) {
+            cat.state = CatState.FALLING;
+        }
+
+        /*----------------------------------------
+         * If cat is startY > endY => cat is free falling
+         * ----------------------------------------*/
+        if(catJump.startY > catJump.endY && cat.state != CatState.JUMPING) {
+            cat.isOnBrick = false;
+            touch.pressDuration = -1;
+            cat.state = CatState.FALLING;
+        }
+
+        Gdx.app.log("JUMPING", "START" + catJump.startY + "===END==" + catJump.endY);
 
         /*----------------------------------------
          *  Release touch when cat on the brick
          * ---------------------------------------- */
-        if(catJump.endY - catJump.startY <= 0) {
+        if(cat.isOnBrick) {
             touch.pressDuration = 0;
+            catJump.endY = 0;
         }
-
     }
 }

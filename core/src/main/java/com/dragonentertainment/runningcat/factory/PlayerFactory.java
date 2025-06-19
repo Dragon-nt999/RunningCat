@@ -53,7 +53,7 @@ public class PlayerFactory {
         transformComponent.height = GameGrid.toGridHeight(frames.get(0).getHeight()) * 1.3f;
         zIndexComponent.zIndex    = zIndex;
         renderTypeComponent.type  = type;
-        playerComponent.state = CatState.IDLE;
+        playerComponent.state = CatState.RUNNING;
 
         // Add component to entity
         entity.add(transformComponent);

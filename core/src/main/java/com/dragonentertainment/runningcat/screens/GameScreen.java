@@ -37,11 +37,11 @@ public class GameScreen extends BaseScreen{
         // Cat
         this.engine.addSystem(new AnimationSystem(this.game, this.engine));
 
+        // Render
+        this.engine.addSystem(new RenderSystem(this.game, this.batch));
+
         // Collision
         this.engine.addSystem(new CollisionSystem());
-
-        // Render
-        this.engine.addSystem(new RenderSystem(this.batch));
 
         // Movement
         this.engine.addSystem(new MovementSystem(this.engine));
