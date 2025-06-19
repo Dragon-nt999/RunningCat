@@ -10,28 +10,33 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
+import com.dragonentertainment.runningcat.components.player.PlayerComponent;
+import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 import java.util.Comparator;
 
 public class RenderSystem extends SortedIteratingSystem
 {
-
+    private final AppGame game;
     private final SpriteBatch batch;
 
-    public RenderSystem(SpriteBatch batch)
+    public RenderSystem(AppGame game, SpriteBatch batch)
     {
         super(Family.all(RenderTypeComponent.class,
                          ZIndexComponent.class
                         ).get(),
                 Comparator.comparing(e -> e.getComponent(ZIndexComponent.class).zIndex)
         );
+        this.game = game;
         this.batch = batch;
     }
 
@@ -48,8 +53,18 @@ public class RenderSystem extends SortedIteratingSystem
         Texture texture = null;
 
         if(type.type == RenderTypeComponent.Type.CAT) {
+            PlayerComponent cat = MappersComponent.player.get(entity);
             try {
-                texture = anim.currentFrame;
+                if(cat.state == CatState.RUNNING) {
+                    texture = anim.currentFrame;
+                } else if(cat.state == CatState.JUMPING) {
+                    texture = this.game.assetManager.
+                                        get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
+                } else if(cat.state == CatState.FALLING) {
+                    texture = this.game.assetManager.
+                                        get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+                }
+
             } catch (RuntimeException e) {
                 Gdx.app.log("ERROR", e.getLocalizedMessage());
             }

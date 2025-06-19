@@ -8,6 +8,7 @@ public class TransformComponent implements Component, Pool.Poolable {
     public final Vector2 position = new Vector2();
     public float width;
     public float height;
+    public float previous_y = 0;
     @Override
     public void reset() {
         position.set(0, 0);

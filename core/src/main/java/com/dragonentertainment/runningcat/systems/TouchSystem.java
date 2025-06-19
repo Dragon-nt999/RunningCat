@@ -7,9 +7,11 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class TouchSystem extends EntitySystem implements InputProcessor
@@ -37,7 +39,8 @@ public class TouchSystem extends EntitySystem implements InputProcessor
     {
         TouchComponent touch = MappersComponent.touch.get(this.cat);
         if(touch.isPressed) {
-            touch.pressDuration += deltaTime;
+            long now = TimeUtils.millis();
+            touch.pressDuration = (now - touch.pressStartTime) / 1000f;
         }
     }
 
@@ -59,8 +62,12 @@ public class TouchSystem extends EntitySystem implements InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         TouchComponent touch = MappersComponent.touch.get(this.cat);
-        touch.isPressed = true;
-        touch.pressDuration = 0;
+
+        if(touch.pressDuration == 0) {
+            touch.isPressed = true;
+            touch.pressStartTime = TimeUtils.millis();
+        }
+
         return true;
     }
 

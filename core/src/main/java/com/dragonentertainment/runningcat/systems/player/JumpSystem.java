@@ -5,9 +5,12 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.dragonentertainment.runningcat.components.TouchComponent;
+import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
+import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class JumpSystem extends IteratingSystem {
@@ -19,20 +22,53 @@ public class JumpSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         VelocityComponent velocity = MappersComponent.velocity.get(entity);
-        TouchComponent touch = MappersComponent.touch.get(entity);
-        PlayerComponent cat = MappersComponent.player.get(entity);
+        TouchComponent touch       = MappersComponent.touch.get(entity);
+        PlayerComponent cat        = MappersComponent.player.get(entity);
+        JumpComponent catJump      = MappersComponent.jump.get(entity);
+        TransformComponent catTransform = MappersComponent.transform.get(entity);
 
-        if(touch.isPressed) {
-            if(cat.state != CatState.JUMPING) {
-                cat.jumpForce = touch.pressDuration * 20;
-                velocity.velocity.y = cat.jumpForce;
-                cat.state = CatState.JUMPING;
+        /*----------------------------------------
+         *   JUMP Cat When touching
+         * ---------------------------------------- */
+        if(touch.isPressed && touch.pressDuration < Config.MAX_PRESS_DURATION) {
+            velocity.velocity.y = touch.pressDuration * 10f;
+            cat.state = CatState.JUMPING;
+            cat.isOnBrick = false;
+        }
+
+        /*----------------------------------------
+         *  Tracking cat 's position y during jump and falling
+         * ---------------------------------------- */
+        if(!touch.isPressed || touch.pressDuration >= Config.MAX_PRESS_DURATION) {
+            if(catJump.endY < catTransform.position.y) {
+                catJump.endY = catTransform.position.y;
             }
-        } else {
+        }
+
+        /*----------------------------------------
+        * If cat is Jump and has maxJump > endY => cat is falling
+        * ----------------------------------------*/
+        if(catJump.endY > 0 && catTransform.position.y < catJump.endY) {
             cat.state = CatState.FALLING;
         }
 
-        Gdx.app.log("CAT-STATE", cat.jumpForce + "===" + cat.state);
+        /*----------------------------------------
+         * If cat is startY > endY => cat is free falling
+         * ----------------------------------------*/
+        if(catJump.startY > catJump.endY && cat.state != CatState.JUMPING) {
+            cat.isOnBrick = false;
+            touch.pressDuration = -1;
+            cat.state = CatState.FALLING;
+        }
 
+        Gdx.app.log("JUMPING", "START" + catJump.startY + "===END==" + catJump.endY);
+
+        /*----------------------------------------
+         *  Release touch when cat on the brick
+         * ---------------------------------------- */
+        if(cat.isOnBrick) {
+            touch.pressDuration = 0;
+            catJump.endY = 0;
+        }
     }
 }

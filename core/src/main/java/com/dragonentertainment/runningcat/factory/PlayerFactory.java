@@ -48,6 +48,7 @@ public class PlayerFactory {
         animationComponent.frameDuration = Math.abs(Config.X_VELOCITY + 0.1f);
 
         transformComponent.position.set(x, y);
+        transformComponent.previous_y = y;
         transformComponent.width  = GameGrid.toGridWidth(frames.get(0).getWidth()) * 1.3f;
         transformComponent.height = GameGrid.toGridHeight(frames.get(0).getHeight()) * 1.3f;
         zIndexComponent.zIndex    = zIndex;

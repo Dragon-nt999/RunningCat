@@ -7,8 +7,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
-import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -48,10 +46,11 @@ public class CollisionSystem extends EntitySystem
             CollisionComponent catCollider = MappersComponent.collider.get(this.cat);
             VelocityComponent catVelocity = MappersComponent.velocity.get(this.cat);
             PlayerComponent cat = MappersComponent.player.get(this.cat);
+            JumpComponent catJump = MappersComponent.jump.get(this.cat);
 
-            catCollider.bounds.set(catTransform.position.x + 0.5f,
+            catCollider.bounds.set(catTransform.position.x,
                                     catTransform.position.y,
-                                    catTransform.width - 0.5f,
+                                    catTransform.width,
                                     catTransform.height);
 
             // Check cat with bricks
@@ -68,15 +67,29 @@ public class CollisionSystem extends EntitySystem
                                             brickTransform.width,
                                             brickTransform.height);
 
-                if(cat.state != CatState.JUMPING) {
-                    if (CalculateCollision.aabbOverlapTop(catCollider, brickCollider)) {
-                        catVelocity.velocity.y = 0;
-                        catTransform.position.y = brickTransform.position.y + brickTransform.height;
-                        cat.state = CatState.RUNNING;
+                switch (cat.state) {
+                    case RUNNING:
+                    case FALLING:
+                        if(CalculateCollision.aabbOverlapTop(catCollider, brickCollider)){
+                            catVelocity.velocity.y = 0;
+                            catTransform.position.y = brickTransform.position.y
+                                                                            + brickTransform.height;
+                            catJump.startY = catTransform.position.y;
+                            catJump.endY = catTransform.position.y;
+                            cat.isOnBrick = true;
+                            cat.state = CatState.RUNNING;
+                        }
                         break;
-                    }
+                    case JUMPING:
+                        if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
+                            catTransform.position.y = brickTransform.position.y - catTransform.height;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
+
         }
     }
 
