@@ -55,14 +55,25 @@ public class RenderSystem extends SortedIteratingSystem
         if(type.type == RenderTypeComponent.Type.CAT) {
             PlayerComponent cat = MappersComponent.player.get(entity);
             try {
-                if(cat.state == CatState.RUNNING) {
-                    texture = anim.currentFrame;
-                } else if(cat.state == CatState.JUMPING) {
-                    texture = this.game.assetManager.
-                                        get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
-                } else if(cat.state == CatState.FALLING) {
-                    texture = this.game.assetManager.
-                                        get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+
+                switch (cat.state){
+                    case RUNNING:
+                        texture = anim.currentFrame;
+                        break;
+                    case JUMPING:
+                        texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
+                        break;
+                    case FALLING:
+                        texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+                        break;
+                    case HIT:
+                        texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+                        break;
+                    default:
+                        break;
                 }
 
             } catch (RuntimeException e) {

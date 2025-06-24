@@ -3,7 +3,7 @@ package com.dragonentertainment.runningcat.utils;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 
 public class CalculateCollision {
-    private static final float MARGIN = 0.5f;
+    public static final float MARGIN = 0.5f;
 
     /**
      * Check Collision from Top
@@ -30,19 +30,18 @@ public class CalculateCollision {
      * */
     public static boolean aabbOverlapBottom(CollisionComponent a,
                                             CollisionComponent b) {
-        /*float aRight = (a.bounds.x + a.bounds.width);
-        float aTop = a.bounds.y + a.bounds.height;
+        float aR = (a.bounds.x + a.bounds.width);
+        float aB = a.bounds.y;
+        float aT = aB + a.bounds.height;
 
-        float bLeft = b.bounds.x;
-        float bRight = bLeft + b.bounds.width;
-        float bBot = b.bounds.y;
-        float bTop = bBot + b.bounds.height;
+        float bL = b.bounds.x;
+        float bR = bL + b.bounds.width;
+        float bB = b.bounds.y;
 
-        return aRight <= bRight
-                && aRight >= bLeft + MARGIN
-                && aTop >= bBot + MARGIN
-                && aTop <= bTop - MARGIN;*/
-        return false;
+        return aR > bL
+            && aR <= bR + MARGIN
+            && aT <= bB + MARGIN
+            && aT >= bB - MARGIN;
 
     }
     /*

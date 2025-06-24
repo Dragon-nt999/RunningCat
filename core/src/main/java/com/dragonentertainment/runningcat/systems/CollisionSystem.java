@@ -14,7 +14,9 @@ import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
+import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class CollisionSystem extends EntitySystem
@@ -83,11 +85,14 @@ public class CollisionSystem extends EntitySystem
                     case JUMPING:
                         if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
                             catTransform.position.y = brickTransform.position.y - catTransform.height;
+                            cat.state = CatState.HIT;
                         }
                         break;
                     default:
                         break;
                 }
+
+                Gdx.app.log("JUMP", cat.state + "");
             }
 
         }

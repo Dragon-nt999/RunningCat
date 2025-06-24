@@ -3,9 +3,11 @@ package com.dragonentertainment.runningcat.screens;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
+import com.dragonentertainment.runningcat.systems.RicochetEffectSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.CollisionSystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
@@ -15,6 +17,7 @@ import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
+import com.dragonentertainment.runningcat.utils.GameStateManager;
 
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
@@ -57,6 +60,9 @@ public class GameScreen extends BaseScreen{
 
         // Touch
         this.engine.addSystem(new TouchSystem(this.engine));
+
+        // Ricochet effect
+        this.engine.addSystem(new RicochetEffectSystem());
     }
 
     @Override
@@ -66,6 +72,8 @@ public class GameScreen extends BaseScreen{
 
     @Override
     public void render(float delta) {
+        //if(!GameStateManager.getInstance().is(GameState.PLAYING)) return;
+
         super.render(delta);
         this.engine.update(delta);
     }

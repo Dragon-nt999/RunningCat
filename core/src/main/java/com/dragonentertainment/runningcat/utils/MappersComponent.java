@@ -5,6 +5,7 @@ import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
@@ -42,4 +43,6 @@ public class MappersComponent {
                                             ComponentMapper.getFor(TouchComponent.class);
     public static final ComponentMapper<JumpComponent> jump =
                                             ComponentMapper.getFor(JumpComponent.class);
+    public static final ComponentMapper<RicochetEffectComponent> ricochet =
+                                            ComponentMapper.getFor(RicochetEffectComponent.class);
 }
