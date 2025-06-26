@@ -3,13 +3,16 @@ package com.dragonentertainment.runningcat.systems.player;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.utils.CalculateCollision;
+import com.dragonentertainment.runningcat.utils.Config;
+import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
@@ -31,7 +34,7 @@ public class JumpSystem extends IteratingSystem {
          *   JUMP Cat When touching
          * ---------------------------------------- */
         if(touch.isPressed && touch.pressDuration < Config.MAX_PRESS_DURATION) {
-            velocity.velocity.y = touch.pressDuration * 10f;
+            velocity.velocity.y = touch.pressDuration * 15f;
             cat.state = CatState.JUMPING;
             cat.isOnBrick = false;
         }
@@ -61,8 +64,6 @@ public class JumpSystem extends IteratingSystem {
             cat.state = CatState.FALLING;
         }
 
-        Gdx.app.log("JUMPING", "START" + catJump.startY + "===END==" + catJump.endY);
-
         /*----------------------------------------
          *  Release touch when cat on the brick
          * ---------------------------------------- */
@@ -70,5 +71,15 @@ public class JumpSystem extends IteratingSystem {
             touch.pressDuration = 0;
             catJump.endY = 0;
         }
+
+        // Game over when cat fall out of screen
+        if(cat.state == CatState.FALLING) {
+            if((catTransform.position.y + catTransform.height
+                                            + CalculateCollision.MARGIN) < 0) {
+                //cat.state = CatState.FALL_OUT;
+                GameStateManager.getInstance().setState(GameState.STOP);
+            }
+        }
+
     }
 }

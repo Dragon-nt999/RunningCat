@@ -9,6 +9,7 @@ public class Config {
     /*-----------------------------------------------
      * Params for JUMP
      *----------------------------------------------*/
-    public static final float MAX_PRESS_DURATION = 0.8f;
+    public static final float MAX_PRESS_DURATION = 0.6f;
+
 
 }

@@ -4,5 +4,7 @@ public enum CatState {
     RUNNING,
     JUMPING,
     FALLING,
-    IDLE
+    IDLE,
+    HIT,
+    FALL_OUT
 }

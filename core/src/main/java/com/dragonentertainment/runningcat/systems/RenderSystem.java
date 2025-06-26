@@ -50,31 +50,37 @@ public class RenderSystem extends SortedIteratingSystem
         AnimationComponent anim = MappersComponent.animation.get(entity);
         RenderTypeComponent type = MappersComponent.type.get(entity);
 
-        Texture texture = null;
-
         if(type.type == RenderTypeComponent.Type.CAT) {
             PlayerComponent cat = MappersComponent.player.get(entity);
             try {
-                if(cat.state == CatState.RUNNING) {
-                    texture = anim.currentFrame;
-                } else if(cat.state == CatState.JUMPING) {
-                    texture = this.game.assetManager.
-                                        get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
-                } else if(cat.state == CatState.FALLING) {
-                    texture = this.game.assetManager.
-                                        get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+                switch (cat.state) {
+                    case RUNNING:
+                        text.texture = anim.currentFrame;
+                        //text.texture = this.game.assetManager.
+                        //get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
+                        break;
+                    case JUMPING:
+                        text.texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
+                        break;
+                    case FALLING:
+                        text.texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+                        break;
+                    case HIT:
+                        text.texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_failed.CAT_FAILED_1);
+                        break;
+                    default:
+                        break;
                 }
-
             } catch (RuntimeException e) {
                 Gdx.app.log("ERROR", e.getLocalizedMessage());
             }
-        } else {
-            texture = text.texture;
         }
-
         // Draw Entity
         this.batch.draw(
-            texture,
+            text.texture,
             trans.position.x,
             trans.position.y,
             trans.width,

@@ -44,6 +44,10 @@ public class AssetsName {
                 public static final String CAT_RUNNING0007 = "game/sequence/cat_running/cat_running0007.png";
                 public static final String CAT_RUNNING0008 = "game/sequence/cat_running/cat_running0008.png";
             }
+            public static class Cat_failed {
+                public static final String CAT_FAILED_1 = "game/sequence/cat_failed/cat_failed_1.png";
+                public static final String CAT_FAILED_2 = "game/sequence/cat_failed/cat_failed_1.png";
+            }
             public static class Mouse {
                 public static final String MOUSE0001 = "game/sequence/mouse/mouse0001.png";
                 public static final String MOUSE0002 = "game/sequence/mouse/mouse0002.png";

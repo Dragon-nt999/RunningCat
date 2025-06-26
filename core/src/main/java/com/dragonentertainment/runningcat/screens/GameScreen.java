@@ -1,11 +1,15 @@
 package com.dragonentertainment.runningcat.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
+import com.dragonentertainment.runningcat.systems.RicochetEffectSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.CollisionSystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
@@ -15,12 +19,14 @@ import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
+import com.dragonentertainment.runningcat.utils.GameStateManager;
 
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
 
     public GameScreen(AppGame game) {
         super(game);
+
         // Initial Engine
         this.engine = new PooledEngine();
         // Get Background
@@ -57,6 +63,13 @@ public class GameScreen extends BaseScreen{
 
         // Touch
         this.engine.addSystem(new TouchSystem(this.engine));
+
+        // Ricochet effect
+        this.engine.addSystem(new RicochetEffectSystem());
+
+        // Reset Game state
+        GameStateManager.getInstance().setState(GameState.PLAYING);
+
     }
 
     @Override
@@ -66,8 +79,14 @@ public class GameScreen extends BaseScreen{
 
     @Override
     public void render(float delta) {
-        super.render(delta);
-        this.engine.update(delta);
+
+        if(GameStateManager.getInstance().is(GameState.OVER)) {
+            this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
+        } else {
+            super.render(delta);
+            this.engine.update(delta);
+        }
+
     }
 
     @Override
