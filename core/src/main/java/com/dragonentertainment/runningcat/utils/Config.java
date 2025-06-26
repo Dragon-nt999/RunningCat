@@ -11,4 +11,5 @@ public class Config {
      *----------------------------------------------*/
     public static final float MAX_PRESS_DURATION = 0.6f;
 
+
 }

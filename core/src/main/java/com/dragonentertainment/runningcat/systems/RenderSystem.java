@@ -52,13 +52,12 @@ public class RenderSystem extends SortedIteratingSystem
 
         if(type.type == RenderTypeComponent.Type.CAT) {
             PlayerComponent cat = MappersComponent.player.get(entity);
-
             try {
-                switch (cat.state){
+                switch (cat.state) {
                     case RUNNING:
                         text.texture = anim.currentFrame;
                         //text.texture = this.game.assetManager.
-                            //get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
+                        //get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
                         break;
                     case JUMPING:
                         text.texture = this.game.assetManager.
@@ -75,7 +74,6 @@ public class RenderSystem extends SortedIteratingSystem
                     default:
                         break;
                 }
-
             } catch (RuntimeException e) {
                 Gdx.app.log("ERROR", e.getLocalizedMessage());
             }

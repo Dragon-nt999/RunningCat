@@ -30,6 +30,7 @@ public class CalculateCollision {
      * */
     public static boolean aabbOverlapBottom(CollisionComponent a,
                                             CollisionComponent b) {
+
         float aR = (a.bounds.x + a.bounds.width);
         float aB = a.bounds.y;
         float aT = aB + a.bounds.height;

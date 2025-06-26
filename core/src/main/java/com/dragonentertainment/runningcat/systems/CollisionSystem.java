@@ -93,7 +93,6 @@ public class CollisionSystem extends EntitySystem
                         break;
                 }
 
-                Gdx.app.log("JUMP", cat.state + "");
             }
 
         }

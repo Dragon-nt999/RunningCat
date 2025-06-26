@@ -3,9 +3,6 @@ package com.dragonentertainment.runningcat.systems.player;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
-import com.dragonentertainment.runningcat.components.RenderTypeComponent;
-import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
@@ -16,6 +13,7 @@ import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class JumpSystem extends IteratingSystem {
@@ -82,5 +80,6 @@ public class JumpSystem extends IteratingSystem {
                 GameStateManager.getInstance().setState(GameState.STOP);
             }
         }
+
     }
 }

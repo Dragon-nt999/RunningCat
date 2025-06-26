@@ -1,12 +1,10 @@
 package com.dragonentertainment.runningcat.systems;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
-import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.enums.GameState;

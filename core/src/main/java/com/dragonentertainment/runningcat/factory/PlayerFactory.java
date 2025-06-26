@@ -51,8 +51,10 @@ public class PlayerFactory {
 
         transformComponent.position.set(x, y);
         transformComponent.previous_y = y;
+
         transformComponent.width  = GameGrid.CELL_SIZE;
         transformComponent.height = GameGrid.CELL_SIZE;
+
         zIndexComponent.zIndex    = zIndex;
         renderTypeComponent.type  = type;
         playerComponent.state = CatState.RUNNING;
