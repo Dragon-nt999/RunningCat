@@ -50,27 +50,27 @@ public class RenderSystem extends SortedIteratingSystem
         AnimationComponent anim = MappersComponent.animation.get(entity);
         RenderTypeComponent type = MappersComponent.type.get(entity);
 
-        Texture texture = null;
-
         if(type.type == RenderTypeComponent.Type.CAT) {
             PlayerComponent cat = MappersComponent.player.get(entity);
-            try {
 
+            try {
                 switch (cat.state){
                     case RUNNING:
-                        texture = anim.currentFrame;
+                        text.texture = anim.currentFrame;
+                        //text.texture = this.game.assetManager.
+                            //get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
                         break;
                     case JUMPING:
-                        texture = this.game.assetManager.
+                        text.texture = this.game.assetManager.
                             get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
                         break;
                     case FALLING:
-                        texture = this.game.assetManager.
+                        text.texture = this.game.assetManager.
                             get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
                         break;
                     case HIT:
-                        texture = this.game.assetManager.
-                            get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_2);
+                        text.texture = this.game.assetManager.
+                            get(AssetsName.Game.Sequence.Cat_failed.CAT_FAILED_1);
                         break;
                     default:
                         break;
@@ -79,13 +79,10 @@ public class RenderSystem extends SortedIteratingSystem
             } catch (RuntimeException e) {
                 Gdx.app.log("ERROR", e.getLocalizedMessage());
             }
-        } else {
-            texture = text.texture;
         }
-
         // Draw Entity
         this.batch.draw(
-            texture,
+            text.texture,
             trans.position.x,
             trans.position.y,
             trans.width,

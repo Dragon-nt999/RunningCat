@@ -36,7 +36,7 @@ public class JumpSystem extends IteratingSystem {
          *   JUMP Cat When touching
          * ---------------------------------------- */
         if(touch.isPressed && touch.pressDuration < Config.MAX_PRESS_DURATION) {
-            velocity.velocity.y = touch.pressDuration * 10f;
+            velocity.velocity.y = touch.pressDuration * 15f;
             cat.state = CatState.JUMPING;
             cat.isOnBrick = false;
         }
@@ -79,7 +79,7 @@ public class JumpSystem extends IteratingSystem {
             if((catTransform.position.y + catTransform.height
                                             + CalculateCollision.MARGIN) < 0) {
                 //cat.state = CatState.FALL_OUT;
-                GameStateManager.getInstance().setState(GameState.OVER);
+                GameStateManager.getInstance().setState(GameState.STOP);
             }
         }
     }

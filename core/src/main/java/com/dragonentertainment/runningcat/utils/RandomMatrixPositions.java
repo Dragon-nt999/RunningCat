@@ -64,6 +64,9 @@ public class RandomMatrixPositions {
             results.add(collects);
         }*/
 
+        // Reset when restart game
+        firstCount = 18;
+
         return results;
     }
 }

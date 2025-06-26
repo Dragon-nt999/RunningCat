@@ -85,6 +85,7 @@ public class CollisionSystem extends EntitySystem
                     case JUMPING:
                         if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
                             catTransform.position.y = brickTransform.position.y - catTransform.height;
+                            GameStateManager.getInstance().setState(GameState.STOP);
                             cat.state = CatState.HIT;
                         }
                         break;

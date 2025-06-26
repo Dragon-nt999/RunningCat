@@ -243,7 +243,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 this.engine,
                 lotus.getValue(),
                 xPos + 6,
-                MathUtils.random(-7, -5),
+                MathUtils.random(-6, -4),
                 11,
                 RenderTypeComponent.Type.PARALLAX_LOTUS_FRONT
             );

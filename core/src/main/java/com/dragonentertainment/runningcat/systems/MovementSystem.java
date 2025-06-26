@@ -35,12 +35,7 @@ public class MovementSystem extends IteratingSystem {
         if(GameStateManager.getInstance().is(GameState.PLAYING)){
             trans.position.x += velocity.velocity.x * deltaTime;
             trans.position.y += velocity.velocity.y * deltaTime;
-        } else {
-            RicochetEffectComponent ricochet = new RicochetEffectComponent();
-            ricochet.triggered = true;
-            entity.add(ricochet);
         }
-
 
         // Get width Brick
         float width = trans.width;

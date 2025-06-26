@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -29,6 +30,7 @@ public class ParallaxFactory {
         ZIndexComponent zI = engine.createComponent(ZIndexComponent.class);
         RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
         ParallaxComponent parallax = engine.createComponent(ParallaxComponent.class);
+        RicochetEffectComponent ricochet = engine.createComponent(RicochetEffectComponent.class);
 
         // Set Transform
         transform.position.set(x, y);
@@ -54,6 +56,7 @@ public class ParallaxFactory {
         entity.add(zI);
         entity.add(type);
         entity.add(parallax);
+        entity.add(ricochet);
 
         // Add Entity
         engine.addEntity(entity);

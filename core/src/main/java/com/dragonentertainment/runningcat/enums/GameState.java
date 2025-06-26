@@ -4,4 +4,5 @@ public enum GameState {
     PLAYING,
     OVER,
     STOP,
+    PAUSE,
 }

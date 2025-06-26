@@ -7,6 +7,7 @@ import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
@@ -42,6 +43,7 @@ public class PlayerFactory {
         GravityComponent gravityComponent = engine.createComponent(GravityComponent.class);
         JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
         TouchComponent touchComponent = engine.createComponent(TouchComponent.class);
+        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
 
         // Set values of components
         animationComponent.frames = frames;
@@ -49,8 +51,8 @@ public class PlayerFactory {
 
         transformComponent.position.set(x, y);
         transformComponent.previous_y = y;
-        transformComponent.width  = GameGrid.toGridWidth(frames.get(0).getWidth()) * 1.3f;
-        transformComponent.height = GameGrid.toGridHeight(frames.get(0).getHeight()) * 1.3f;
+        transformComponent.width  = GameGrid.CELL_SIZE;
+        transformComponent.height = GameGrid.CELL_SIZE;
         zIndexComponent.zIndex    = zIndex;
         renderTypeComponent.type  = type;
         playerComponent.state = CatState.RUNNING;
@@ -66,6 +68,7 @@ public class PlayerFactory {
         entity.add(gravityComponent);
         entity.add(jumpComponent);
         entity.add(touchComponent);
+        entity.add(textureComponent);
 
         // Add entity to component
         engine.addEntity(entity);

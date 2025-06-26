@@ -38,7 +38,7 @@ public class CalculateCollision {
         float bR = bL + b.bounds.width;
         float bB = b.bounds.y;
 
-        return aR > bL
+        return aR > bL + MARGIN
             && aR <= bR + MARGIN
             && aT <= bB + MARGIN
             && aT >= bB - MARGIN;

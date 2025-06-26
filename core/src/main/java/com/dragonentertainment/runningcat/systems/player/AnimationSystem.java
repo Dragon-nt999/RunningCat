@@ -37,13 +37,14 @@ public class AnimationSystem extends IteratingSystem {
         this.assetName.add(AssetsName.Game.Sequence.Cat_running.CAT_RUNNING0006);
         this.assetName.add(AssetsName.Game.Sequence.Cat_running.CAT_RUNNING0007);
         this.assetName.add(AssetsName.Game.Sequence.Cat_running.CAT_RUNNING0008);
+
+        this.generatePlayer();
     }
 
     @Override
     public void addedToEngine(Engine engine)
     {
         super.addedToEngine(engine);
-        this.generatePlayer();
     }
 
     @Override
@@ -69,9 +70,9 @@ public class AnimationSystem extends IteratingSystem {
     private void generatePlayer()
     {
         List<Texture> animations = new ArrayList<>();
-        for(int i = 0; i < assetName.size(); i++)
+        for(String name : this.assetName)
         {
-            animations.add(this.game.assetManager.get(assetName.get(i), Texture.class));
+            animations.add(this.game.assetManager.get(name, Texture.class));
         }
 
         PlayerFactory.createCat(

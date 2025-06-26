@@ -1,9 +1,11 @@
 package com.dragonentertainment.runningcat.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
@@ -24,6 +26,7 @@ public class GameScreen extends BaseScreen{
 
     public GameScreen(AppGame game) {
         super(game);
+
         // Initial Engine
         this.engine = new PooledEngine();
         // Get Background
@@ -50,7 +53,7 @@ public class GameScreen extends BaseScreen{
         this.engine.addSystem(new MovementSystem(this.engine));
 
         // Render Bounds for text Collision
-        this.engine.addSystem(new BoundsRenderSystem(this.camera));
+        //this.engine.addSystem(new BoundsRenderSystem(this.camera));
 
         // Gravity
         this.engine.addSystem(new GravitySystem());
@@ -63,6 +66,10 @@ public class GameScreen extends BaseScreen{
 
         // Ricochet effect
         this.engine.addSystem(new RicochetEffectSystem());
+
+        // Reset Game state
+        GameStateManager.getInstance().setState(GameState.PLAYING);
+
     }
 
     @Override
@@ -72,10 +79,14 @@ public class GameScreen extends BaseScreen{
 
     @Override
     public void render(float delta) {
-        //if(!GameStateManager.getInstance().is(GameState.PLAYING)) return;
 
-        super.render(delta);
-        this.engine.update(delta);
+        if(GameStateManager.getInstance().is(GameState.OVER)) {
+            this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
+        } else {
+            super.render(delta);
+            this.engine.update(delta);
+        }
+
     }
 
     @Override
