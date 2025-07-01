@@ -74,8 +74,8 @@ public class JumpSystem extends IteratingSystem {
 
         // Game over when cat fall out of screen
         if(cat.state == CatState.FALLING) {
-            if((catTransform.position.y + catTransform.height
-                                            + CalculateCollision.MARGIN) < 0) {
+            if((catTransform.position.y + catTransform.height * 2) < 0
+                    || (catTransform.position.x + catTransform.width) < 0) {
                 //cat.state = CatState.FALL_OUT;
                 GameStateManager.getInstance().setState(GameState.STOP);
             }
