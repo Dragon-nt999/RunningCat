@@ -47,7 +47,7 @@ public class PlayerFactory {
 
         // Set values of components
         animationComponent.frames = frames;
-        animationComponent.frameDuration = Math.abs(Config.X_VELOCITY + 0.1f);
+        animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
 
         transformComponent.position.set(x, y);
         transformComponent.previous_y = y;

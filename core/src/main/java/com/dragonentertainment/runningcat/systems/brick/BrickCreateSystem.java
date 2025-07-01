@@ -30,7 +30,7 @@ public class BrickCreateSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         int brickRemain = this.engine.getEntitiesFor(Family.one(BrickComponent.class).get()).size();
-        if( brickRemain < 40 ) {
+        if( brickRemain < 36 ) {
             this.generateBricks(true);
         }
     }
