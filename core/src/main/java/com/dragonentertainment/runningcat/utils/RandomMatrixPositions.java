@@ -42,7 +42,7 @@ public class RandomMatrixPositions {
             int y;
             // random y
             do{
-                y = MathUtils.random(GameGrid.WORLD_HEIGHT - 2);
+                y = MathUtils.random(GameGrid.WORLD_HEIGHT - 1);
             }while(y % 4 != 0);
 
             // increase x
