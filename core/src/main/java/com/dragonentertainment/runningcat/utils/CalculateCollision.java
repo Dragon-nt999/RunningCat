@@ -3,12 +3,13 @@ package com.dragonentertainment.runningcat.utils;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 
 public class CalculateCollision {
-    public static final float MARGIN = 0.5f;
+    private static final float MARGIN_Y = 0.1f;
+    private static final float MARGIN_X = 0.3f;
+    public static final float MIN_MARGIN_X = MARGIN_X/3;
 
     /**
      * Check Collision from Top
      */
-
     public static boolean aabbOverlapTop(CollisionComponent a,
                                          CollisionComponent b) {
         float aR = (a.bounds.x + a.bounds.width);
@@ -19,10 +20,10 @@ public class CalculateCollision {
         float bB = b.bounds.y;
         float bT = bB + b.bounds.height;
 
-        return aR > bL
-                && aR <= bR + MARGIN
-                && aB <= bT + MARGIN
-                && aB >= bT - MARGIN;
+        return aR > bL + MARGIN_X
+                && aR <= bR + MARGIN_X
+                && aB <= bT + MARGIN_Y
+                && aB >= bT - MARGIN_Y;
     }
 
     /*
@@ -31,6 +32,7 @@ public class CalculateCollision {
     public static boolean aabbOverlapBottom(CollisionComponent a,
                                             CollisionComponent b) {
 
+        float aL = a.bounds.x;
         float aR = (a.bounds.x + a.bounds.width);
         float aB = a.bounds.y;
         float aT = aB + a.bounds.height;
@@ -39,17 +41,60 @@ public class CalculateCollision {
         float bR = bL + b.bounds.width;
         float bB = b.bounds.y;
 
-        return aR > bL + MARGIN
-            && aR <= bR + MARGIN
-            && aT <= bB + MARGIN
-            && aT >= bB - MARGIN;
+        return  aR > bL + MARGIN_X
+            && aR <= bR + MARGIN_X
+            && aT < bB + MARGIN_Y
+            && aT > bB - MARGIN_Y;
 
     }
+
     /*
-    * Check Collision from right
+    * Check Collision from right when Falling
     * */
-    public static boolean aabOverlapRight(CollisionComponent a,
+    public static boolean aabOverlapRightWhenFalling(CollisionComponent a,
                                           CollisionComponent b) {
-        return false;
+        float aR = (a.bounds.x + a.bounds.width);
+        float aB = a.bounds.y;
+        float aT = aB + a.bounds.height;
+
+        float bL = b.bounds.x;
+        float bR = bL + b.bounds.width;
+        float bB = b.bounds.y;
+        float bT = bB + b.bounds.height;
+
+        return (aR > bL + MARGIN_X/3
+               && aR < bR + MARGIN_X/3
+               && aB < bT
+               && aB > bB)
+              ||
+            (aR > bL + MARGIN_X/3
+                && aR < bR + MARGIN_X/3
+                && aT < bT
+                && aT > bB);
+    }
+
+    /*
+     * Check Collision from right when Falling
+     * */
+    public static boolean aabOverlapRightWhenJumping(CollisionComponent a,
+                                                 CollisionComponent b) {
+        float aR = (a.bounds.x + a.bounds.width);
+        float aB = a.bounds.y;
+        float aT = aB + a.bounds.height;
+
+        float bL = b.bounds.x;
+        float bR = bL + b.bounds.width;
+        float bB = b.bounds.y;
+        float bT = bB + b.bounds.height;
+
+        return (aR > bL + MARGIN_X/3
+            && aR < bR + MARGIN_X/3
+            && aT > bB
+            && aT < bT)
+            ||
+            (aR > bL + MARGIN_X/3
+                && aR < bR + MARGIN_X/3
+                && aB > bB
+                && aB < bT);
     }
 }
