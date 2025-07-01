@@ -42,7 +42,7 @@ public class RandomMatrixPositions {
             int y;
             // random y
             do{
-                y = MathUtils.random(GameGrid.WORLD_HEIGHT + 1);
+                y = MathUtils.random(GameGrid.WORLD_HEIGHT - 2);
             }while(y % 4 != 0);
 
             // increase x
@@ -54,13 +54,20 @@ public class RandomMatrixPositions {
         }
 
         /*-----------------------------------------------
-        * Code for Testing
+        * Code for Testing with full brick in floor
         *-----------------------------------------------*/
         /*for(int i = 0; i < 2; i++) {
             List<Vector2> collects = new ArrayList<>();
             for(int j = GameGrid.WORLD_WIDTH; j < GameGrid.WORLD_WIDTH * 2; j++) {
                 collects.add(new Vector2(j, i));
             }
+            results.add(collects);
+        }
+        for(int i = 4; i < 6; i++) {
+            List<Vector2> collects = new ArrayList<>();
+
+            collects.add(new Vector2(i - 2f, 5));
+
             results.add(collects);
         }*/
 

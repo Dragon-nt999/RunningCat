@@ -53,7 +53,7 @@ public class GameScreen extends BaseScreen{
         this.engine.addSystem(new MovementSystem(this.engine));
 
         // Render Bounds for text Collision
-        this.engine.addSystem(new BoundsRenderSystem(this.camera));
+        //this.engine.addSystem(new BoundsRenderSystem(this.camera));
 
         // Gravity
         this.engine.addSystem(new GravitySystem());
