@@ -3,6 +3,7 @@ package com.dragonentertainment.runningcat.systems.player;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
@@ -30,6 +31,8 @@ public class JumpSystem extends IteratingSystem {
         JumpComponent catJump      = MappersComponent.jump.get(entity);
         TransformComponent catTransform = MappersComponent.transform.get(entity);
 
+        if(catJump == null) return;
+
         /*----------------------------------------
          *   JUMP Cat When touching
          * ---------------------------------------- */
@@ -38,6 +41,8 @@ public class JumpSystem extends IteratingSystem {
             cat.state = CatState.JUMPING;
             cat.isOnBrick = false;
         }
+
+
 
         /*----------------------------------------
          *  Tracking cat 's position y during jump and falling
@@ -74,8 +79,7 @@ public class JumpSystem extends IteratingSystem {
 
         // Game over when cat fall out of screen
         if(cat.state == CatState.FALLING) {
-            if((catTransform.position.y + catTransform.height * 2) < 0
-                    || (catTransform.position.x + catTransform.width) < 0) {
+            if((catTransform.position.y + catTransform.height * 2) < 0) {
                 //cat.state = CatState.FALL_OUT;
                 GameStateManager.getInstance().setState(GameState.STOP);
             }

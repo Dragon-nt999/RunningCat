@@ -27,19 +27,20 @@ public class MovementSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         TransformComponent trans = MappersComponent.transform.get(entity);
         VelocityComponent velocity = MappersComponent.velocity.get(entity);
+        RenderTypeComponent type = MappersComponent.type.get(entity);
 
 
         // Moving
         if(GameStateManager.getInstance().is(GameState.PLAYING)){
-            trans.position.x += velocity.velocity.x * deltaTime;
+            //trans.position.x += velocity.velocity.x * deltaTime;
             trans.position.y += velocity.velocity.y * deltaTime;
         }
 
         // Get width Brick
         float width = trans.width;
 
-        // Remove entity when out of Screen
-        if((trans.position.x + width) < 0) {
+        // Remove entity when out of Screen except Cat
+        if(((trans.position.x + width) < 0) && type.type != RenderTypeComponent.Type.CAT) {
             this.engine.removeEntity(entity);
         }
 

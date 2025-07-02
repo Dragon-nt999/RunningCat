@@ -7,8 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
-import com.dragonentertainment.runningcat.components.VelocityComponent;
-import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
@@ -34,13 +32,11 @@ public class RicochetEffectSystem extends IteratingSystem {
             transform.position.y += MathUtils.random(-shakeAmount, shakeAmount);
         }
 
-        if (ricochet.time > ricochet.duration) {
+        if (ricochet.time >= ricochet.duration) {
             ricochet.triggered = false;
             entity.remove(RicochetEffectComponent.class);
             GameStateManager.getInstance().setState(GameState.OVER);
         }
-
-        Gdx.app.log("RICOCHET", ricochet.time + "====" + ricochet.duration);
 
     }
 }
