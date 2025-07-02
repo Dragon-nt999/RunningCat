@@ -5,11 +5,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
+import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
+import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
@@ -22,8 +25,15 @@ import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class CollisionSystem extends EntitySystem
 {
+    //private Entity cat;
     private Entity cat;
     private ImmutableArray<Entity> entities;
+    private TransformComponent catTransform = null;
+    private CollisionComponent catCollider = null;
+    private VelocityComponent catVelocity = null;
+    private PlayerComponent catState = null;
+    private JumpComponent catJump = null;
+    private RicochetEffectComponent ricochet = null;
 
     @Override
     public void addedToEngine(Engine engine)
@@ -34,6 +44,12 @@ public class CollisionSystem extends EntitySystem
             RenderTypeComponent type = MappersComponent.type.get(entity);
             // Get cat
             if(type.type == RenderTypeComponent.Type.CAT) {
+                catTransform = MappersComponent.transform.get(entity);
+                catCollider = MappersComponent.collider.get(entity);
+                catVelocity = MappersComponent.velocity.get(entity);
+                catState = MappersComponent.player.get(entity);
+                catJump = MappersComponent.jump.get(entity);
+                ricochet = getEngine().createComponent(RicochetEffectComponent.class);
                 this.cat = entity;
                 break;
             }
@@ -43,68 +59,74 @@ public class CollisionSystem extends EntitySystem
     @Override
     public void update(float deltaTime)
     {
-        if(this.cat != null) {
-            // Set Cat bound
-            TransformComponent catTransform = MappersComponent.transform.get(this.cat);
-            CollisionComponent catCollider = MappersComponent.collider.get(this.cat);
-            VelocityComponent catVelocity = MappersComponent.velocity.get(this.cat);
-            PlayerComponent cat = MappersComponent.player.get(this.cat);
-            JumpComponent catJump = MappersComponent.jump.get(this.cat);
+        if(catJump == null || catTransform == null || catCollider == null) return;
 
-            catCollider.bounds.set(catTransform.position.x,
-                                    catTransform.position.y,
-                                    catTransform.width,
-                                    catTransform.height);
+        catCollider.bounds.set(catTransform.position.x,
+                                catTransform.position.y,
+                                catTransform.width,
+                                catTransform.height);
 
-            // Check cat with bricks
-            for(Entity brick : this.entities)
-            {
-                RenderTypeComponent type = MappersComponent.type.get(brick);
-                if(type.type != RenderTypeComponent.Type.BRICK) continue;
+        // Check cat with bricks
+        for(Entity brick : this.entities)
+        {
+            RenderTypeComponent type = MappersComponent.type.get(brick);
+            if(type.type != RenderTypeComponent.Type.BRICK) continue;
 
-                TransformComponent brickTransform = MappersComponent.transform.get(brick);
-                CollisionComponent brickCollider = MappersComponent.collider.get(brick);
+            TransformComponent brickTransform = MappersComponent.transform.get(brick);
+            CollisionComponent brickCollider = MappersComponent.collider.get(brick);
 
-                brickCollider.bounds.set(brickTransform.position.x,
-                                            brickTransform.position.y,
-                                            brickTransform.width,
-                                            brickTransform.height);
+            brickCollider.bounds.set(brickTransform.position.x,
+                                        brickTransform.position.y,
+                                        brickTransform.width,
+                                        brickTransform.height);
 
-                switch (cat.state) {
-                    case RUNNING:
-                    case FALLING:
-                        // Tracking Collision between Cat's Bottom and Bricks's Top
-                        // And Tracking Collision between Cat's Right and Bricks's Left
-                        if(CalculateCollision.aabbOverlapTop(catCollider, brickCollider)){
-                            catVelocity.velocity.y = 0;
-                            catTransform.position.y = brickTransform.position.y
-                                                                            + brickTransform.height;
-                            catJump.startY = catTransform.position.y;
-                            catJump.endY = catTransform.position.y;
-                            cat.isOnBrick = true;
-                            cat.state = CatState.RUNNING;
-                        } else if(CalculateCollision.aabOverlapRightWhenFalling(catCollider, brickCollider)){
-                            catTransform.position.x = brickTransform.position.x - catTransform.width + CalculateCollision.MIN_MARGIN_X;
-                        }
+            switch (catState.state) {
+                case RUNNING:
+                case FALLING:
+                    // Tracking Collision between Cat's Bottom and Bricks's Top
+                    // And Tracking Collision between Cat's Right and Bricks's Left
+                    if(CalculateCollision.aabbOverlapTop(catCollider, brickCollider)){
+                        catVelocity.velocity.y = 0;
+                        catTransform.position.y = brickTransform.position.y
+                            + brickTransform.height;
+                        catJump.startY = catTransform.position.y;
+                        catJump.endY = catTransform.position.y;
+                        catState.isOnBrick = true;
+                        catState.state = CatState.RUNNING;
+                    } else if(CalculateCollision.aabOverlapRightWhenFalling(catCollider, brickCollider)){
+                        catTransform.position.x = brickTransform.position.x - catTransform.width
+                            + CalculateCollision.MIN_MARGIN_X;
+                    }
 
-                        break;
-                    case JUMPING:
+                    break;
+                case JUMPING:
 
-                        // Tracking Collision between Cat's Top and Bricks's Bottom
-                        // And Tracking Collision between Cat's Right and Bricks's Left
-                        if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
-                            cat.state = CatState.HIT;
-                            catTransform.position.y = brickTransform.position.y - catTransform.height;
-                            GameStateManager.getInstance().setState(GameState.STOP);
-                        } else if(CalculateCollision.aabOverlapRightWhenJumping(catCollider, brickCollider)){
-                            catTransform.position.x = brickTransform.position.x - catTransform.width + CalculateCollision.MIN_MARGIN_X;
-                        }
+                    // Tracking Collision between Cat's Top and Bricks's Bottom
+                    // And Tracking Collision between Cat's Right and Bricks's Left
+                    if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
+                        catState.state = CatState.HIT;
+                        catTransform.position.y = brickTransform.position.y - catTransform.height;
+                        GameStateManager.getInstance().setState(GameState.STOP);
 
-                        break;
-                    default:
-                        break;
-                }
+                        // Add Ricochet When cat hit brick
+                        /*if(ricochet != null) {
+                            this.cat.remove(CollisionComponent.class);
+                            this.cat.remove(JumpComponent.class);
+                            this.cat.add(ricochet);
+                            if (brick != null) {
+                                brick.add(ricochet);
+                            }
 
+
+                        }*/
+
+                    } else if(CalculateCollision.aabOverlapRightWhenJumping(catCollider, brickCollider)){
+                        catTransform.position.x = brickTransform.position.x -
+                            catTransform.width + CalculateCollision.MIN_MARGIN_X;
+                    }
+                    break;
+                default:
+                    break;
             }
 
         }

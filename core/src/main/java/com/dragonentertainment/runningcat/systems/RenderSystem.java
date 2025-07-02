@@ -56,8 +56,6 @@ public class RenderSystem extends SortedIteratingSystem
                 switch (cat.state) {
                     case RUNNING:
                         text.texture = anim.currentFrame;
-                        //text.texture = this.game.assetManager.
-                        //get(AssetsName.Game.Sequence.Cat_jumping.CAT_JUMPING_1);
                         break;
                     case JUMPING:
                         text.texture = this.game.assetManager.
