@@ -31,8 +31,6 @@ public class JumpSystem extends IteratingSystem {
         JumpComponent catJump      = MappersComponent.jump.get(entity);
         TransformComponent catTransform = MappersComponent.transform.get(entity);
 
-        if(catJump == null) return;
-
         /*----------------------------------------
          *   JUMP Cat When touching
          * ---------------------------------------- */

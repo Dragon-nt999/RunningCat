@@ -23,6 +23,7 @@ import com.dragonentertainment.runningcat.utils.GameStateManager;
 
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
+    private float timeToRestart = -1;
 
     public GameScreen(AppGame game) {
         super(game);
@@ -81,12 +82,22 @@ public class GameScreen extends BaseScreen{
     public void render(float delta) {
 
         if(GameStateManager.getInstance().is(GameState.OVER)) {
-            this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
+            GameStateManager.getInstance().setState(GameState.RESTART);
         } else {
             super.render(delta);
             this.engine.update(delta);
         }
 
+        if(GameStateManager.getInstance().is(GameState.RESTART)) {
+            if(this.timeToRestart < 0f) {
+                this.timeToRestart = 0f;
+            } else {
+                this.timeToRestart += delta;
+                if(this.timeToRestart >= 1f) {
+                    this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
+                }
+            }
+        }
     }
 
     @Override

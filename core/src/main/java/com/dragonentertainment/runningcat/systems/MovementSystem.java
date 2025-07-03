@@ -29,10 +29,9 @@ public class MovementSystem extends IteratingSystem {
         VelocityComponent velocity = MappersComponent.velocity.get(entity);
         RenderTypeComponent type = MappersComponent.type.get(entity);
 
-
         // Moving
         if(GameStateManager.getInstance().is(GameState.PLAYING)){
-            //trans.position.x += velocity.velocity.x * deltaTime;
+            trans.position.x += velocity.velocity.x * deltaTime;
             trans.position.y += velocity.velocity.y * deltaTime;
         }
 

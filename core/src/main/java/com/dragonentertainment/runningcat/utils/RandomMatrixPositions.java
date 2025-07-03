@@ -63,13 +63,13 @@ public class RandomMatrixPositions {
             }
             results.add(collects);
         }*/
-        for(int i = 4; i < 6; i++) {
+        /*for(int i = 4; i < 6; i++) {
             List<Vector2> collects = new ArrayList<>();
 
             collects.add(new Vector2(i-0.9f, 4));
 
             results.add(collects);
-        }
+        }*/
 
         // Reset when restart game
         firstCount = 18;

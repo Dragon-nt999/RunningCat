@@ -3,6 +3,7 @@ package com.dragonentertainment.runningcat.utils;
 import com.dragonentertainment.runningcat.enums.GameState;
 
 public class GameStateManager {
+
     private static final GameStateManager instance = new GameStateManager();
 
     private GameState currentState = GameState.PLAYING;
