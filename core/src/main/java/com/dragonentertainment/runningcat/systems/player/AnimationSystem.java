@@ -79,7 +79,7 @@ public class AnimationSystem extends IteratingSystem {
             this.engine,
             animations,
             3,
-            2,
+            4,
             10,
             RenderTypeComponent.Type.CAT);
     }
