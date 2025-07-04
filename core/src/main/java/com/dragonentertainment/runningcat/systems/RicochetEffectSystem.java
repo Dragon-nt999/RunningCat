@@ -25,13 +25,12 @@ public class RicochetEffectSystem extends IteratingSystem {
             ricochet.time += deltaTime;
             float shake = MathUtils.cos(ricochet.time * ricochet.frequency) * ricochet.shakeAmount;
             transform.position.y += shake;
-        }
 
-        if (ricochet.time > ricochet.duration) {
-            entity.remove(RicochetEffectComponent.class);
-            getEngine().getSystem(MovementSystem.class).setProcessing(false);
-            GameStateManager.getInstance().setState(GameState.OVER);
+            if (ricochet.time > ricochet.duration) {
+                //entity.remove(RicochetEffectComponent.class);
+                //getEngine().getSystem(MovementSystem.class).setProcessing(false);
+                GameStateManager.getInstance().setState(GameState.OVER);
+            }
         }
-
     }
 }
