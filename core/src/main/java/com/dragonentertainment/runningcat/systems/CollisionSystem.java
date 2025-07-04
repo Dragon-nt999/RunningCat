@@ -105,12 +105,12 @@ public class CollisionSystem extends EntitySystem
                         catTransform.position.y = brickTransform.position.y - catTransform.height;
                         GameStateManager.getInstance().setState(GameState.STOP);
 
+                        getEngine().getSystem(CollisionSystem.class).setProcessing(false);
+                        getEngine().getSystem(JumpSystem.class).setProcessing(false);
+
                         // Add Ricochet When cat hit brick
                         if(ricochet == null) {
                             this.ricochet = getEngine().createComponent(RicochetEffectComponent.class);
-                            getEngine().getSystem(CollisionSystem.class).setProcessing(false);
-                            getEngine().getSystem(JumpSystem.class).setProcessing(false);
-
                             this.cat.add(ricochet);
                             if (brick != null) {
                                 brick.add(ricochet);
