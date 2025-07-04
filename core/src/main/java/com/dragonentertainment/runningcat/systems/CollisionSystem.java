@@ -19,13 +19,13 @@ import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class CollisionSystem extends EntitySystem
 {
-    //private Entity cat;
     private Entity cat;
     private ImmutableArray<Entity> entities;
     private TransformComponent catTransform = null;
@@ -49,7 +49,6 @@ public class CollisionSystem extends EntitySystem
                 catVelocity = MappersComponent.velocity.get(entity);
                 catState = MappersComponent.player.get(entity);
                 catJump = MappersComponent.jump.get(entity);
-                ricochet = getEngine().createComponent(RicochetEffectComponent.class);
                 this.cat = entity;
                 break;
             }
@@ -59,8 +58,6 @@ public class CollisionSystem extends EntitySystem
     @Override
     public void update(float deltaTime)
     {
-        if(catJump == null || catTransform == null || catCollider == null) return;
-
         catCollider.bounds.set(catTransform.position.x,
                                 catTransform.position.y,
                                 catTransform.width,
@@ -109,16 +106,16 @@ public class CollisionSystem extends EntitySystem
                         GameStateManager.getInstance().setState(GameState.STOP);
 
                         // Add Ricochet When cat hit brick
-                        /*if(ricochet != null) {
-                            this.cat.remove(CollisionComponent.class);
-                            this.cat.remove(JumpComponent.class);
+                        if(ricochet == null) {
+                            this.ricochet = getEngine().createComponent(RicochetEffectComponent.class);
+                            getEngine().getSystem(CollisionSystem.class).setProcessing(false);
+                            getEngine().getSystem(JumpSystem.class).setProcessing(false);
+
                             this.cat.add(ricochet);
                             if (brick != null) {
                                 brick.add(ricochet);
                             }
-
-
-                        }*/
+                        }
 
                     } else if(CalculateCollision.aabOverlapRightWhenJumping(catCollider, brickCollider)){
                         catTransform.position.x = brickTransform.position.x -

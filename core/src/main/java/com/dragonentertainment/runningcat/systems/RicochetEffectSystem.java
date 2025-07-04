@@ -3,7 +3,6 @@ package com.dragonentertainment.runningcat.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -18,23 +17,19 @@ public class RicochetEffectSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+
         TransformComponent transform = MappersComponent.transform.get(entity);
         RicochetEffectComponent ricochet = MappersComponent.ricochet.get(entity);
 
         if(GameStateManager.getInstance().is(GameState.STOP)) {
             ricochet.time += deltaTime;
-            ricochet.triggered = true;
+            float shake = MathUtils.cos(ricochet.time * ricochet.frequency) * ricochet.shakeAmount;
+            transform.position.y += shake;
         }
 
-        if(ricochet.triggered) {
-            float shakeAmount = 0.05f;
-            transform.position.x += MathUtils.random(-shakeAmount, shakeAmount);
-            transform.position.y += MathUtils.random(-shakeAmount, shakeAmount);
-        }
-
-        if (ricochet.time >= ricochet.duration) {
-            ricochet.triggered = false;
+        if (ricochet.time > ricochet.duration) {
             entity.remove(RicochetEffectComponent.class);
+            getEngine().getSystem(MovementSystem.class).setProcessing(false);
             GameStateManager.getInstance().setState(GameState.OVER);
         }
 
