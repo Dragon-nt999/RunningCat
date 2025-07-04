@@ -17,5 +17,15 @@ public class Config {
      *----------------------------------------------*/
     public static final float MAX_PRESS_DURATION = 0.6f;
 
+    /*-----------------------------------------------
+     * First Num of Brick Will render when game is started
+     *----------------------------------------------*/
+    public static final int FIRST_NUM_BRICKS = 36;
+
+    /*-----------------------------------------------
+     * Maximum number of row
+     *----------------------------------------------*/
+    public static final int MAX_NUM_ROW = 5;
+
 
 }

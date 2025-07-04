@@ -3,22 +3,24 @@ package com.dragonentertainment.runningcat.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.dragonentertainment.runningcat.enums.Level;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 public class RandomMatrixPositions {
-    private static int firstCount = 18;
-    public static List<List<Vector2>> getBlockPositions(int total, boolean isRespawn) {
+    private static int firstCount = Config.FIRST_NUM_BRICKS;
+    public static List<List<Vector2>> getBlockPositions(boolean isRespawn, Level level) {
         List<List<Vector2>> results = new ArrayList<>();
 
         // First Render Bricks
         if(firstCount > 0 && !isRespawn) {
             List<Vector2> firstCollects = new ArrayList<>();
-            for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < 9; j++) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < GameGrid.WORLD_WIDTH; j++) {
                     firstCollects.add(new Vector2(j, i));
                     firstCount--;
                 }
@@ -30,49 +32,35 @@ public class RandomMatrixPositions {
         /*-----------------------------------------------
          * Shuffle GameGrid.allPositions
          *-----------------------------------------------*/
-
         Collections.shuffle(GameGrid.allPositions);
 
-        for(int i = 0; i < Math.min(total, GameGrid.allPositions.size()); i++) {
-            List<Vector2> collects = new ArrayList<>();
+        /*-----------------------------------------------
+         * Contain y for checking to avoid duplicate per loop
+         *-----------------------------------------------*/
+        ArrayList<Integer> prevY = new ArrayList<Integer>();
 
+
+        for(int i = 0; i < Config.MAX_NUM_ROW; i++) {
             Vector2 start = GameGrid.allPositions.get(i);
 
-            int x = 0;
-            int y;
+            int y = 0;
             // random y
             do{
-                y = MathUtils.random(GameGrid.WORLD_HEIGHT - 1);
-            }while(y % 4 != 0);
+                y = MathUtils.random(2, GameGrid.WORLD_HEIGHT - 1);
+            }while((y % 3 != 0) || (prevY.contains(y)));
 
-            // increase x
-            do {
-                collects.add(new Vector2(start.x + x, y));
-            }while(x++ < 2);
+            prevY.add(y);
 
-            results.add(collects);
+            results.add(LevelManager.getLevel(start, level, y));
         }
 
         /*-----------------------------------------------
-        * Code for Testing with full brick in floor
-        *-----------------------------------------------*/
-        /*for(int i = 0; i < 2; i++) {
-            List<Vector2> collects = new ArrayList<>();
-            for(int j = GameGrid.WORLD_WIDTH; j < GameGrid.WORLD_WIDTH * 2; j++) {
-                collects.add(new Vector2(j, i));
-            }
-            results.add(collects);
-        }*/
-        /*for(int i = 4; i < 6; i++) {
-            List<Vector2> collects = new ArrayList<>();
-
-            collects.add(new Vector2(i-0.9f, 4));
-
-            results.add(collects);
-        }*/
+         * Sort position by maximum position x
+         *-----------------------------------------------*/
+        results.sort(Comparator.comparingDouble(group ->group.get(LevelManager.numOfBrick).x));
 
         // Reset when restart game
-        firstCount = 18;
+        firstCount = Config.FIRST_NUM_BRICKS;
 
         return results;
     }
