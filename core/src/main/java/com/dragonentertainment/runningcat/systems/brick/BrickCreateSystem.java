@@ -9,22 +9,32 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.brick.BrickComponent;
 import com.dragonentertainment.runningcat.enums.Level;
 import com.dragonentertainment.runningcat.factory.BrickFactory;
+import com.dragonentertainment.runningcat.factory.PlayerFactory;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.RandomMatrixPositions;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class BrickCreateSystem extends EntitySystem {
     private final PooledEngine engine;
     private final Texture texture;
 
-    public BrickCreateSystem(PooledEngine engine, Texture texture) {
+    private final List<Vector2> positionsPlayer = new ArrayList<>();
+
+    private final AppGame game;
+
+    public BrickCreateSystem(PooledEngine engine, Texture texture, AppGame game) {
         this.engine = engine;
         this.texture = texture;
+        this.game = game;
     }
 
     @Override
@@ -39,11 +49,15 @@ public class BrickCreateSystem extends EntitySystem {
         int lastX = (int)lastBrick.getComponent(TransformComponent.class).position.x;
 
         if( lastX < GameGrid.WORLD_WIDTH / 5) {
-            this.generateBricks(true, Level.EASY);
+            this.generateBricks(true, Level.MEDIUM);
+            this.generateMouses();
         }
     }
 
     private void generateBricks(boolean isReSpawn, Level level) {
+       // Clear position for render Player
+       this.positionsPlayer.clear();
+
        List<List<Vector2>> randPositions = RandomMatrixPositions.getBlockPositions(isReSpawn, level);
         for(int i = 0; i < randPositions.size(); i++) {
             List<Vector2> positions = randPositions.get(i);
@@ -54,6 +68,22 @@ public class BrickCreateSystem extends EntitySystem {
                     positions.get(j).x,
                     positions.get(j).y,
                     9);
+
+                // Add position for render Mouse and Other Cat
+                this.positionsPlayer.add(positions.get(j));
+            }
+        }
+    }
+
+    private void generateMouses() {
+        int maxMouse = 2;
+        if(!this.positionsPlayer.isEmpty()) {
+            Collections.shuffle(this.positionsPlayer);
+            for (Vector2 pos : this.positionsPlayer) {
+                if(maxMouse > 0) {
+                    PlayerFactory.createMouse(this.game, this.engine, pos);
+                    maxMouse--;
+                }
             }
         }
     }

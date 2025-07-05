@@ -5,19 +5,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Intersector;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
-import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
-import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
-import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.enums.PlayerState;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
@@ -89,7 +84,7 @@ public class CollisionSystem extends EntitySystem
                         catJump.startY = catTransform.position.y;
                         catJump.endY = catTransform.position.y;
                         catState.isOnBrick = true;
-                        catState.state = CatState.RUNNING;
+                        catState.state = PlayerState.RUNNING;
                     } else if(CalculateCollision.aabOverlapRightWhenFalling(catCollider, brickCollider)){
                         catTransform.position.x = brickTransform.position.x - catTransform.width
                             + CalculateCollision.MIN_MARGIN_X;
@@ -101,7 +96,7 @@ public class CollisionSystem extends EntitySystem
                     // Tracking Collision between Cat's Top and Bricks's Bottom
                     // And Tracking Collision between Cat's Right and Bricks's Left
                     if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
-                        catState.state = CatState.HIT;
+                        catState.state = PlayerState.HIT;
                         catTransform.position.y = brickTransform.position.y - catTransform.height;
                         GameStateManager.getInstance().setState(GameState.STOP);
 

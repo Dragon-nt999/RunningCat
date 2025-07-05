@@ -23,13 +23,13 @@ public class BrickFactory {
     ) {
         Entity entity = engine.createEntity();
 
-        TransformComponent trans = engine.createComponent(TransformComponent.class);
-        TextureComponent text   = engine.createComponent(TextureComponent.class);
+        TransformComponent trans    = engine.createComponent(TransformComponent.class);
+        TextureComponent text       = engine.createComponent(TextureComponent.class);
         VelocityComponent velocity  = engine.createComponent(VelocityComponent.class);
-        ZIndexComponent zI    = engine.createComponent(ZIndexComponent.class);
-        RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
-        BrickComponent bc = engine.createComponent(BrickComponent.class);
-        CollisionComponent cc = engine.createComponent(CollisionComponent.class);
+        ZIndexComponent zI          = engine.createComponent(ZIndexComponent.class);
+        RenderTypeComponent type    = engine.createComponent(RenderTypeComponent.class);
+        BrickComponent bc           = engine.createComponent(BrickComponent.class);
+        CollisionComponent cc       = engine.createComponent(CollisionComponent.class);
 
         // Set Transform
         trans.position.set(x, y);
