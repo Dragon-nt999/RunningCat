@@ -1,20 +1,17 @@
-package com.dragonentertainment.runningcat.strategy.mouse;
+package com.dragonentertainment.runningcat.strategy.othercat;
 
 import com.badlogic.ashley.core.Entity;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.PlayerState;
 import com.dragonentertainment.runningcat.strategy.BehaviorStrategy;
-import com.dragonentertainment.runningcat.strategy.cat.FallingBehavior;
-import com.dragonentertainment.runningcat.strategy.cat.HitBehavior;
-import com.dragonentertainment.runningcat.strategy.cat.JumpingBehavior;
 import com.dragonentertainment.runningcat.strategy.cat.RunningBehavior;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MouseStateManager {
+public class OtherCatStateManager {
     private static final Map<PlayerState, BehaviorStrategy> STRATEGY_MAP = new HashMap<>();
 
     static {
