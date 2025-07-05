@@ -2,7 +2,9 @@ package com.dragonentertainment.runningcat.factory;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
@@ -14,50 +16,49 @@ import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
-import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.enums.PlayerState;
+import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
-
-import java.util.List;
+import com.dragonentertainment.runningcat.utils.FrameTexture;
 
 public class PlayerFactory {
     public static void createCat(
-        PooledEngine engine,
-        List<Texture> frames,
-        float x,
-        float y,
-        int zIndex,
-        RenderTypeComponent.Type type
+        AppGame game,
+        PooledEngine engine
     ) {
         // Create Entity
         Entity entity = engine.createEntity();
 
         // Create Components
-        TransformComponent transformComponent = engine.createComponent(TransformComponent.class);
-        ZIndexComponent zIndexComponent       = engine.createComponent(ZIndexComponent.class);
-        AnimationComponent animationComponent = engine.createComponent(AnimationComponent.class);
+        TransformComponent transformComponent   = engine.createComponent(TransformComponent.class);
+        ZIndexComponent zIndexComponent         = engine.createComponent(ZIndexComponent.class);
+        AnimationComponent animationComponent   = engine.createComponent(AnimationComponent.class);
+        TextureComponent textureComponent       = engine.createComponent(TextureComponent.class);
         RenderTypeComponent renderTypeComponent = engine.createComponent(RenderTypeComponent.class);
-        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
-        VelocityComponent velocityComponent = engine.createComponent(VelocityComponent.class);
-        CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
-        GravityComponent gravityComponent = engine.createComponent(GravityComponent.class);
-        JumpComponent jumpComponent = engine.createComponent(JumpComponent.class);
-        TouchComponent touchComponent = engine.createComponent(TouchComponent.class);
-        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
+        PlayerComponent playerComponent         = engine.createComponent(PlayerComponent.class);
+        VelocityComponent velocityComponent     = engine.createComponent(VelocityComponent.class);
+        CollisionComponent collisionComponent   = engine.createComponent(CollisionComponent.class);
+        GravityComponent gravityComponent       = engine.createComponent(GravityComponent.class);
+        JumpComponent jumpComponent             = engine.createComponent(JumpComponent.class);
+        TouchComponent touchComponent           = engine.createComponent(TouchComponent.class);
 
         // Set values of components
-        animationComponent.frames = frames;
+        animationComponent.frames = FrameTexture.cat(game);
         animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
 
-        transformComponent.position.set(x, y);
-        transformComponent.previous_y = y;
+        playerComponent.state     = PlayerState.RUNNING;
+        textureComponent.texture  = animationComponent.frames.get(0);
+
+        playerComponent.position = new Vector3(3, 4, 10);
+
+        transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
         transformComponent.width  = GameGrid.CELL_SIZE;
         transformComponent.height = GameGrid.CELL_SIZE;
 
-        zIndexComponent.zIndex    = zIndex;
-        renderTypeComponent.type  = type;
-        playerComponent.state = CatState.RUNNING;
+        zIndexComponent.zIndex    = (int)playerComponent.position.z;
+        renderTypeComponent.type  = RenderTypeComponent.Type.CAT;
 
         // Add component to entity
         entity.add(transformComponent);
@@ -74,5 +75,59 @@ public class PlayerFactory {
 
         // Add entity to component
         engine.addEntity(entity);
+    }
+
+    public static Entity createMouse(
+        AppGame game,
+        PooledEngine engine,
+        Vector2 position
+    ) {
+        // Create Entity
+        Entity entity = engine.createEntity();
+
+        // Create Components
+        TransformComponent transformComponent   = engine.createComponent(TransformComponent.class);
+        ZIndexComponent zIndexComponent         = engine.createComponent(ZIndexComponent.class);
+        AnimationComponent animationComponent   = engine.createComponent(AnimationComponent.class);
+        TextureComponent textureComponent       = engine.createComponent(TextureComponent.class);
+        RenderTypeComponent renderTypeComponent = engine.createComponent(RenderTypeComponent.class);
+        PlayerComponent playerComponent         = engine.createComponent(PlayerComponent.class);
+        CollisionComponent collisionComponent   = engine.createComponent(CollisionComponent.class);
+        VelocityComponent velocity              = engine.createComponent(VelocityComponent.class);
+
+        // Set values of components
+        animationComponent.frames = FrameTexture.mouse(game);
+        animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
+
+        playerComponent.state     = PlayerState.IDLE;
+        textureComponent.texture  = animationComponent.frames.get(0);
+
+        playerComponent.position = new Vector3(position.x, position.y + 1, 9);
+
+        transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
+
+        transformComponent.width  = (float) (GameGrid.CELL_SIZE * 0.7);
+        transformComponent.height = (float) (GameGrid.CELL_SIZE * 0.7);
+
+        zIndexComponent.zIndex    = (int)playerComponent.position.z;
+        renderTypeComponent.type  = RenderTypeComponent.Type.MOUSE;
+
+        // Set velocity
+        velocity.velocity.set(Config.X_VELOCITY * zIndexComponent.zIndex, 0);
+
+        // Add component to entity
+        entity.add(transformComponent);
+        entity.add(zIndexComponent);
+        entity.add(animationComponent);
+        entity.add(renderTypeComponent);
+        entity.add(playerComponent);
+        entity.add(collisionComponent);
+        entity.add(textureComponent);
+        entity.add(velocity);
+
+        // Add entity to component
+        engine.addEntity(entity);
+
+        return entity;
     }
 }
