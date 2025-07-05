@@ -2,6 +2,7 @@ package com.dragonentertainment.runningcat.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;

@@ -28,6 +28,7 @@ public class BrickCreateSystem extends EntitySystem {
     private final Texture texture;
 
     private final List<Vector2> positionsPlayer = new ArrayList<>();
+    private final List<Vector2> positionsUsed = new ArrayList<>();
 
     private final AppGame game;
 
@@ -39,7 +40,7 @@ public class BrickCreateSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        this.generateBricks(false, Level.EASY);
+        this.generateBricks(false, Level.MEDIUM);
     }
 
     @Override
@@ -50,7 +51,9 @@ public class BrickCreateSystem extends EntitySystem {
 
         if( lastX < GameGrid.WORLD_WIDTH / 5) {
             this.generateBricks(true, Level.MEDIUM);
-            this.generateMouses();
+            if(this.generateMouses()){
+                this.generateOtherCat();
+            }
         }
     }
 
@@ -75,7 +78,7 @@ public class BrickCreateSystem extends EntitySystem {
         }
     }
 
-    private void generateMouses() {
+    private boolean generateMouses() {
         int maxMouse = 2;
         if(!this.positionsPlayer.isEmpty()) {
             Collections.shuffle(this.positionsPlayer);
@@ -83,6 +86,26 @@ public class BrickCreateSystem extends EntitySystem {
                 if(maxMouse > 0) {
                     PlayerFactory.createMouse(this.game, this.engine, pos);
                     maxMouse--;
+                    this.positionsUsed.add(pos);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private void generateOtherCat() {
+        int maxCat = 1;
+        this.positionsPlayer.removeAll(this.positionsUsed);
+        if(!this.positionsPlayer.isEmpty()) {
+            Collections.shuffle(this.positionsPlayer);
+            for (Vector2 pos : this.positionsPlayer) {
+                if(maxCat > 0) {
+                    PlayerFactory.createOtherCat(this.game, this.engine, pos);
+                    maxCat--;
+                    this.positionsUsed.add(pos);
                 }
             }
         }
