@@ -1,13 +1,12 @@
 package com.dragonentertainment.runningcat.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;
+import com.dragonentertainment.runningcat.factory.PlayerFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
-import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.RicochetEffectSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
@@ -18,6 +17,7 @@ import com.dragonentertainment.runningcat.systems.TouchSystem;
 import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
+import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 
@@ -34,18 +34,24 @@ public class GameScreen extends BaseScreen{
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
 
+        // Create Cat
+        PlayerFactory.createCat(game, this.engine);
+
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
 
         // Brick
         Texture brick = this.game.assetManager.get(AssetsName.Game.Items.BRICK, Texture.class);
-        this.engine.addSystem(new BrickCreateSystem(this.engine, brick));
+        this.engine.addSystem(new BrickCreateSystem(this.engine, brick, this.game));
 
-        // Cat
-        this.engine.addSystem(new AnimationSystem(this.game, this.engine));
+        // Player
+        this.engine.addSystem(new PlayerSystem(this.game));
+
+        // Animation
+        this.engine.addSystem(new AnimationSystem());
 
         // Render
-        this.engine.addSystem(new RenderSystem(this.game, this.batch));
+        this.engine.addSystem(new RenderSystem(this.batch));
 
         // Collision
         this.engine.addSystem(new CollisionSystem());

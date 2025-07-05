@@ -3,24 +3,21 @@ package com.dragonentertainment.runningcat.systems.player;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
-import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.enums.PlayerState;
 import com.dragonentertainment.runningcat.enums.GameState;
-import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
-import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class JumpSystem extends IteratingSystem {
 
     public JumpSystem() {
-        super(Family.all(PlayerComponent.class).get());
+        super(Family.all(PlayerComponent.class, JumpComponent.class).get());
     }
 
     @Override
@@ -36,7 +33,7 @@ public class JumpSystem extends IteratingSystem {
          * ---------------------------------------- */
         if(touch.isPressed && touch.pressDuration < Config.MAX_PRESS_DURATION) {
             velocity.velocity.y = touch.pressDuration * 15f;
-            cat.state = CatState.JUMPING;
+            cat.state = PlayerState.JUMPING;
             cat.isOnBrick = false;
         }
 
@@ -55,16 +52,16 @@ public class JumpSystem extends IteratingSystem {
         * If cat is Jump and has maxJump > endY => cat is falling
         * ----------------------------------------*/
         if(catJump.endY > 0 && catTransform.position.y < catJump.endY) {
-            cat.state = CatState.FALLING;
+            cat.state = PlayerState.FALLING;
         }
 
         /*----------------------------------------
          * If cat is startY > endY => cat is free falling
          * ----------------------------------------*/
-        if(catJump.startY > catJump.endY && cat.state != CatState.JUMPING) {
+        if(catJump.startY > catJump.endY && cat.state != PlayerState.JUMPING) {
             cat.isOnBrick = false;
             touch.pressDuration = -1;
-            cat.state = CatState.FALLING;
+            cat.state = PlayerState.FALLING;
         }
 
         /*----------------------------------------
@@ -76,9 +73,8 @@ public class JumpSystem extends IteratingSystem {
         }
 
         // Game over when cat fall out of screen
-        if(cat.state == CatState.FALLING) {
+        if(cat.state == PlayerState.FALLING) {
             if((catTransform.position.y + catTransform.height * 2) < 0) {
-                //cat.state = CatState.FALL_OUT;
                 GameStateManager.getInstance().setState(GameState.STOP);
             }
         }
