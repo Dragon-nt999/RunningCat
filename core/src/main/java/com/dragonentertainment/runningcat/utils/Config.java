@@ -27,5 +27,10 @@ public class Config {
      *----------------------------------------------*/
     public static final int MAX_NUM_ROW = 5;
 
+    /*-----------------------------------------------
+     * Maximum hight jump
+     *----------------------------------------------*/
+    public static final float MAX_HIGHT_JUMP = 20f;
+
 
 }

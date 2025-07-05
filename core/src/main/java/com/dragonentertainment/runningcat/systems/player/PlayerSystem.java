@@ -8,6 +8,7 @@ import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.strategy.cat.CatStateManager;
 import com.dragonentertainment.runningcat.strategy.mouse.MouseStateManager;
+import com.dragonentertainment.runningcat.strategy.othercat.OtherCatStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class PlayerSystem extends IteratingSystem {
@@ -27,6 +28,8 @@ public class PlayerSystem extends IteratingSystem {
             CatStateManager.changeState(this.game, entity);
         } else if(type.type == RenderTypeComponent.Type.MOUSE){
             MouseStateManager.changeState(this.game, entity);
+        } else if(type.type == RenderTypeComponent.Type.OTHER_CAT){
+            OtherCatStateManager.changeState(this.game, entity);
         }
     }
 }

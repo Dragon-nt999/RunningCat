@@ -32,7 +32,7 @@ public class JumpSystem extends IteratingSystem {
          *   JUMP Cat When touching
          * ---------------------------------------- */
         if(touch.isPressed && touch.pressDuration < Config.MAX_PRESS_DURATION) {
-            velocity.velocity.y = touch.pressDuration * 15f;
+            velocity.velocity.y = touch.pressDuration * Config.MAX_HIGHT_JUMP;
             cat.state = PlayerState.JUMPING;
             cat.isOnBrick = false;
         }
