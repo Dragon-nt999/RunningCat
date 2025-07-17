@@ -47,7 +47,7 @@ public class RandomMatrixPositions {
             // random y
             do{
                 y = MathUtils.random(2, GameGrid.WORLD_HEIGHT - 1);
-            }while((y % 3 != 0) || (prevY.contains(y)));
+            }while((y % 4 != 0)); //|| (prevY.contains(y)));
 
             prevY.add(y);
 
@@ -57,7 +57,8 @@ public class RandomMatrixPositions {
         /*-----------------------------------------------
          * Sort position by maximum position x
          *-----------------------------------------------*/
-        results.sort(Comparator.comparingDouble(group ->group.get(LevelManager.numOfBrick).x));
+        results.sort(Comparator.comparingDouble(
+            group ->group.get(LevelManager.numOfBrick).x));
 
         // Reset when restart game
         firstCount = Config.FIRST_NUM_BRICKS;
