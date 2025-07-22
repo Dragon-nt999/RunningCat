@@ -1,6 +1,8 @@
 package com.dragonentertainment.runningcat.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
@@ -19,18 +21,24 @@ import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
+import com.dragonentertainment.runningcat.ui.UIManager;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
     private float timeToRestart = -1;
+    private final UIManager uiManager;
 
     public GameScreen(AppGame game) {
         super(game);
 
         // Initial Engine
         this.engine = new PooledEngine();
+
+        // Initial UI
+        this.uiManager = new UIManager(game);
+
         // Get Background
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
@@ -70,7 +78,8 @@ public class GameScreen extends BaseScreen{
         this.engine.addSystem(new JumpSystem());
 
         // Touch
-        this.engine.addSystem(new TouchSystem(this.engine));
+        TouchSystem touchSystem = new TouchSystem(this.engine);
+        this.engine.addSystem(touchSystem);
 
         // Ricochet effect
         this.engine.addSystem(new RicochetEffectSystem());
@@ -78,6 +87,12 @@ public class GameScreen extends BaseScreen{
         // Reset Game state
         GameStateManager.getInstance().setState(GameState.PLAYING);
 
+        // Input processor
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(this.uiManager.getStage());
+        multiplexer.addProcessor(touchSystem);
+
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
@@ -93,6 +108,9 @@ public class GameScreen extends BaseScreen{
         } else {
             super.render(delta);
             this.engine.update(delta);
+
+            // Render UI
+            this.uiManager.draw();
         }
 
         if(GameStateManager.getInstance().is(GameState.RESTART)) {
@@ -110,6 +128,7 @@ public class GameScreen extends BaseScreen{
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        this.uiManager.getStage().getViewport().update(width, height, true);
     }
 
     @Override
@@ -122,6 +141,7 @@ public class GameScreen extends BaseScreen{
     public void dispose() {
         super.dispose();
         AssetLoader.unloadGameScreenAssets(this.game.assetManager);
+        this.uiManager.dispose();
     }
 
 }
