@@ -1,6 +1,9 @@
 package com.dragonentertainment.runningcat.struct;
 
 public class AssetsName {
+    public static class Fonts {
+        public static final String SHOWG = "fonts/SHOWG.TTF";
+    }
     public static class Game {
         public static class Backgrounds {
             public static final String BGGAME_DAY = "game/backgrounds/bgGame_day.jpg";
@@ -30,6 +33,9 @@ public class AssetsName {
             public static final String BRICK = "game/items/brick.png";
         }
         public static class Sequence {
+            public static class Cat_failed {
+                public static final String CAT_FAILED_1 = "game/sequence/cat_failed/cat_failed_1.png";
+            }
             public static class Cat_jumping {
                 public static final String CAT_JUMPING_1 = "game/sequence/cat_jumping/cat_jumping_1.png";
                 public static final String CAT_JUMPING_2 = "game/sequence/cat_jumping/cat_jumping_2.png";
@@ -43,10 +49,6 @@ public class AssetsName {
                 public static final String CAT_RUNNING0006 = "game/sequence/cat_running/cat_running0006.png";
                 public static final String CAT_RUNNING0007 = "game/sequence/cat_running/cat_running0007.png";
                 public static final String CAT_RUNNING0008 = "game/sequence/cat_running/cat_running0008.png";
-            }
-            public static class Cat_failed {
-                public static final String CAT_FAILED_1 = "game/sequence/cat_failed/cat_failed_1.png";
-                public static final String CAT_FAILED_2 = "game/sequence/cat_failed/cat_failed_1.png";
             }
             public static class Mouse {
                 public static final String MOUSE0001 = "game/sequence/mouse/mouse0001.png";
@@ -120,6 +122,12 @@ public class AssetsName {
                 public static final String NEIGHTCAT0007 = "game/sequence/neighbor_cat/neightCat0007.png";
                 public static final String NEIGHTCAT0008 = "game/sequence/neighbor_cat/neightCat0008.png";
             }
+        }
+        public static class Ui {
+            public static final String BTN_PAUSE = "game/ui/btn_pause.png";
+            public static final String BTN_PLAY = "game/ui/btn_play.png";
+            public static final String COIN = "game/ui/coin.png";
+            public static final String SCORE_CONTAINER = "game/ui/score_container.png";
         }
     }
     public static class Home {

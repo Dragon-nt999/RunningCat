@@ -2,6 +2,7 @@ package com.dragonentertainment.runningcat.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -41,7 +42,7 @@ public class AssetLoader {
         Map<String, List<String>> gameSrcs = getAssetNames(GAME);
         if(!gameSrcs.isEmpty()) {
             for(String src : gameSrcs.get(GAME)) {
-                assetManager.load(src, Texture.class);
+                loadAssetByType(assetManager, src);
             }
         }
 
@@ -53,6 +54,14 @@ public class AssetLoader {
             for(String src : gameSrcs.get(GAME)) {
                 assetManager.unload(src);
             }
+        }
+    }
+
+    private static void loadAssetByType(AssetManager assetManager, String src) {
+        if(src.endsWith(".png") || src.endsWith(".jpg")) {
+            assetManager.load(src, Texture.class);
+        } else if(src.endsWith(".mp3") || src.endsWith(".ogg") || src.endsWith(".wav")) {
+            assetManager.load(src, Sound.class);
         }
     }
 }

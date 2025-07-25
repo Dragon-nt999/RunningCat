@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.ui.GameUI;
+import com.dragonentertainment.runningcat.utils.FontManager;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public abstract class BaseScreen implements Screen {
