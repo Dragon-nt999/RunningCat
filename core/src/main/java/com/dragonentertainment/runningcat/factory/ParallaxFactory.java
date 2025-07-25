@@ -34,8 +34,8 @@ public class ParallaxFactory {
 
         // Set Transform
         transform.position.set(x, y);
-        transform.width = GameGrid.toGridWidth(texture.getWidth());
-        transform.height = GameGrid.toGridHeight(texture.getHeight());
+        transform.width = GameGrid.toGridWidth(texture.getWidth()) * 0.8f;
+        transform.height = GameGrid.toGridHeight(texture.getHeight()) * 0.8f;
 
         // Set Texture
         text.texture = texture;

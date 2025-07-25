@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
+import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.utils.Config;
+import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class TouchSystem extends EntitySystem implements InputProcessor
@@ -30,8 +32,6 @@ public class TouchSystem extends EntitySystem implements InputProcessor
                 break;
             }
         }
-
-        Gdx.input.setInputProcessor(this);
     }
 
     @Override
