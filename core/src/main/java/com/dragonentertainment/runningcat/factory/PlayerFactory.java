@@ -24,6 +24,8 @@ import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.FrameTexture;
 
 public class PlayerFactory {
+
+    private final static float SCALE = 0.7f;
     public static void createCat(
         AppGame game,
         PooledEngine engine
@@ -55,8 +57,8 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
-        transformComponent.width  = GameGrid.CELL_SIZE;
-        transformComponent.height = GameGrid.CELL_SIZE;
+        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * SCALE;
+        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * SCALE;
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
         renderTypeComponent.type  = RenderTypeComponent.Type.CAT;
@@ -108,8 +110,8 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
-        transformComponent.width  = (float) (GameGrid.CELL_SIZE * 0.7);
-        transformComponent.height = (float) (GameGrid.CELL_SIZE * 0.6);
+        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * SCALE;
+        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * SCALE;
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
         renderTypeComponent.type  = RenderTypeComponent.Type.MOUSE;
@@ -162,8 +164,8 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
-        transformComponent.width  = (float) (GameGrid.CELL_SIZE);
-        transformComponent.height = (float) (GameGrid.CELL_SIZE * 1.2);
+        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * SCALE;
+        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * SCALE;
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
         renderTypeComponent.type  = RenderTypeComponent.Type.OTHER_CAT;

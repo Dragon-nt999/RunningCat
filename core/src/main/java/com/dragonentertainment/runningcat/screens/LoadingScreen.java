@@ -3,12 +3,15 @@ package com.dragonentertainment.runningcat.screens;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;
+import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
+import com.dragonentertainment.runningcat.utils.FontManager;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.RandomMatrixPositions;
 
 public class LoadingScreen extends BaseScreen {
     private final ScreenType targetScreen;
+    //private final FontManager fontManager;
     public LoadingScreen(AppGame game, ScreenType screenType) {
         super(game);
         this.targetScreen = screenType;

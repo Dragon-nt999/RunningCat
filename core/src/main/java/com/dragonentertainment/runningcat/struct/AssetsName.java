@@ -1,6 +1,9 @@
 package com.dragonentertainment.runningcat.struct;
 
 public class AssetsName {
+    public static class Fonts {
+        public static final String SHOWG = "fonts/SHOWG.TTF";
+    }
     public static class Game {
         public static class Backgrounds {
             public static final String BGGAME_DAY = "game/backgrounds/bgGame_day.jpg";
@@ -156,8 +159,5 @@ public class AssetsName {
             public static final String BTNSETTING = "home/ui/btnSetting.png";
             public static final String GAME_BAR_SMALL = "home/ui/game_bar_small.png";
         }
-    }
-    public static class Fonts {
-        public static final String SHOWG = "fonts/SHOWG.TTF";
     }
 }
