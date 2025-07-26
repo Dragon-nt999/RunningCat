@@ -10,6 +10,7 @@ import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.brick.BrickComponent;
+import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
@@ -45,7 +46,7 @@ public class BrickFactory {
         zI.zIndex = zIndex;
 
         // Set Type
-        type.type = RenderTypeComponent.Type.BRICK;
+        type.type = RenderType.BRICK;
 
         // Set Brick index
         bc.index.set(x, y);

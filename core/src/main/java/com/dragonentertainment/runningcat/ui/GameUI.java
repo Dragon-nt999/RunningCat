@@ -17,8 +17,10 @@ import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.FontManager;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
+import com.dragonentertainment.runningcat.utils.ScoreManager;
 
 public class GameUI extends BaseUI{
+    private Label scoreLabel;
     public GameUI(AppGame game) {
         super(game);
     }
@@ -27,6 +29,11 @@ public class GameUI extends BaseUI{
     protected void init() {
         this.drawScore();
         this.drawBtnPause();
+    }
+
+    @Override
+    protected void update() {
+        this.scoreLabel.setText(ScoreManager.getInstance().getScore());
     }
 
     /**
@@ -49,12 +56,12 @@ public class GameUI extends BaseUI{
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = FontManager.getInstance().getFont(90, Color.valueOf("#8D4200"));
 
-        Label label = new Label("100", labelStyle);
-        label.setPosition(
+        this.scoreLabel =  new Label(ScoreManager.getInstance().getScore() + "", labelStyle);
+        this.scoreLabel.setPosition(
             scoreBg.getX() + w / 5,
             scoreBg.getY() + h / 5
         );
-        this.stage.addActor(label);
+        this.stage.addActor(this.scoreLabel);
     }
 
     /**
