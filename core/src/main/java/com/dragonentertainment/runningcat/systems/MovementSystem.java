@@ -8,6 +8,7 @@ import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
@@ -29,6 +30,8 @@ public class MovementSystem extends IteratingSystem {
         VelocityComponent velocity = MappersComponent.velocity.get(entity);
         RenderTypeComponent type = MappersComponent.type.get(entity);
 
+        if(!trans.canMove) return;
+
         // Moving
         if(GameStateManager.getInstance().is(GameState.PLAYING)
                         && !GameStateManager.getInstance().is(GameState.PAUSE)){
@@ -40,7 +43,7 @@ public class MovementSystem extends IteratingSystem {
         float width = trans.width;
 
         // Remove entity when out of Screen except Cat
-        if(((trans.position.x + width) < 0) && type.type != RenderTypeComponent.Type.CAT) {
+        if(((trans.position.x + width) < 0) && type.type != RenderType.CAT) {
             this.engine.removeEntity(entity);
         }
 

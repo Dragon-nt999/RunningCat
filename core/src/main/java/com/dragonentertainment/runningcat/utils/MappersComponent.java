@@ -3,6 +3,7 @@ package com.dragonentertainment.runningcat.utils;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
+import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
@@ -45,4 +46,6 @@ public class MappersComponent {
                                             ComponentMapper.getFor(JumpComponent.class);
     public static final ComponentMapper<RicochetEffectComponent> ricochet =
                                             ComponentMapper.getFor(RicochetEffectComponent.class);
+    public static final ComponentMapper<FlyingComponent> flying =
+                                            ComponentMapper.getFor(FlyingComponent.class);
 }

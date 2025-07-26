@@ -18,6 +18,7 @@ import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.PlayerState;
+import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
@@ -25,7 +26,6 @@ import com.dragonentertainment.runningcat.utils.FrameTexture;
 
 public class PlayerFactory {
 
-    private final static float SCALE = 0.7f;
     public static void createCat(
         AppGame game,
         PooledEngine engine
@@ -57,11 +57,11 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
-        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * SCALE;
-        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * SCALE;
+        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
+        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
-        renderTypeComponent.type  = RenderTypeComponent.Type.CAT;
+        renderTypeComponent.type  = RenderType.CAT;
 
         // Add component to entity
         entity.add(transformComponent);
@@ -110,11 +110,11 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
-        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * SCALE;
-        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * SCALE;
+        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
+        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
-        renderTypeComponent.type  = RenderTypeComponent.Type.MOUSE;
+        renderTypeComponent.type  = RenderType.MOUSE;
 
         // Set velocity
         velocity.velocity.set(Config.X_VELOCITY * zIndexComponent.zIndex, 0);
@@ -164,11 +164,11 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
-        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * SCALE;
-        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * SCALE;
+        transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
+        transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
-        renderTypeComponent.type  = RenderTypeComponent.Type.OTHER_CAT;
+        renderTypeComponent.type  = RenderType.ENEMY_CAT;
 
         // Set velocity
         velocity.velocity.set(Config.X_VELOCITY * zIndexComponent.zIndex, 0);

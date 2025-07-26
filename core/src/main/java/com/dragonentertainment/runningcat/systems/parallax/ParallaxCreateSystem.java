@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
+import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.factory.ParallaxFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.GameGrid;
@@ -171,7 +172,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                                 xPos,
                                 -0.5f,
                                 mountain.getKey(),
-                                RenderTypeComponent.Type.PARALLAX_MOUNTAIN
+                                RenderType.PARALLAX_MOUNTAIN
                 );
         }
     }
@@ -193,7 +194,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 xPos,
                 MathUtils.random(1, 6) + cloud.getKey(),
                 cloud.getKey(),
-                RenderTypeComponent.Type.PARALLAX_CLOUD
+                RenderType.PARALLAX_CLOUD
             );
         }
     }
@@ -219,7 +220,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 xPos + 1,
                 MathUtils.random(-3, -1),
                 7,
-                RenderTypeComponent.Type.PARALLAX_LOTUS_BACK
+                RenderType.PARALLAX_LOTUS_BACK
             );
         }
     }
@@ -245,7 +246,7 @@ public class ParallaxCreateSystem extends EntitySystem {
                 xPos + 6,
                 MathUtils.random(-6, -4),
                 11,
-                RenderTypeComponent.Type.PARALLAX_LOTUS_FRONT
+                RenderType.PARALLAX_LOTUS_FRONT
             );
         }
     }

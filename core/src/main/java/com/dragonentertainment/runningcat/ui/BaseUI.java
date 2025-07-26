@@ -15,10 +15,12 @@ public abstract class BaseUI {
     }
 
     protected abstract void init();
+    protected abstract void update();
 
     public void draw() {
         this.stage.act();
         this.stage.draw();
+        this.update();
     }
 
     public void resize(){

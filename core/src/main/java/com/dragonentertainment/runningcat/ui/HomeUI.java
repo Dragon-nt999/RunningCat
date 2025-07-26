@@ -11,4 +11,9 @@ public class HomeUI extends BaseUI{
     protected void init() {
 
     }
+
+    @Override
+    protected void update() {
+
+    }
 }
