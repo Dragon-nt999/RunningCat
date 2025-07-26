@@ -10,7 +10,7 @@ public class Config {
     /*-----------------------------------------------
      * Params for X - Velocity cho all object
      *----------------------------------------------*/
-    public static final float X_VELOCITY = -0.3f;
+    public static final float X_VELOCITY = -0.25f;
 
     /*-----------------------------------------------
      * Params for JUMP
@@ -31,6 +31,11 @@ public class Config {
      * Maximum hight jump
      *----------------------------------------------*/
     public static final float MAX_HIGHT_JUMP = 20f;
+
+    /*-----------------------------------------------
+     * Scale ratio for Entity
+     *----------------------------------------------*/
+    public static final float SCALE_RATIO = 0.7f;
 
 
 }

@@ -12,6 +12,7 @@ import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
@@ -27,7 +28,7 @@ public class TouchSystem extends EntitySystem implements InputProcessor
         for(Entity entity : entities)
         {
             RenderTypeComponent type = MappersComponent.type.get(entity);
-            if(type.type == RenderTypeComponent.Type.CAT) {
+            if(type.type == RenderType.CAT) {
                 this.cat = entity;
                 break;
             }

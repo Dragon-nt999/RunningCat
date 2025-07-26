@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;
+import com.dragonentertainment.runningcat.factory.CoinFactory;
 import com.dragonentertainment.runningcat.factory.PlayerFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
+import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
+import com.dragonentertainment.runningcat.systems.FlyingSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.RicochetEffectSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
@@ -60,7 +63,7 @@ public class GameScreen extends BaseScreen{
         this.engine.addSystem(new RenderSystem(this.batch));
 
         // Collision
-        this.engine.addSystem(new CollisionSystem());
+        this.engine.addSystem(new CollisionSystem(this.game, this.engine));
 
         // Movement
         this.engine.addSystem(new MovementSystem(this.engine));
@@ -80,6 +83,9 @@ public class GameScreen extends BaseScreen{
 
         // Ricochet effect
         this.engine.addSystem(new RicochetEffectSystem());
+
+        // Flying effect
+        this.engine.addSystem(new FlyingSystem());
 
         // Reset Game state
         GameStateManager.getInstance().setState(GameState.PLAYING);

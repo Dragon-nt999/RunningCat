@@ -10,6 +10,7 @@ import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
+import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 
@@ -20,7 +21,7 @@ public class ParallaxFactory {
                                       float x,
                                       float y,
                                       int zIndex,
-                                      RenderTypeComponent.Type pType
+                                      RenderType type
     ) {
         Entity entity = engine.createEntity();
 
@@ -28,7 +29,7 @@ public class ParallaxFactory {
         TextureComponent text = engine.createComponent(TextureComponent.class);
         VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
         ZIndexComponent zI = engine.createComponent(ZIndexComponent.class);
-        RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
+        RenderTypeComponent renderType = engine.createComponent(RenderTypeComponent.class);
         ParallaxComponent parallax = engine.createComponent(ParallaxComponent.class);
         RicochetEffectComponent ricochet = engine.createComponent(RicochetEffectComponent.class);
 
@@ -47,14 +48,14 @@ public class ParallaxFactory {
         zI.zIndex = zIndex;
 
         // Set Type
-        type.type = pType;
+        renderType.type = type;
 
         // Add component
         entity.add(transform);
         entity.add(text);
         entity.add(velocity);
         entity.add(zI);
-        entity.add(type);
+        entity.add(renderType);
         entity.add(parallax);
         entity.add(ricochet);
 
