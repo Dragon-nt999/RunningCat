@@ -16,7 +16,7 @@ import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public class BrickFactory {
 
-    public static void createBrick(PooledEngine engine,
+    public static Entity createBrick(PooledEngine engine,
                                    Texture texture,
                                    float x,
                                    float y,
@@ -62,6 +62,7 @@ public class BrickFactory {
 
         engine.addEntity(entity);
 
+        return entity;
     }
 
 }

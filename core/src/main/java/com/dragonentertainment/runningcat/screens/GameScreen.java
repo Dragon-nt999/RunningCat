@@ -49,8 +49,6 @@ public class GameScreen extends BaseScreen{
         // Create Cat
         PlayerFactory.createCat(game, this.engine);
 
-        //PlayerFactory.createOtherCat(this.game,this.engine, new Vector2(6, 2));
-
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
 

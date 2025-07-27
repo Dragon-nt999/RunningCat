@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -20,8 +21,10 @@ import com.dragonentertainment.runningcat.utils.RandomMatrixPositions;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class BrickCreateSystem extends EntitySystem {
     private final PooledEngine engine;
@@ -32,6 +35,12 @@ public class BrickCreateSystem extends EntitySystem {
 
     private final AppGame game;
 
+    private float maxXBrick = Float.NEGATIVE_INFINITY;
+    private Map<Float, Entity> bricksHasMaxX = new HashMap<>();
+
+    private ImmutableArray<Entity> allBricks;
+    private int max = 0;
+
     public BrickCreateSystem(PooledEngine engine, Texture texture, AppGame game) {
         this.engine = engine;
         this.texture = texture;
@@ -40,42 +49,67 @@ public class BrickCreateSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        this.generateBricks(false, Level.MEDIUM);
+        this.bricksHasMaxX = this.generateBricks(false, Level.MEDIUM);
+        this.allBricks = engine.getEntitiesFor(Family.one(BrickComponent.class).get());
     }
 
     @Override
     public void update(float deltaTime) {
-        ImmutableArray<Entity> allBricks = this.engine.getEntitiesFor(Family.one(BrickComponent.class).get());
-        Entity lastBrick = allBricks.get(allBricks.size() - 1);
-        int lastX = (int)lastBrick.getComponent(TransformComponent.class).position.x;
 
-        if( lastX < GameGrid.WORLD_WIDTH / 5) {
+        //Entity lastBrick = this.bricksHasMaxX.get(this.maxXBrick);
+        //int lastX = (int)lastBrick.getComponent(TransformComponent.class).position.x;
+
+        if(this.allBricks.size() <= ((int) (max * 0.7)) ) {
             this.generateBricks(true, Level.MEDIUM);
             if(this.generateMouses()){
                 this.generateOtherCat();
             }
         }
+
+       Gdx.app.log("LASTX", this.allBricks.size() + "===" + ((int) (max * 0.7)));
     }
 
-    private void generateBricks(boolean isReSpawn, Level level) {
+    private Map<Float, Entity>  generateBricks(boolean isReSpawn, Level level) {
+        max = 0;
+        Map<Float, Entity>  all = new HashMap<>();
        // Clear position for render Player
-       this.positionsPlayer.clear();
+        this.positionsPlayer.clear();
 
-       List<List<Vector2>> randPositions = RandomMatrixPositions.getBlockPositions(isReSpawn, level);
+        /*-----------------------------------------------
+         * Get random position on Game Grid
+         *-----------------------------------------------*/
+        List<Vector2> randPositions = RandomMatrixPositions.getBlockPositions(isReSpawn, level);
+
         for(int i = 0; i < randPositions.size(); i++) {
-            List<Vector2> positions = randPositions.get(i);
-            for(int j = 0; j < positions.size(); j++) {
-                BrickFactory.createBrick(
-                    this.engine,
-                    this.texture,
-                    positions.get(j).x,
-                    positions.get(j).y,
-                    9);
+            Vector2 position = randPositions.get(i);
 
-                // Add position for render Mouse and Other Cat
-                this.positionsPlayer.add(positions.get(j));
+            /*-----------------------------------------------
+             * Create brick to render
+             *-----------------------------------------------*/
+            Entity brick = BrickFactory.createBrick(
+                this.engine,
+                this.texture,
+                position.x,
+                position.y,
+                9
+            );
+
+            max++;
+
+            /*-----------------------------------------------
+             * Find Brick has greatest position x
+             *-----------------------------------------------*/
+            if(position.x > this.maxXBrick) {
+                this.maxXBrick = position.x;
+                all.put(this.maxXBrick, brick);
             }
+
+            /*-----------------------------------------------
+             * Tracking position for spawn enemy cat and mouse
+             *-----------------------------------------------*/
+            this.positionsPlayer.add(position);
         }
+        return all;
     }
 
     private boolean generateMouses() {

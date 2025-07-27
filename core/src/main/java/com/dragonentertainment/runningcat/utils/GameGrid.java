@@ -30,8 +30,9 @@ public class GameGrid {
     * Get All position on Grid
     * */
     public static void allPosition() {
-        for(int y = 0; y < GameGrid.WORLD_HEIGHT; y++) {
-            for(int x = GameGrid.WORLD_WIDTH; x < GameGrid.WORLD_WIDTH * 2; x++) {
+        for(int y = 0; y <= GameGrid.WORLD_HEIGHT; y++) {
+            for(int x = GameGrid.WORLD_WIDTH; x <= GameGrid.WORLD_WIDTH * 2; x++) {
+            //for(int x = 0; x <= GameGrid.WORLD_WIDTH; x++) {
                 allPositions.add(new Vector2(x, y));
             }
         }
