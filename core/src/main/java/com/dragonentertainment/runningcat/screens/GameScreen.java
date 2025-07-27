@@ -4,16 +4,19 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.factory.CoinFactory;
+import com.dragonentertainment.runningcat.factory.EffectFactory;
 import com.dragonentertainment.runningcat.factory.PlayerFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
 import com.dragonentertainment.runningcat.systems.FlyingSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.RicochetEffectSystem;
+import com.dragonentertainment.runningcat.systems.ScaleSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.CollisionSystem;
 import com.dragonentertainment.runningcat.systems.MovementSystem;
@@ -31,7 +34,7 @@ import com.dragonentertainment.runningcat.utils.GameStateManager;
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
     private float timeToRestart = -1;
-    private BaseUI ui;
+    private final BaseUI ui;
 
     public GameScreen(AppGame game) {
         super(game);
@@ -45,6 +48,8 @@ public class GameScreen extends BaseScreen{
 
         // Create Cat
         PlayerFactory.createCat(game, this.engine);
+
+        //PlayerFactory.createOtherCat(this.game,this.engine, new Vector2(6, 2));
 
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
@@ -86,6 +91,9 @@ public class GameScreen extends BaseScreen{
 
         // Flying effect
         this.engine.addSystem(new FlyingSystem());
+
+        // Scale effect
+        this.engine.addSystem(new ScaleSystem(this.game, this.engine));
 
         // Reset Game state
         GameStateManager.getInstance().setState(GameState.PLAYING);

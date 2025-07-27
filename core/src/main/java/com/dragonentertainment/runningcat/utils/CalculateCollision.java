@@ -96,4 +96,24 @@ public class CalculateCollision {
                 && aB > bB
                 && aB < bT);
     }
+
+    /*
+     * Check Collision from right when Hit
+     * */
+    public static boolean aabOverlapRightWhenOverOtherEntity(CollisionComponent a,
+                                                                CollisionComponent b) {
+        float aR = (a.bounds.x + a.bounds.width);
+        float aB = a.bounds.y;
+
+        float bL = b.bounds.x;
+       // float bCenter = (bL + b.bounds.width) / 2;
+        float bR = bL + b.bounds.width;
+        float bB = b.bounds.y;
+        float bT = bB + b.bounds.height;
+
+        return aR >= bL
+                && aR <= bR
+                && aB >= bB
+                && aB <= bT;
+    }
 }

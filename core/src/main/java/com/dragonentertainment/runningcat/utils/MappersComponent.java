@@ -7,6 +7,7 @@ import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
+import com.dragonentertainment.runningcat.components.ScaleComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.parallax.ParallaxComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
@@ -48,4 +49,6 @@ public class MappersComponent {
                                             ComponentMapper.getFor(RicochetEffectComponent.class);
     public static final ComponentMapper<FlyingComponent> flying =
                                             ComponentMapper.getFor(FlyingComponent.class);
+    public static final ComponentMapper<ScaleComponent> scale =
+                                            ComponentMapper.getFor(ScaleComponent.class);
 }

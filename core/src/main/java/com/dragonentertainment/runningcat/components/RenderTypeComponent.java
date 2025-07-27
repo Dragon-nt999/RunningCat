@@ -5,4 +5,5 @@ import com.dragonentertainment.runningcat.enums.RenderType;
 
 public class RenderTypeComponent implements Component {
     public RenderType type;
+    public boolean visibility = true;
 }

@@ -35,6 +35,8 @@ public class AssetsName {
         public static class Sequence {
             public static class Cat_failed {
                 public static final String CAT_FAILED_1 = "game/sequence/cat_failed/cat_failed_1.png";
+                public static final String CAT_FAILED_2 = "game/sequence/cat_failed/cat_failed_2.png";
+                public static final String SCREEN_BREAKING = "game/sequence/cat_failed/screen_breaking.png";
             }
             public static class Cat_jumping {
                 public static final String CAT_JUMPING_1 = "game/sequence/cat_jumping/cat_jumping_1.png";
@@ -121,6 +123,13 @@ public class AssetsName {
                 public static final String NEIGHTCAT0006 = "game/sequence/neighbor_cat/neightCat0006.png";
                 public static final String NEIGHTCAT0007 = "game/sequence/neighbor_cat/neightCat0007.png";
                 public static final String NEIGHTCAT0008 = "game/sequence/neighbor_cat/neightCat0008.png";
+            }
+            public static class Neighbor_cat_hit {
+                public static final String NEIGHTCATHIT0001 = "game/sequence/neighbor_cat_hit/neightCatHit0001.png";
+                public static final String NEIGHTCATHIT0002 = "game/sequence/neighbor_cat_hit/neightCatHit0002.png";
+                public static final String NEIGHTCATHIT0003 = "game/sequence/neighbor_cat_hit/neightCatHit0003.png";
+                public static final String NEIGHTCATHIT0004 = "game/sequence/neighbor_cat_hit/neightCatHit0004.png";
+                public static final String NEIGHTCATHIT0005 = "game/sequence/neighbor_cat_hit/neightCatHit0005.png";
             }
         }
         public static class Ui {

@@ -42,6 +42,16 @@ public class FrameTexture {
         return frames;
     }
 
+    public static List<Texture> otherCatHit(AppGame game){
+        List<Texture> frames = new ArrayList<>();
+
+        for(String name : getFramesFromClass(AssetsName.Game.Sequence.Neighbor_cat_hit.class)) {
+            frames.add(game.assetManager.get(name));
+        }
+
+        return frames;
+    }
+
     private static List<String> getFramesFromClass(Class<?> clazz) {
         List<String> frames = new ArrayList<>();
 

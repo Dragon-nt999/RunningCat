@@ -6,24 +6,23 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
-import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
+import com.dragonentertainment.runningcat.components.ScaleComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
-import com.dragonentertainment.runningcat.enums.PlayerState;
+import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.factory.CoinFactory;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
-import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
@@ -113,7 +112,7 @@ public class CollisionSystem extends EntitySystem
                         catJump.startY = catTransform.position.y;
                         catJump.endY = catTransform.position.y;
                         catState.isOnBrick = true;
-                        catState.state = PlayerState.RUNNING;
+                        catState.state = CatState.RUNNING;
                     } else if(CalculateCollision.aabOverlapRightWhenFalling(catCollider, brickCollider)){
                         catTransform.position.x = brickTransform.position.x - catTransform.width
                             + CalculateCollision.MIN_MARGIN_X;
@@ -125,7 +124,7 @@ public class CollisionSystem extends EntitySystem
                     // Tracking Collision between Cat's Top and Bricks's Bottom
                     // And Tracking Collision between Cat's Right and Bricks's Left
                     if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
-                        catState.state = PlayerState.HIT;
+                        catState.state = CatState.HIT_BRICK;
                         catTransform.position.y = brickTransform.position.y - catTransform.height;
                         GameStateManager.getInstance().setState(GameState.STOP);
 
@@ -166,7 +165,8 @@ public class CollisionSystem extends EntitySystem
                                     mouseTransform.width,
                                     mouseTransform.height);
 
-            if(Intersector.overlaps(this.catCollider.bounds, mouseColider.bounds)) {
+            if(Intersector.overlaps(this.catCollider.bounds, mouseColider.bounds)
+                                                                        && this.catState.state != CatState.HIT_ENEMY) {
                 CoinFactory.createCoin(this.game, this.engine, mouseTransform.position.x, mouseTransform.position.y);
                 this.engine.removeEntity(mouse);
             }
@@ -176,19 +176,25 @@ public class CollisionSystem extends EntitySystem
     /**
      * Checking cat collides with the enemy cat
      */
-    private void catCollidesEnemyCat(Entity mouse, RenderTypeComponent type) {
+    private void catCollidesEnemyCat(Entity enemyCat, RenderTypeComponent type) {
         if(type.type == RenderType.ENEMY_CAT) {
-            TransformComponent enemyCatTransform = MappersComponent.transform.get(mouse);
-            CollisionComponent enemyCatColider = MappersComponent.collider.get(mouse);
+            TransformComponent enemyCatTransform = MappersComponent.transform.get(enemyCat);
+            CollisionComponent enemyCatCollider = MappersComponent.collider.get(enemyCat);
+            PlayerComponent enemyCatState = MappersComponent.player.get(enemyCat);
+            ScaleComponent scaleCat = MappersComponent.scale.get(this.cat);
 
-            enemyCatColider.bounds.set(enemyCatTransform.position.x,
+
+            enemyCatCollider.bounds.set(enemyCatTransform.position.x,
                                         enemyCatTransform.position.y,
                                         enemyCatTransform.width,
                                         enemyCatTransform.height);
 
-            if(Intersector.overlaps(this.catCollider.bounds, enemyCatColider.bounds)) {
-
+            if(CalculateCollision.aabOverlapRightWhenOverOtherEntity(this.catCollider, enemyCatCollider)){
+                enemyCatState.state = CatState.HIT_ENEMY;
+                scaleCat.isEffect = true; // Trigger to turn on ScaleSystem
+                GameStateManager.getInstance().setState(GameState.PAUSE);
             }
+
         }
     }
 }

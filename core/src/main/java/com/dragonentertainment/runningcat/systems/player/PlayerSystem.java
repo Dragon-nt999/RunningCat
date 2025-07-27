@@ -9,7 +9,7 @@ import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.strategy.cat.CatStateManager;
 import com.dragonentertainment.runningcat.strategy.mouse.MouseStateManager;
-import com.dragonentertainment.runningcat.strategy.othercat.OtherCatStateManager;
+import com.dragonentertainment.runningcat.strategy.enemycat.OtherCatStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class PlayerSystem extends IteratingSystem {

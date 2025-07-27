@@ -30,11 +30,13 @@ public class RenderSystem extends SortedIteratingSystem
     @Override
     protected void processEntity(Entity entity, float deltaTime)
     {
-        this.batch.begin();
-
+        RenderTypeComponent render = MappersComponent.type.get(entity);
         TextureComponent texture = MappersComponent.texture.get(entity);
         TransformComponent trans = MappersComponent.transform.get(entity);
 
+        if(!render.visibility) return;
+
+        this.batch.begin();
         // Draw Entity
         this.batch.draw(
             texture.texture,
