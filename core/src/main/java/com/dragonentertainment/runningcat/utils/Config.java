@@ -10,7 +10,7 @@ public class Config {
     /*-----------------------------------------------
      * Params for X - Velocity cho all object
      *----------------------------------------------*/
-    public static final float X_VELOCITY = -0.25f;
+    public static final float X_VELOCITY = -0.2f;
 
     /*-----------------------------------------------
      * Params for JUMP
