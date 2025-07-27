@@ -10,6 +10,7 @@ import com.dragonentertainment.runningcat.components.AnimationComponent;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
 import com.dragonentertainment.runningcat.components.GravityComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
+import com.dragonentertainment.runningcat.components.ScaleComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -17,9 +18,8 @@ import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
-import com.dragonentertainment.runningcat.enums.PlayerState;
+import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.enums.RenderType;
-import com.dragonentertainment.runningcat.systems.MovementSystem;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.FrameTexture;
@@ -45,15 +45,17 @@ public class PlayerFactory {
         GravityComponent gravityComponent       = engine.createComponent(GravityComponent.class);
         JumpComponent jumpComponent             = engine.createComponent(JumpComponent.class);
         TouchComponent touchComponent           = engine.createComponent(TouchComponent.class);
+        ScaleComponent scale                    = engine.createComponent(ScaleComponent.class);
 
         // Set values of components
         animationComponent.frames = FrameTexture.cat(game);
         animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
 
-        playerComponent.state     = PlayerState.RUNNING;
+        playerComponent.state     = CatState.RUNNING;
         textureComponent.texture  = animationComponent.frames.get(0);
 
         playerComponent.position = new Vector3(3, 4, 10);
+        //playerComponent.position = new Vector3(0, 4, 10);
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
@@ -75,6 +77,7 @@ public class PlayerFactory {
         entity.add(jumpComponent);
         entity.add(touchComponent);
         entity.add(textureComponent);
+        entity.add(scale);
 
         // Add entity to component
         engine.addEntity(entity);
@@ -103,7 +106,7 @@ public class PlayerFactory {
         animationComponent.frameDuration = (Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY))
                                                                     + MathUtils.random(0.01f, 0.05f);
 
-        playerComponent.state     = PlayerState.IDLE;
+        playerComponent.state     = CatState.IDLE;
         textureComponent.texture  = animationComponent.frames.get(0);
 
         playerComponent.position = new Vector3(position.x, position.y + 1, 9);
@@ -157,7 +160,7 @@ public class PlayerFactory {
         animationComponent.frameDuration = (Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY))
             + MathUtils.random(0.01f, 0.05f);
 
-        playerComponent.state     = PlayerState.IDLE;
+        playerComponent.state     = CatState.IDLE;
         textureComponent.texture  = animationComponent.frames.get(0);
 
         playerComponent.position = new Vector3(position.x, position.y + 1, 9);

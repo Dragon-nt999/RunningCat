@@ -1,10 +1,10 @@
 package com.dragonentertainment.runningcat.enums;
 
-public enum PlayerState {
+public enum CatState {
     RUNNING,
     JUMPING,
     FALLING,
     IDLE,
-    HIT,
-    FALL_OUT,
+    HIT_BRICK,
+    HIT_ENEMY,
 }

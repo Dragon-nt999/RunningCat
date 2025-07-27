@@ -7,4 +7,5 @@ public class RicochetEffectComponent implements Component {
     public float time = 0f;
     public float frequency = 30f;
     public float shakeAmount = 0.05f;
+    public boolean isEffect = false;
 }
