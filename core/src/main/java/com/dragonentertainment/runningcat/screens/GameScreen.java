@@ -136,11 +136,6 @@ public class GameScreen extends BaseScreen{
                 }
             }
         }
-
-        /*
-         * Set Level ++ When Score reach 50
-         * */
-        LevelManager.getInstance().increase();
     }
 
     @Override

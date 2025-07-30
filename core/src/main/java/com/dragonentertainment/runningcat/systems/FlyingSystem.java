@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
+import com.dragonentertainment.runningcat.utils.LevelManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 import com.dragonentertainment.runningcat.utils.ScoreManager;
 
@@ -28,14 +29,21 @@ public class FlyingSystem extends IteratingSystem {
         float eased = Interpolation.smooth.apply(progress);
 
         transform.position.set(
-            MathUtils.lerp(transform.position.x, fly.target.x, eased),
-            MathUtils.lerp(transform.position.y, fly.target.y, eased)
+            MathUtils.lerp(fly.start.x, fly.target.x, eased),
+            MathUtils.lerp(fly.start.y, fly.target.y, eased)
         );
 
-        if(eased >= fly.duration) {
+        /**
+         * -------------------------------------------------
+         * Add score when coin disappear
+         * And increase level
+         * -------------------------------------------------
+         */
+        if (progress >= 1f) {
             ScoreManager.getInstance().addScore();
-            fly.elapsed = 0f;
+            LevelManager.getInstance().increase(); //Set Level ++ When Score reach 50
             getEngine().removeEntity(entity);
+            fly.elapsed = 0f;
         }
     }
 }

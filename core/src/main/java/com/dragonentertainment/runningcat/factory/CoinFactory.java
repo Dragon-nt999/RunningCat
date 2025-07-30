@@ -24,17 +24,16 @@ public class CoinFactory {
         TextureComponent texture = engine.createComponent(TextureComponent.class);
         ZIndexComponent zIndex = engine.createComponent(ZIndexComponent.class);
         RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
-        VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
-        //FlyingComponent flying = engine.createComponent(FlyingComponent.class);
+        FlyingComponent flying = engine.createComponent(FlyingComponent.class);
 
         // Set texture
         texture.texture = game.assetManager.get(AssetsName.Game.Ui.COIN);
 
         // Set Transform
+
         transform.position.set(x, y);
-        transform.width = GameGrid.toGridWidth(texture.texture.getWidth()) * Config.SCALE_RATIO;
-        transform.height = GameGrid.toGridHeight(texture.texture.getHeight()) * Config.SCALE_RATIO;
-        transform.canMove = false;
+        transform.width = GameGrid.toGridWidth(texture.texture.getWidth());
+        transform.height = GameGrid.toGridHeight(texture.texture.getHeight());
 
         // Set zIndex
         zIndex.zIndex = 11;
@@ -42,16 +41,15 @@ public class CoinFactory {
         // Set Type entity
         type.type = RenderType.COIN;
 
-        //flying.target = new Vector2(0, GameGrid.WORLD_HEIGHT);
+        flying.start = new Vector2(x, y);
+        flying.target = new Vector2(0, GameGrid.WORLD_HEIGHT);
 
         coin.add(transform);
         coin.add(texture);
         coin.add(zIndex);
         coin.add(type);
-        coin.add(velocity);
-        //coin.add(flying);
+        coin.add(flying);
 
         engine.addEntity(coin);
-
     }
 }
