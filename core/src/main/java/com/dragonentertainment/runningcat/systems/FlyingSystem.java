@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
@@ -23,14 +24,15 @@ public class FlyingSystem extends IteratingSystem {
         TransformComponent transform = MappersComponent.transform.get(entity);
 
         fly.elapsed += deltaTime;
-        float progress = Math.min(fly.elapsed / fly.duration, fly.duration);
+        float progress = Math.min(fly.elapsed / fly.duration, 1f);
+        float eased = Interpolation.smooth.apply(progress);
 
         transform.position.set(
-            MathUtils.lerp(transform.position.x, fly.target.x, progress),
-            MathUtils.lerp(transform.position.y, fly.target.y, progress)
+            MathUtils.lerp(transform.position.x, fly.target.x, eased),
+            MathUtils.lerp(transform.position.y, fly.target.y, eased)
         );
 
-        if(progress >= fly.duration) {
+        if(eased >= fly.duration) {
             ScoreManager.getInstance().addScore();
             fly.elapsed = 0f;
             getEngine().removeEntity(entity);

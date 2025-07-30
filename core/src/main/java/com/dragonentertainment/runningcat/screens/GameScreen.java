@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
@@ -30,6 +31,8 @@ import com.dragonentertainment.runningcat.ui.BaseUI;
 import com.dragonentertainment.runningcat.ui.UIFactory;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
+import com.dragonentertainment.runningcat.utils.LevelManager;
+import com.dragonentertainment.runningcat.utils.ScoreManager;
 
 public class GameScreen extends BaseScreen{
     private final PooledEngine engine;
@@ -48,8 +51,6 @@ public class GameScreen extends BaseScreen{
 
         // Create Cat
         PlayerFactory.createCat(game, this.engine);
-
-        //PlayerFactory.createOtherCat(this.game,this.engine, new Vector2(6, 2));
 
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
@@ -136,6 +137,10 @@ public class GameScreen extends BaseScreen{
             }
         }
 
+        /*
+         * Set Level ++ When Score reach 50
+         * */
+        LevelManager.getInstance().increase();
     }
 
     @Override

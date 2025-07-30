@@ -41,9 +41,6 @@ public class ParallaxFactory {
         // Set Texture
         text.texture = texture;
 
-        // Set velocity
-        velocity.velocity.set(Config.X_VELOCITY * zIndex, 0);
-
         // Set zIndex
         zI.zIndex = zIndex;
 

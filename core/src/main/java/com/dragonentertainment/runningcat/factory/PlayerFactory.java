@@ -49,13 +49,12 @@ public class PlayerFactory {
 
         // Set values of components
         animationComponent.frames = FrameTexture.cat(game);
-        animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
+        //animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
 
         playerComponent.state     = CatState.RUNNING;
         textureComponent.texture  = animationComponent.frames.get(0);
 
         playerComponent.position = new Vector3(3, 4, 10);
-        //playerComponent.position = new Vector3(0, 4, 10);
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
@@ -119,9 +118,6 @@ public class PlayerFactory {
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
         renderTypeComponent.type  = RenderType.MOUSE;
 
-        // Set velocity
-        velocity.velocity.set(Config.X_VELOCITY * zIndexComponent.zIndex, 0);
-
         // Add component to entity
         entity.add(transformComponent);
         entity.add(zIndexComponent);
@@ -172,9 +168,6 @@ public class PlayerFactory {
 
         zIndexComponent.zIndex    = (int)playerComponent.position.z;
         renderTypeComponent.type  = RenderType.ENEMY_CAT;
-
-        // Set velocity
-        velocity.velocity.set(Config.X_VELOCITY * zIndexComponent.zIndex, 0);
 
         // Add component to entity
         entity.add(transformComponent);
