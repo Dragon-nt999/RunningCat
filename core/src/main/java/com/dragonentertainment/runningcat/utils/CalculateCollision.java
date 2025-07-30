@@ -43,7 +43,7 @@ public class CalculateCollision {
         return aR > bL + MARGIN_X
             && aR <= bR + MARGIN_X
             && aT < bB + MARGIN_Y
-            && aT > bB - MARGIN_Y;
+            && aT > bB;
 
     }
 

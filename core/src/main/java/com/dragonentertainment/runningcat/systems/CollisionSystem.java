@@ -25,6 +25,7 @@ import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
+import com.dragonentertainment.runningcat.utils.ScoreManager;
 
 public class CollisionSystem extends EntitySystem
 {
@@ -167,8 +168,9 @@ public class CollisionSystem extends EntitySystem
 
             if(Intersector.overlaps(this.catCollider.bounds, mouseColider.bounds)
                                                                         && this.catState.state != CatState.HIT_ENEMY) {
-                CoinFactory.createCoin(this.game, this.engine, mouseTransform.position.x, mouseTransform.position.y);
                 this.engine.removeEntity(mouse);
+                CoinFactory.createCoin(this.game, this.engine, mouseTransform.position.x, mouseTransform.position.y);
+                ScoreManager.getInstance().addScore();
             }
         }
     }

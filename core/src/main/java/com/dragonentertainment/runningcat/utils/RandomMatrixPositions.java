@@ -15,9 +15,10 @@ import java.util.Random;
 public class RandomMatrixPositions {
     private static int firstCount = Config.FIRST_NUM_BRICKS;
 
-    private static int row = 4;
-    private static int col = 4;
-    public static List<Vector2> getBlockPositions(boolean isRespawn, Level level) {
+    private final static int row = 3;
+    private static final int MAX_COL = 6;
+    private static int col = MAX_COL;
+    public static List<Vector2> getBlockPositions(boolean isRespawn) {
         List<Vector2> results = new ArrayList<>();
 
         /*-----------------------------------------------
@@ -44,8 +45,23 @@ public class RandomMatrixPositions {
         ArrayList<Vector2> yPos = new ArrayList<Vector2>();
         HashMap<Float, Float> lastXByY = new HashMap<>();
 
+
+        /*-----------------------------------------------
+         * Alway add this block of brick for begin
+         *-----------------------------------------------*/
+        yPos.add(new Vector2((int)GameGrid.WORLD_WIDTH, row));
+
+        /*-----------------------------------------------
+         * Set num of brick by level
+         *-----------------------------------------------*/
+
+        if(col > 2) {
+            col -= (int)(LevelManager.getInstance().originLevel() / 2);
+        }
+
         for(Vector2 p : GameGrid.allPositions) {
-            if(p.y > 0 && p.y % row == 0
+
+            if(p.y > 0 && p.y % row == 0 && p.y < GameGrid.WORLD_HEIGHT
                     && yPos.size() < MathUtils.floor((float)GameGrid.WORLD_HEIGHT / row)) {
 
                 /*-----------------------------------------------
@@ -87,12 +103,14 @@ public class RandomMatrixPositions {
                 Vector2 newP = new Vector2(p.x + index, p.y);
                 results.add(newP);
                 index++;
-            }while (index < col);
+            }while (index <= col);
 
         }
 
         // Reset when restart game
         firstCount = Config.FIRST_NUM_BRICKS;
+
+        //Gdx.app.log("BRICKS", results.toString());
 
         return results;
     }
