@@ -8,6 +8,7 @@ import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
+import com.dragonentertainment.runningcat.components.VelocityComponent;
 import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.struct.AssetsName;
@@ -23,7 +24,8 @@ public class CoinFactory {
         TextureComponent texture = engine.createComponent(TextureComponent.class);
         ZIndexComponent zIndex = engine.createComponent(ZIndexComponent.class);
         RenderTypeComponent type = engine.createComponent(RenderTypeComponent.class);
-        FlyingComponent flying = engine.createComponent(FlyingComponent.class);
+        VelocityComponent velocity = engine.createComponent(VelocityComponent.class);
+        //FlyingComponent flying = engine.createComponent(FlyingComponent.class);
 
         // Set texture
         texture.texture = game.assetManager.get(AssetsName.Game.Ui.COIN);
@@ -40,13 +42,14 @@ public class CoinFactory {
         // Set Type entity
         type.type = RenderType.COIN;
 
-        flying.target = new Vector2(0, GameGrid.WORLD_HEIGHT);
+        //flying.target = new Vector2(0, GameGrid.WORLD_HEIGHT);
 
         coin.add(transform);
         coin.add(texture);
         coin.add(zIndex);
         coin.add(type);
-        coin.add(flying);
+        coin.add(velocity);
+        //coin.add(flying);
 
         engine.addEntity(coin);
 

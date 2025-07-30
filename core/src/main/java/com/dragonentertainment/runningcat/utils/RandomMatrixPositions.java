@@ -8,25 +8,29 @@ import com.dragonentertainment.runningcat.enums.Level;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 public class RandomMatrixPositions {
     private static int firstCount = Config.FIRST_NUM_BRICKS;
-    public static List<List<Vector2>> getBlockPositions(boolean isRespawn, Level level) {
-        List<List<Vector2>> results = new ArrayList<>();
 
-        // First Render Bricks
+    private final static int row = 3;
+    private static final int MAX_COL = 6;
+    private static int col = MAX_COL;
+    public static List<Vector2> getBlockPositions(boolean isRespawn) {
+        List<Vector2> results = new ArrayList<>();
+
+        /*-----------------------------------------------
+         * The First Bricks for game starts
+         *-----------------------------------------------*/
         if(firstCount > 0 && !isRespawn) {
-            List<Vector2> firstCollects = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < GameGrid.WORLD_WIDTH; j++) {
-                    firstCollects.add(new Vector2(j, i));
+                    results.add(new Vector2(j, i));
                     firstCount--;
                 }
             }
-
-            results.add(firstCollects);
         }
 
         /*-----------------------------------------------
@@ -34,34 +38,79 @@ public class RandomMatrixPositions {
          *-----------------------------------------------*/
         Collections.shuffle(GameGrid.allPositions);
 
+
         /*-----------------------------------------------
-         * Contain y for checking to avoid duplicate per loop
+         * Create the yPos list with the following conditions
          *-----------------------------------------------*/
-        ArrayList<Integer> prevY = new ArrayList<Integer>();
+        ArrayList<Vector2> yPos = new ArrayList<Vector2>();
+        HashMap<Float, Float> lastXByY = new HashMap<>();
 
 
-        for(int i = 0; i < Config.MAX_NUM_ROW; i++) {
-            Vector2 start = GameGrid.allPositions.get(i);
+        /*-----------------------------------------------
+         * Alway add this block of brick for begin
+         *-----------------------------------------------*/
+        yPos.add(new Vector2((int)GameGrid.WORLD_WIDTH, row));
 
-            int y = 0;
-            // random y
-            do{
-                y = MathUtils.random(2, GameGrid.WORLD_HEIGHT - 1);
-            }while((y % 4 != 0)); //|| (prevY.contains(y)));
+        /*-----------------------------------------------
+         * Set num of brick by level
+         *-----------------------------------------------*/
 
-            prevY.add(y);
+        if(col > 2) {
+            col -= (int)(LevelManager.getInstance().originLevel() / 2);
+        }
 
-            results.add(LevelManager.getLevel(start, level, y));
+        for(Vector2 p : GameGrid.allPositions) {
+
+            if(p.y > 0 && p.y % row == 0 && p.y < GameGrid.WORLD_HEIGHT
+                    && yPos.size() < MathUtils.floor((float)GameGrid.WORLD_HEIGHT / row)) {
+
+                /*-----------------------------------------------
+                 * Prevent duplicate p
+                 *-----------------------------------------------*/
+                boolean allReadyExists = false;
+                for (Vector2 existing : yPos) {
+                    if(existing.epsilonEquals(p, 0.01f)) {
+                        allReadyExists = true;
+                        break;
+                    }
+                }
+                if(allReadyExists) continue;
+
+                /*-----------------------------------------------
+                 * Ensure x > previous x + num when y values match
+                 *-----------------------------------------------*/
+                if(lastXByY.containsKey(p.y)) {
+                    float lastX = lastXByY.get(p.y);
+                    if(p.x <= lastX + col) continue;
+                }
+
+                /*-----------------------------------------------
+                 * Add p when all conditions are met
+                 *-----------------------------------------------*/
+                yPos.add(p);
+                lastXByY.put(p.y, p.x);
+            }
         }
 
         /*-----------------------------------------------
-         * Sort position by maximum position x
+         * Generate newP base on yPos
+         * and add it to results
          *-----------------------------------------------*/
-        results.sort(Comparator.comparingDouble(
-            group ->group.get(LevelManager.numOfBrick).x));
+        for (Vector2 p : yPos) {
+            int index = 0;
+
+            do{
+                Vector2 newP = new Vector2(p.x + index, p.y);
+                results.add(newP);
+                index++;
+            }while (index <= col);
+
+        }
 
         // Reset when restart game
         firstCount = Config.FIRST_NUM_BRICKS;
+
+        //Gdx.app.log("BRICKS", results.toString());
 
         return results;
     }

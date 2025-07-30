@@ -8,55 +8,24 @@ import java.util.List;
 
 public class LevelManager {
 
-    public static int numOfBrick = 3;
+    private final static LevelManager instance = new LevelManager();
+    private float level = 1f;
 
-    public static List<Vector2> getLevel(Vector2 start, Level level, int y) {
-        List<Vector2> collects = new ArrayList<>();
-        switch (level){
-            case EASY:
-                numOfBrick = 3;
-                collects = levelEasy(start, y);
-                break;
-            case MEDIUM:
-                numOfBrick = 2;
-                collects = levelMedium(start, y);
-                break;
-            case HARD:
-                numOfBrick = 1;
-                collects = levelHard(start, y);
-                break;
-            default:
-                break;
-        }
-
-        return collects;
+    public static LevelManager getInstance() {
+        return instance;
     }
 
-    private static List<Vector2> levelEasy(Vector2 start, int y) {
-        List<Vector2> collects = new ArrayList<>();
-        int x = 0;
-        do {
-            collects.add(new Vector2(start.x + x, y));
-        }while(x++ < numOfBrick);
-
-        return collects;
+    public float getLevel() {
+        return (float)(this.level / 100);
+    }
+    public void setLevel(float level) {
+        this.level = level;
     }
 
-    private static List<Vector2> levelMedium(Vector2 start, int y) {
-        List<Vector2> collects = new ArrayList<>();
-        int x = 0;
-        do {
-            collects.add(new Vector2(start.x + x, y));
-        }while(x++ < numOfBrick);
-        return collects;
+    public void increase() {
+        this.level = (float) ScoreManager.getInstance().getScore() / 50;
     }
-
-    private static List<Vector2> levelHard(Vector2 start, int y) {
-        List<Vector2> collects = new ArrayList<>();
-        int x = 0;
-        do {
-            collects.add(new Vector2(start.x + x, y + x));
-        }while(x++ < numOfBrick);
-        return collects;
+    public int originLevel() {
+        return (int)this.level;
     }
 }
