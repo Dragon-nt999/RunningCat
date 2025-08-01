@@ -2,8 +2,10 @@ package com.dragonentertainment.runningcat.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -11,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.struct.AssetsName;
@@ -21,12 +25,14 @@ import com.dragonentertainment.runningcat.utils.ScoreManager;
 
 public class GameUI extends BaseUI{
     private Label scoreLabel;
+
     public GameUI(AppGame game) {
         super(game);
     }
 
     @Override
     protected void init() {
+        stage.getViewport().apply(true);
         this.drawScore();
         this.drawBtnPause();
     }
@@ -46,7 +52,7 @@ public class GameUI extends BaseUI{
         Image scoreBg = new Image(scoreText);
 
         float w = scoreText.getWidth();
-        float h = scoreText.getHeight() + GameGrid.PixelRatio();
+        float h = scoreText.getHeight();
 
         scoreBg.setSize(w, h);
         scoreBg.setPosition(0, Gdx.graphics.getHeight() - h);
@@ -57,9 +63,10 @@ public class GameUI extends BaseUI{
         labelStyle.font = FontManager.getInstance().getFont(90, Color.valueOf("#8D4200"));
 
         this.scoreLabel =  new Label(ScoreManager.getInstance().getScore() + "", labelStyle);
+        this.scoreLabel.setAlignment(Align.center);
         this.scoreLabel.setPosition(
-            scoreBg.getX() + w / 5,
-            scoreBg.getY() + h / 5
+            this.scoreLabel.getWidth() * 2,
+            scoreBg.getY()
         );
         this.stage.addActor(this.scoreLabel);
     }
@@ -81,6 +88,9 @@ public class GameUI extends BaseUI{
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
+                if(GameStateManager.getInstance().is(GameState.STOP)
+                    || GameStateManager.getInstance().is(GameState.OVER)) return;
+
                 pauseButton.addAction(
                     Actions.sequence(
                         Actions.scaleTo(0.9f, 0.9f, 0.05f),
@@ -93,6 +103,7 @@ public class GameUI extends BaseUI{
 
                 Texture newTex = paused ? pauseTexture : playTexture;
                 pauseButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(newTex));
+
             }
         });
 
@@ -103,10 +114,10 @@ public class GameUI extends BaseUI{
         ImageButton pauseButton = new ImageButton(pauseStyle);
 
         float w = pauseButton.getWidth();
-        float h = pauseButton.getHeight() + GameGrid.PixelRatio();
+        float h = pauseButton.getHeight();
 
         pauseButton.setSize(w, h);
-        pauseButton.setPosition((((float) Gdx.graphics.getWidth() / 2) - (w / 2)), -5f);
+        pauseButton.setPosition((((float) Gdx.graphics.getWidth() / 2) - (w / 2)), 0);
         pauseButton.setTransform(true);
         pauseButton.setOrigin(pauseButton.getWidth() / 2f, pauseButton.getHeight() / 2f);
 

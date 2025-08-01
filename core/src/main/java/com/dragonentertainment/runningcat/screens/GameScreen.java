@@ -4,16 +4,11 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;
-import com.dragonentertainment.runningcat.factory.CoinFactory;
-import com.dragonentertainment.runningcat.factory.EffectFactory;
 import com.dragonentertainment.runningcat.factory.PlayerFactory;
 import com.dragonentertainment.runningcat.struct.AssetsName;
-import com.dragonentertainment.runningcat.systems.BoundsRenderSystem;
 import com.dragonentertainment.runningcat.systems.FlyingSystem;
 import com.dragonentertainment.runningcat.systems.GravitySystem;
 import com.dragonentertainment.runningcat.systems.RicochetEffectSystem;
@@ -27,17 +22,12 @@ import com.dragonentertainment.runningcat.systems.brick.BrickCreateSystem;
 import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
-import com.dragonentertainment.runningcat.ui.BaseUI;
 import com.dragonentertainment.runningcat.ui.UIFactory;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
-import com.dragonentertainment.runningcat.utils.LevelManager;
-import com.dragonentertainment.runningcat.utils.ScoreManager;
-
-public class GameScreen extends BaseScreen{
+public class GameScreen extends BaseScreen {
     private final PooledEngine engine;
     private float timeToRestart = -1;
-    private final BaseUI ui;
 
     public GameScreen(AppGame game) {
         super(game);
@@ -48,7 +38,6 @@ public class GameScreen extends BaseScreen{
         // Get Background
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
-
         // Create Cat
         PlayerFactory.createCat(game, this.engine);
 
@@ -117,16 +106,13 @@ public class GameScreen extends BaseScreen{
 
     @Override
     public void render(float delta) {
+        super.render(delta);
+        this.ui.draw();
+    }
 
+    @Override
+    protected void renderContent(float delta) {
         if(GameStateManager.getInstance().is(GameState.OVER)) {
-            GameStateManager.getInstance().setState(GameState.RESTART);
-        } else {
-            super.render(delta);
-            this.engine.update(delta);
-            this.ui.draw();
-        }
-
-        if(GameStateManager.getInstance().is(GameState.RESTART)) {
             if(this.timeToRestart < 0f) {
                 this.timeToRestart = 0f;
             } else {
@@ -136,6 +122,8 @@ public class GameScreen extends BaseScreen{
                 }
             }
         }
+
+        this.engine.update(delta);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class ScaleSystem extends IteratingSystem {
                 transform.width += shake;
                 transform.height += shake;
                 effect.visibility = true;
-                GameStateManager.getInstance().setState(GameState.RESTART);
+                GameStateManager.getInstance().setState(GameState.OVER);
             }
         }
     }

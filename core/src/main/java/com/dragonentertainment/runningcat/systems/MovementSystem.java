@@ -19,7 +19,6 @@ import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class MovementSystem extends IteratingSystem {
     private final PooledEngine engine;
-    private float time = 0.0f;
 
     public MovementSystem(PooledEngine engine) {
         super(Family.all(
@@ -54,7 +53,7 @@ public class MovementSystem extends IteratingSystem {
                 animation.frameDuration = (float) (Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY - LevelManager.getInstance().parseLevelToSpeed()));
                 velocity.velocity.x = 0;
             }
-            Gdx.app.log("SPEED", LevelManager.getInstance().parseLevelToSpeed() + "" );
+
             trans.position.x += velocity.velocity.x * deltaTime;
             trans.position.y += velocity.velocity.y * deltaTime;
         }

@@ -58,8 +58,6 @@ public class RandomMatrixPositions {
             LevelManager.getInstance().setEffect(false);
         }
 
-        Gdx.app.log("LEVEL", col + "=====" + LevelManager.getInstance().getLevel() + LevelManager.getInstance().isEffect());
-
         for(Vector2 p : GameGrid.allPositions) {
 
             if(p.y > 0 && p.y % row == 0 && p.y < GameGrid.WORLD_HEIGHT

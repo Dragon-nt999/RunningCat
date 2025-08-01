@@ -62,6 +62,7 @@ public class TouchSystem extends EntitySystem implements InputProcessor
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         TouchComponent touch = MappersComponent.touch.get(this.cat);
 
         if(touch.pressDuration == 0) {

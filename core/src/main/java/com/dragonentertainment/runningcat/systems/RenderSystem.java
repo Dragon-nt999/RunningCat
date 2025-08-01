@@ -3,6 +3,7 @@ package com.dragonentertainment.runningcat.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.TextureComponent;
@@ -34,9 +35,10 @@ public class RenderSystem extends SortedIteratingSystem
         TextureComponent texture = MappersComponent.texture.get(entity);
         TransformComponent trans = MappersComponent.transform.get(entity);
 
+        texture.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         if(!render.visibility) return;
 
-        this.batch.begin();
         // Draw Entity
         this.batch.draw(
             texture.texture,
@@ -45,8 +47,5 @@ public class RenderSystem extends SortedIteratingSystem
             trans.width,
             trans.height
         );
-
-        this.batch.end();
-
     }
 }

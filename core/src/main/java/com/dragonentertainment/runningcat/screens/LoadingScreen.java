@@ -46,4 +46,9 @@ public class LoadingScreen extends BaseScreen {
         }
     }
 
+    @Override
+    protected void renderContent(float delta) {
+
+    }
+
 }

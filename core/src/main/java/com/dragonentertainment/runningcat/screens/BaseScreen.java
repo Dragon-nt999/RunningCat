@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.ui.BaseUI;
 import com.dragonentertainment.runningcat.ui.GameUI;
 import com.dragonentertainment.runningcat.utils.FontManager;
 import com.dragonentertainment.runningcat.utils.GameGrid;
@@ -17,10 +18,10 @@ import com.dragonentertainment.runningcat.utils.GameGrid;
 public abstract class BaseScreen implements Screen {
     protected final AppGame game;
     protected final OrthographicCamera camera;
-    protected final Viewport viewport;
+    protected final FitViewport viewport;
     protected final SpriteBatch batch;
     protected Texture background;
-
+    protected BaseUI ui;
     public BaseScreen(final AppGame game) {
         this.game = game;
         this.camera = new OrthographicCamera();
@@ -43,15 +44,18 @@ public abstract class BaseScreen implements Screen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Draw background
         this.batch.begin();
-
+        // Draw background
         if(this.background != null) {
             this.batch.draw(this.background, 0, 0, GameGrid.WORLD_WIDTH, GameGrid.WORLD_HEIGHT);
         }
 
+        this.renderContent(delta);
+
         this.batch.end();
     }
+
+    protected abstract void renderContent(float delta);
 
     @Override
     public void resize(int width, int height) {

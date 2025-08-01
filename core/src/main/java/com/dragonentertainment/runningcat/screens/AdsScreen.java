@@ -6,4 +6,9 @@ public class AdsScreen extends BaseScreen{
     public AdsScreen(AppGame game) {
         super(game);
     }
+
+    @Override
+    protected void renderContent(float delta) {
+
+    }
 }

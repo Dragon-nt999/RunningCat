@@ -58,6 +58,9 @@ public class PlayerFactory {
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
+        //transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
+        //transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;
+
         transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
         transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;
 

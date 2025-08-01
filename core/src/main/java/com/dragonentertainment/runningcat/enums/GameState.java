@@ -5,5 +5,4 @@ public enum GameState {
     OVER,
     STOP,
     PAUSE,
-    RESTART,
 }

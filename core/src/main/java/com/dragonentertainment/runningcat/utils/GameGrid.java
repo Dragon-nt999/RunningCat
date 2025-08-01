@@ -11,8 +11,8 @@ public class GameGrid {
     public static final int CELL_SIZE = 1;
     public static final int WORLD_WIDTH = 9;
     public static final int WORLD_HEIGHT = 18;
-    private static final float PIXEL_PER_UNIT_X = (float) Gdx.graphics.getWidth() / WORLD_WIDTH;
-    private static final float PIXEL_PER_UNIT_Y = (float) Gdx.graphics.getHeight() / WORLD_HEIGHT;
+    public static final float PIXEL_PER_UNIT_X = (float) Gdx.graphics.getWidth() / WORLD_WIDTH;
+    public static final float PIXEL_PER_UNIT_Y = (float) Gdx.graphics.getHeight() / WORLD_HEIGHT;
     public static final List<Vector2> allPositions = new ArrayList<>();
 
     public static float toGridWidth(float textureWith) {
@@ -22,9 +22,17 @@ public class GameGrid {
         return textureHeight / PIXEL_PER_UNIT_Y;
     }
 
-    public static float PixelRatio() {
+    public static float pixelRatio() {
         return Math.abs(PIXEL_PER_UNIT_Y - PIXEL_PER_UNIT_X);
     }
+
+    public static float gridToPixelX(float cell) {
+        return PIXEL_PER_UNIT_X * cell;
+    }
+    public static float gridToPixelY(float cell) {
+        return PIXEL_PER_UNIT_Y * cell;
+    }
+
 
     /*
     * Get All position on Grid
