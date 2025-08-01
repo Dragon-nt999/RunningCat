@@ -24,6 +24,7 @@ import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
 import com.dragonentertainment.runningcat.ui.UIFactory;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
+import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 public class GameScreen extends BaseScreen {
     private final PooledEngine engine;
@@ -97,6 +98,9 @@ public class GameScreen extends BaseScreen {
         multiplexer.addProcessor(touchSystem);
 
         Gdx.input.setInputProcessor(multiplexer);
+
+        // Save user's attempts
+        GameData.getInstance().increaseAttempts();
     }
 
     @Override

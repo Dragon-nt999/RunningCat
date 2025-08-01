@@ -15,6 +15,9 @@ public class ScoreManager {
 
     public void addScore() {
         this.score += GAME_SCORE_INITIAL;
+        if(this.score > GameData.getInstance().getScore()) {
+            GameData.getInstance().saveScore(this.score);
+        }
     }
 
     public void resetScore() {
