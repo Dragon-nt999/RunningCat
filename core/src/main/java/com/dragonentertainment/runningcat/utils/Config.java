@@ -37,5 +37,9 @@ public class Config {
      *----------------------------------------------*/
     public static final float SCALE_RATIO = 0.7f;
 
+    /*-----------------------------------------------
+     * Num Of Brick On Row
+     *----------------------------------------------*/
+    public static final int NUM_BIRCK_OF_ROW = 6;
 
 }

@@ -1,9 +1,13 @@
 package com.dragonentertainment.runningcat.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.utils.GameGrid;
 
 public abstract class BaseUI {
     protected final Stage stage;
@@ -18,6 +22,7 @@ public abstract class BaseUI {
     protected abstract void update();
 
     public void draw() {
+        this.stage.getViewport().apply(true);
         this.stage.act();
         this.stage.draw();
         this.update();

@@ -19,7 +19,6 @@ import com.dragonentertainment.runningcat.utils.MappersComponent;
 
 public class MovementSystem extends IteratingSystem {
     private final PooledEngine engine;
-    private float time = 0.0f;
 
     public MovementSystem(PooledEngine engine) {
         super(Family.all(
@@ -38,8 +37,6 @@ public class MovementSystem extends IteratingSystem {
         ZIndexComponent zIndex = MappersComponent.zIndex.get(entity);
         AnimationComponent animation = MappersComponent.animation.get(entity);
 
-        if(!trans.canMove) return;
-
         // Moving
         if(GameStateManager.getInstance().is(GameState.PLAYING)
                         && !GameStateManager.getInstance().is(GameState.PAUSE)){
@@ -48,12 +45,12 @@ public class MovementSystem extends IteratingSystem {
                 /*------------------------------------------------------------------------
                 * Set Speed movement X by Level for other Entity
                 * ------------------------------------------------------------------------*/
-                velocity.velocity.set((Config.X_VELOCITY - LevelManager.getInstance().getLevel()) * zIndex.zIndex, 0);
+                velocity.velocity.set((Config.X_VELOCITY - LevelManager.getInstance().parseLevelToSpeed()) * zIndex.zIndex, 0);
             } else {
                 /*------------------------------------------------------------------------
                  * Set Speed of animation frame for Cat
                  * ------------------------------------------------------------------------*/
-                animation.frameDuration = (float) (Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY - LevelManager.getInstance().getLevel()));
+                animation.frameDuration = (float) (Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY - LevelManager.getInstance().parseLevelToSpeed()));
                 velocity.velocity.x = 0;
             }
 

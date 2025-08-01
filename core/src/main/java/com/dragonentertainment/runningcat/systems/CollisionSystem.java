@@ -8,8 +8,10 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.components.CollisionComponent;
+import com.dragonentertainment.runningcat.components.FlyingComponent;
 import com.dragonentertainment.runningcat.components.RenderTypeComponent;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.ScaleComponent;
@@ -159,18 +161,19 @@ public class CollisionSystem extends EntitySystem
     private void catCollidesMouse(Entity mouse, RenderTypeComponent type) {
         if(type.type == RenderType.MOUSE) {
             TransformComponent mouseTransform = MappersComponent.transform.get(mouse);
-            CollisionComponent mouseColider = MappersComponent.collider.get(mouse);
+            CollisionComponent mouseCollider = MappersComponent.collider.get(mouse);
 
-            mouseColider.bounds.set(mouseTransform.position.x,
+            mouseCollider.bounds.set(mouseTransform.position.x,
                                     mouseTransform.position.y,
                                     mouseTransform.width,
                                     mouseTransform.height);
 
-            if(Intersector.overlaps(this.catCollider.bounds, mouseColider.bounds)
+            if(Intersector.overlaps(this.catCollider.bounds, mouseCollider.bounds)
                                                                         && this.catState.state != CatState.HIT_ENEMY) {
                 this.engine.removeEntity(mouse);
-                CoinFactory.createCoin(this.game, this.engine, mouseTransform.position.x, mouseTransform.position.y);
-                ScoreManager.getInstance().addScore();
+                CoinFactory.createCoin(this.game,
+                                        this.engine, mouseTransform.position.x,
+                                        mouseTransform.position.y);
             }
         }
     }

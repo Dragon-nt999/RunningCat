@@ -16,8 +16,7 @@ public class RandomMatrixPositions {
     private static int firstCount = Config.FIRST_NUM_BRICKS;
 
     private final static int row = 3;
-    private static final int MAX_COL = 6;
-    private static int col = MAX_COL;
+    private static int col = Config.NUM_BIRCK_OF_ROW;
     public static List<Vector2> getBlockPositions(boolean isRespawn) {
         List<Vector2> results = new ArrayList<>();
 
@@ -54,9 +53,9 @@ public class RandomMatrixPositions {
         /*-----------------------------------------------
          * Set num of brick by level
          *-----------------------------------------------*/
-
-        if(col > 2) {
-            col -= (int)(LevelManager.getInstance().originLevel() / 2);
+        if(col > 2 && LevelManager.getInstance().isEffect()) {
+            col--;
+            LevelManager.getInstance().setEffect(false);
         }
 
         for(Vector2 p : GameGrid.allPositions) {

@@ -111,9 +111,9 @@ public class CalculateCollision {
         float bB = b.bounds.y;
         float bT = bB + b.bounds.height;
 
-        return aR >= bL
+        return aR >= bL + MARGIN_X
                 && aR <= bR
                 && aB >= bB
-                && aB <= bT;
+                && aB <= bT - MARGIN_Y;
     }
 }
