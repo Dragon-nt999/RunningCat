@@ -169,4 +169,20 @@ public class AssetsName {
             public static final String GAME_BAR_SMALL = "home/ui/game_bar_small.png";
         }
     }
+    public static class Sounds {
+        public static class Common {
+            public static final String TOUCH = "sounds/common/touch.wav";
+        }
+        public static class Game {
+            public static final String BACKGROUND_MUSIC = "sounds/game/background_music.mp3";
+            public static final String BACKGROUND_MUSIC_FAST = "sounds/game/background_music_fast.mp3";
+            public static final String COIN = "sounds/game/coin.wav";
+            public static final String COLLISION_BRICK = "sounds/game/collision_brick.wav";
+            public static final String FAILURE = "sounds/game/failure.wav";
+            public static final String HIT_SCREEN = "sounds/game/hit_screen.wav";
+            public static final String JUMP = "sounds/game/jump.wav";
+            public static final String JUMP_OUT = "sounds/game/jump_out.wav";
+            public static final String LAND = "sounds/game/land.wav";
+        }
+    }
 }

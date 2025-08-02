@@ -23,11 +23,13 @@ import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.factory.CoinFactory;
+import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.utils.CalculateCollision;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
 import com.dragonentertainment.runningcat.utils.ScoreManager;
+import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class CollisionSystem extends EntitySystem
 {
@@ -114,8 +116,14 @@ public class CollisionSystem extends EntitySystem
                             + brickTransform.height;
                         catJump.startY = catTransform.position.y;
                         catJump.endY = catTransform.position.y;
-                        catState.isOnBrick = true;
-                        catState.state = CatState.RUNNING;
+
+                        // Play sound effect
+                        if(catState.state == CatState.FALLING && !catState.isOnBrick) {
+                            SoundManager.getInstance().playSound(AssetsName.Sounds.Game.LAND);
+                            catState.isOnBrick = true;
+                            catState.state = CatState.RUNNING;
+                        }
+
                     } else if(CalculateCollision.aabOverlapRightWhenFalling(catCollider, brickCollider)){
                         catTransform.position.x = brickTransform.position.x - catTransform.width
                             + CalculateCollision.MIN_MARGIN_X;
@@ -129,7 +137,12 @@ public class CollisionSystem extends EntitySystem
                     if(CalculateCollision.aabbOverlapBottom(catCollider, brickCollider)) {
                         catState.state = CatState.HIT_BRICK;
                         catTransform.position.y = brickTransform.position.y - catTransform.height;
-                        GameStateManager.getInstance().setState(GameState.STOP);
+
+                        // Play sound effect
+                        if(!GameStateManager.getInstance().is(GameState.STOP)) {
+                            SoundManager.getInstance().playSound(AssetsName.Sounds.Game.COLLISION_BRICK);
+                            GameStateManager.getInstance().setState(GameState.STOP);
+                        }
 
                         getEngine().getSystem(CollisionSystem.class).setProcessing(false);
                         getEngine().getSystem(JumpSystem.class).setProcessing(false);
@@ -170,6 +183,10 @@ public class CollisionSystem extends EntitySystem
 
             if(Intersector.overlaps(this.catCollider.bounds, mouseCollider.bounds)
                                                                         && this.catState.state != CatState.HIT_ENEMY) {
+                // Play sound effect
+                if(mouse != null) {
+                    SoundManager.getInstance().playSound(AssetsName.Sounds.Game.COIN);
+                }
                 this.engine.removeEntity(mouse);
                 CoinFactory.createCoin(this.game,
                                         this.engine, mouseTransform.position.x,
@@ -197,6 +214,12 @@ public class CollisionSystem extends EntitySystem
             if(CalculateCollision.aabOverlapRightWhenOverOtherEntity(this.catCollider, enemyCatCollider)){
                 enemyCatState.state = CatState.HIT_ENEMY;
                 scaleCat.isEffect = true; // Trigger to turn on ScaleSystem
+
+                // Play sound effect
+                if(!GameStateManager.getInstance().is(GameState.PAUSE)) {
+                    SoundManager.getInstance().playSound(AssetsName.Sounds.Game.HIT_SCREEN);
+                }
+
                 GameStateManager.getInstance().setState(GameState.PAUSE);
             }
 

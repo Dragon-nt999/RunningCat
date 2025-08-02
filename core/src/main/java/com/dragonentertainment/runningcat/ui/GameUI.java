@@ -22,6 +22,7 @@ import com.dragonentertainment.runningcat.utils.FontManager;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.ScoreManager;
+import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class GameUI extends BaseUI{
     private Label scoreLabel;
@@ -90,6 +91,9 @@ public class GameUI extends BaseUI{
 
                 if(GameStateManager.getInstance().is(GameState.STOP)
                     || GameStateManager.getInstance().is(GameState.OVER)) return;
+
+                // Play sound effect
+                SoundManager.getInstance().playSound(AssetsName.Sounds.Common.TOUCH);
 
                 pauseButton.addAction(
                     Actions.sequence(

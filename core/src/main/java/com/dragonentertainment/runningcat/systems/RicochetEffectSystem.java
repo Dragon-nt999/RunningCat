@@ -7,10 +7,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.dragonentertainment.runningcat.components.RicochetEffectComponent;
 import com.dragonentertainment.runningcat.components.TransformComponent;
 import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
+import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class RicochetEffectSystem extends IteratingSystem {
+    private boolean soundPlayed = false;
     public RicochetEffectSystem() {
         super(Family.all(RicochetEffectComponent.class).get());
     }
@@ -28,6 +31,11 @@ public class RicochetEffectSystem extends IteratingSystem {
 
             if (ricochet.time > ricochet.duration) {
                 GameStateManager.getInstance().setState(GameState.OVER);
+            } else { // Play sound effect
+                if(!soundPlayed) {
+                    SoundManager.getInstance().playSound(AssetsName.Sounds.Game.JUMP_OUT);
+                    soundPlayed = true;
+                }
             }
         }
     }

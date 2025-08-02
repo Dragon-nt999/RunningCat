@@ -26,9 +26,14 @@ import com.dragonentertainment.runningcat.ui.UIFactory;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
+import com.dragonentertainment.runningcat.utils.LevelManager;
+import com.dragonentertainment.runningcat.utils.SoundManager;
+
 public class GameScreen extends BaseScreen {
     private final PooledEngine engine;
     private float timeToRestart = -1;
+    private boolean playSoundFailure = false;
+    private String musicName = AssetsName.Sounds.Game.BACKGROUND_MUSIC;
 
     public GameScreen(AppGame game) {
         super(game);
@@ -101,6 +106,9 @@ public class GameScreen extends BaseScreen {
 
         // Save user's attempts
         GameData.getInstance().increaseAttempts();
+
+        // Load Sound
+        SoundManager.getInstance().init(this.game.assetManager);
     }
 
     @Override
@@ -119,12 +127,23 @@ public class GameScreen extends BaseScreen {
         if(GameStateManager.getInstance().is(GameState.OVER)) {
             if(this.timeToRestart < 0f) {
                 this.timeToRestart = 0f;
+                // Play sound effect
+                if(!this.playSoundFailure) {
+                    SoundManager.getInstance().playSound(AssetsName.Sounds.Game.FAILURE);
+                    this.playSoundFailure = true;
+                }
+
+                // Stop Music
+                SoundManager.getInstance().stopMusic(this.musicName);
             } else {
                 this.timeToRestart += delta;
-                if(this.timeToRestart >= 1f) {
+                this.playSoundFailure = false;
+                if(this.timeToRestart >= 2f) {
                     this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
                 }
             }
+        } else {
+            SoundManager.getInstance().playMusic(this.musicName);
         }
 
         this.engine.update(delta);
