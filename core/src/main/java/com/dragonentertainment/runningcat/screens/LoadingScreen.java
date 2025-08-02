@@ -53,5 +53,19 @@ public class LoadingScreen extends BaseScreen {
 
     }
 
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
 
 }

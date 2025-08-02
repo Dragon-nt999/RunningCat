@@ -46,7 +46,7 @@ public class GameScreen extends BaseScreen {
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
         // Create Cat
-        PlayerFactory.createCat(game, this.engine, CatTextureType.CAT_IN_GAME);
+        PlayerFactory.createCat(game, this.engine, CatTextureType.CAT_IN_GAME, 3, 4);
 
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
@@ -110,11 +110,13 @@ public class GameScreen extends BaseScreen {
 
         // Load Sound
         SoundManager.getInstance().init(this.game.assetManager);
+
     }
 
     @Override
     public void show() {
         super.show();
+        SoundManager.getInstance().playMusic(musicName);
     }
 
     @Override
@@ -135,7 +137,7 @@ public class GameScreen extends BaseScreen {
                 }
 
                 // Stop Music
-                SoundManager.getInstance().stopMusic(this.musicName);
+                SoundManager.getInstance().stopMusic(musicName);
             } else {
                 this.timeToRestart += delta;
                 this.playSoundFailure = false;
@@ -143,8 +145,6 @@ public class GameScreen extends BaseScreen {
                     this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
                 }
             }
-        } else {
-            SoundManager.getInstance().playMusic(this.musicName);
         }
 
         this.engine.update(delta);
@@ -160,6 +160,7 @@ public class GameScreen extends BaseScreen {
     public void hide() {
         super.hide();
         AssetLoader.unloadGameScreenAssets(this.game.assetManager);
+        SoundManager.getInstance().stopMusic(musicName);
     }
 
     @Override

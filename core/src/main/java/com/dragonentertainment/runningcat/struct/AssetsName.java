@@ -204,5 +204,8 @@ public class AssetsName {
             public static final String JUMP_OUT = "sounds/game/jump_out.wav";
             public static final String LAND = "sounds/game/land.wav";
         }
+        public static class Home {
+            public static final String HOME_BACKGROUND_MUSIC = "sounds/home/home_background_music.mp3";
+        }
     }
 }

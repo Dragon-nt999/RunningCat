@@ -30,7 +30,9 @@ public class PlayerFactory {
     public static void createCat(
         AppGame game,
         PooledEngine engine,
-        CatTextureType typeTexture
+        CatTextureType typeTexture,
+        float x,
+        float y
     ) {
         // Create Entity
         Entity entity = engine.createEntity();
@@ -57,16 +59,18 @@ public class PlayerFactory {
                 break;
             case CAT_IN_HOME_IDLE:
                 animationComponent.frames = FrameTexture.catInHomeIdle(game);
+                animationComponent.frameDuration = 0.15f;
                 break;
             case CAT_IN_HOME_INJURED:
                 animationComponent.frames = FrameTexture.catInHomeInjured(game);
+                animationComponent.frameDuration = 0.15f;
                 break;
         }
-        
+
         playerComponent.state     = CatState.RUNNING;
         textureComponent.texture  = animationComponent.frames.get(0);
 
-        playerComponent.position = new Vector3(3, 4, 10);
+        playerComponent.position = new Vector3(x, y, 10);
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
 
