@@ -12,10 +12,30 @@ import java.util.List;
 
 public class FrameTexture {
 
-    public static List<Texture> cat(AppGame game){
+    public static List<Texture> catInGame(AppGame game){
         List<Texture> frames = new ArrayList<>();
 
         for(String name : getFramesFromClass(AssetsName.Game.Sequence.Cat_running.class)) {
+            frames.add(game.assetManager.get(name));
+        }
+
+        return frames;
+    }
+
+    public static List<Texture> catInHomeIdle(AppGame game){
+        List<Texture> frames = new ArrayList<>();
+
+        for(String name : getFramesFromClass(AssetsName.Home.Sequences.Cat.class)) {
+            frames.add(game.assetManager.get(name));
+        }
+
+        return frames;
+    }
+
+    public static List<Texture> catInHomeInjured(AppGame game){
+        List<Texture> frames = new ArrayList<>();
+
+        for(String name : getFramesFromClass(AssetsName.Home.Sequences.Cat_injured.class)) {
             frames.add(game.assetManager.get(name));
         }
 

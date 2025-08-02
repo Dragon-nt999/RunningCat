@@ -19,6 +19,7 @@ import com.dragonentertainment.runningcat.components.ZIndexComponent;
 import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
+import com.dragonentertainment.runningcat.enums.CatTextureType;
 import com.dragonentertainment.runningcat.enums.RenderType;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameGrid;
@@ -28,7 +29,8 @@ public class PlayerFactory {
 
     public static void createCat(
         AppGame game,
-        PooledEngine engine
+        PooledEngine engine,
+        CatTextureType typeTexture
     ) {
         // Create Entity
         Entity entity = engine.createEntity();
@@ -48,18 +50,25 @@ public class PlayerFactory {
         ScaleComponent scale                    = engine.createComponent(ScaleComponent.class);
 
         // Set values of components
-        animationComponent.frames = FrameTexture.cat(game);
-        //animationComponent.frameDuration = Config.CAT_MAX_SPEED_RUN / Math.abs(Config.X_VELOCITY);
 
+        switch (typeTexture){
+            case CAT_IN_GAME:
+                animationComponent.frames = FrameTexture.catInGame(game);
+                break;
+            case CAT_IN_HOME_IDLE:
+                animationComponent.frames = FrameTexture.catInHomeIdle(game);
+                break;
+            case CAT_IN_HOME_INJURED:
+                animationComponent.frames = FrameTexture.catInHomeInjured(game);
+                break;
+        }
+        
         playerComponent.state     = CatState.RUNNING;
         textureComponent.texture  = animationComponent.frames.get(0);
 
         playerComponent.position = new Vector3(3, 4, 10);
 
         transformComponent.position.set(playerComponent.position.x, playerComponent.position.y);
-
-        //transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
-        //transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;
 
         transformComponent.width = GameGrid.toGridWidth(textureComponent.texture.getWidth()) * Config.SCALE_RATIO;
         transformComponent.height = GameGrid.toGridHeight(textureComponent.texture.getHeight()) * Config.SCALE_RATIO;

@@ -76,6 +76,42 @@ public class AssetLoader {
         }
     }
 
+    public static void loadHomeScreenAssets(AssetManager assetManager){
+        // Load Texture
+        Map<String, List<String>> gameSrcs = getAssetNames(HOME);
+        if(!gameSrcs.isEmpty()) {
+            for(String src : gameSrcs.get(HOME)) {
+                loadAssetByType(assetManager, src);
+            }
+        }
+
+        // Load Sounds
+        Map<String, List<String>> soundSrcs = getAssetNames(SOUNDS);
+        if(!soundSrcs.isEmpty()) {
+            for(String src : soundSrcs.get(SOUNDS)) {
+                loadAssetByType(assetManager, src);
+            }
+        }
+    }
+
+    public static void unloadHomeScreenAssets(AssetManager assetManager){
+        // UnLoad Texture
+        Map<String, List<String>> gameSrcs = getAssetNames(HOME);
+        if(!gameSrcs.isEmpty()) {
+            for(String src : gameSrcs.get(HOME)) {
+                assetManager.unload(src);
+            }
+        }
+
+        // UnLoad Sounds
+        Map<String, List<String>> soundSrcs = getAssetNames(SOUNDS);
+        if(!soundSrcs.isEmpty()) {
+            for(String src : soundSrcs.get(SOUNDS)) {
+                assetManager.unload(src);
+            }
+        }
+    }
+
     private static void loadAssetByType(AssetManager assetManager, String src) {
         if(src.endsWith(".png") || src.endsWith(".jpg")) {
             assetManager.load(src, Texture.class);
