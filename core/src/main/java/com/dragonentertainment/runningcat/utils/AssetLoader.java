@@ -2,6 +2,7 @@ package com.dragonentertainment.runningcat.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,7 @@ public class AssetLoader {
 
     private static final String GAME = "GAME";
     private static final String HOME = "HOME";
+    private static final String SOUNDS = "SOUNDS";
 
     private static Map<String, List<String>> getAssetNames(String name) {
         Map<String, List<String>> assetNames = new HashMap<>();
@@ -39,6 +41,7 @@ public class AssetLoader {
     }
 
     public static void loadGameScreenAssets(AssetManager assetManager){
+        // Load Texture
         Map<String, List<String>> gameSrcs = getAssetNames(GAME);
         if(!gameSrcs.isEmpty()) {
             for(String src : gameSrcs.get(GAME)) {
@@ -46,12 +49,28 @@ public class AssetLoader {
             }
         }
 
+        // Load Sounds
+        Map<String, List<String>> soundSrcs = getAssetNames(SOUNDS);
+        if(!soundSrcs.isEmpty()) {
+            for(String src : soundSrcs.get(SOUNDS)) {
+                loadAssetByType(assetManager, src);
+            }
+        }
     }
 
     public static void unloadGameScreenAssets(AssetManager assetManager){
+        // UnLoad Texture
         Map<String, List<String>> gameSrcs = getAssetNames(GAME);
         if(!gameSrcs.isEmpty()) {
             for(String src : gameSrcs.get(GAME)) {
+                assetManager.unload(src);
+            }
+        }
+
+        // UnLoad Sounds
+        Map<String, List<String>> soundSrcs = getAssetNames(SOUNDS);
+        if(!soundSrcs.isEmpty()) {
+            for(String src : soundSrcs.get(SOUNDS)) {
                 assetManager.unload(src);
             }
         }
@@ -60,8 +79,10 @@ public class AssetLoader {
     private static void loadAssetByType(AssetManager assetManager, String src) {
         if(src.endsWith(".png") || src.endsWith(".jpg")) {
             assetManager.load(src, Texture.class);
-        } else if(src.endsWith(".mp3") || src.endsWith(".ogg") || src.endsWith(".wav")) {
+        } else if(src.endsWith(".ogg") || src.endsWith(".wav")) {
             assetManager.load(src, Sound.class);
+        } else if(src.endsWith(".mp3")) {
+            assetManager.load(src, Music.class);
         }
     }
 }

@@ -10,9 +10,11 @@ import com.dragonentertainment.runningcat.components.player.JumpComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.CatState;
 import com.dragonentertainment.runningcat.enums.GameState;
+import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
+import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class JumpSystem extends IteratingSystem {
 

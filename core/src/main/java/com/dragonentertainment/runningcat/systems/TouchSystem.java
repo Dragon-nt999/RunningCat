@@ -13,9 +13,11 @@ import com.dragonentertainment.runningcat.components.TouchComponent;
 import com.dragonentertainment.runningcat.components.player.PlayerComponent;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.RenderType;
+import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.MappersComponent;
+import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class TouchSystem extends EntitySystem implements InputProcessor
 {
@@ -68,6 +70,7 @@ public class TouchSystem extends EntitySystem implements InputProcessor
         if(touch.pressDuration == 0) {
             touch.isPressed = true;
             touch.pressStartTime = TimeUtils.millis();
+            SoundManager.getInstance().playSound(AssetsName.Sounds.Game.JUMP);
         }
 
         return true;
