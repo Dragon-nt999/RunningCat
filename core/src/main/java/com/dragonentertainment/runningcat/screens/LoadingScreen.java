@@ -17,6 +17,7 @@ public class LoadingScreen extends BaseScreen {
         this.targetScreen = screenType;
         switch (this.targetScreen) {
             case HOME:
+                AssetLoader.loadHomeScreenAssets(this.game.assetManager);
                 break;
             case GAME:
                 AssetLoader.loadGameScreenAssets(this.game.assetManager);
@@ -33,6 +34,7 @@ public class LoadingScreen extends BaseScreen {
         if(this.game.assetManager.update()) {
             switch (this.targetScreen){
                 case HOME:
+                    this.game.setScreen(new HomeScreen(this.game));
                     break;
                 case GAME:
                     this.game.setScreen(new GameScreen(this.game));
@@ -50,5 +52,6 @@ public class LoadingScreen extends BaseScreen {
     protected void renderContent(float delta) {
 
     }
+
 
 }

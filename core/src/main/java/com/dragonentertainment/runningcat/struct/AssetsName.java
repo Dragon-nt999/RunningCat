@@ -162,11 +162,31 @@ public class AssetsName {
                 public static final String CAT_IDLE0015 = "home/sequences/cat/cat_idle0015.png";
                 public static final String CAT_IDLE0016 = "home/sequences/cat/cat_idle0016.png";
             }
+            public static class Cat_injured {
+                public static final String CAT_INJURED0001 = "home/sequences/cat_injured/cat_injured0001.png";
+                public static final String CAT_INJURED0002 = "home/sequences/cat_injured/cat_injured0002.png";
+                public static final String CAT_INJURED0003 = "home/sequences/cat_injured/cat_injured0003.png";
+                public static final String CAT_INJURED0004 = "home/sequences/cat_injured/cat_injured0004.png";
+                public static final String CAT_INJURED0005 = "home/sequences/cat_injured/cat_injured0005.png";
+                public static final String CAT_INJURED0006 = "home/sequences/cat_injured/cat_injured0006.png";
+                public static final String CAT_INJURED0007 = "home/sequences/cat_injured/cat_injured0007.png";
+                public static final String CAT_INJURED0008 = "home/sequences/cat_injured/cat_injured0008.png";
+                public static final String CAT_INJURED0009 = "home/sequences/cat_injured/cat_injured0009.png";
+                public static final String CAT_INJURED0010 = "home/sequences/cat_injured/cat_injured0010.png";
+                public static final String CAT_INJURED0011 = "home/sequences/cat_injured/cat_injured0011.png";
+                public static final String CAT_INJURED0012 = "home/sequences/cat_injured/cat_injured0012.png";
+                public static final String CAT_INJURED0013 = "home/sequences/cat_injured/cat_injured0013.png";
+                public static final String CAT_INJURED0014 = "home/sequences/cat_injured/cat_injured0014.png";
+                public static final String CAT_INJURED0015 = "home/sequences/cat_injured/cat_injured0015.png";
+                public static final String CAT_INJURED0016 = "home/sequences/cat_injured/cat_injured0016.png";
+                public static final String CAT_INJURED0017 = "home/sequences/cat_injured/cat_injured0017.png";
+                public static final String CAT_INJURED0018 = "home/sequences/cat_injured/cat_injured0018.png";
+                public static final String CAT_INJURED0019 = "home/sequences/cat_injured/cat_injured0019.png";
+            }
         }
         public static class Ui {
             public static final String BTNPLAY = "home/ui/btnPlay.png";
-            public static final String BTNSETTING = "home/ui/btnSetting.png";
-            public static final String GAME_BAR_SMALL = "home/ui/game_bar_small.png";
+            public static final String HOME_SCORE_CONTAINER = "home/ui/home_score_container.png";
         }
     }
     public static class Sounds {

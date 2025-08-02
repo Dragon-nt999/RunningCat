@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.dragonentertainment.runningcat.AppGame;
+import com.dragonentertainment.runningcat.enums.CatTextureType;
 import com.dragonentertainment.runningcat.enums.GameState;
 import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.factory.PlayerFactory;
@@ -45,7 +46,7 @@ public class GameScreen extends BaseScreen {
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
         // Create Cat
-        PlayerFactory.createCat(game, this.engine);
+        PlayerFactory.createCat(game, this.engine, CatTextureType.CAT_IN_GAME);
 
         // Parallax
         this.engine.addSystem(new ParallaxCreateSystem(this.game, this.engine));
