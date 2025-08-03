@@ -24,19 +24,14 @@ import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
 import com.dragonentertainment.runningcat.ui.UIFactory;
-import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.HealthManager;
-import com.dragonentertainment.runningcat.utils.LevelManager;
 import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class GameScreen extends BaseScreen {
     private final PooledEngine engine;
     private float timeToRestart = -1;
-    private boolean playSoundFailure = false;
-    private final String musicName = AssetsName.Sounds.Game.BACKGROUND_MUSIC;
-
     public GameScreen(AppGame game) {
         super(game);
 
@@ -46,6 +41,79 @@ public class GameScreen extends BaseScreen {
         // Get Background
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
+        this.initGame();
+        // Load Sound
+        SoundManager.getInstance().init(this.game.assetManager);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        this.ui.draw(delta);
+    }
+
+    @Override
+    protected void renderContent(float delta) {
+        if(GameStateManager.getInstance().is(GameState.OVER)) {
+            if(this.timeToRestart < 0f) {
+                this.timeToRestart = 0f;
+                // Stop music and Play sound effect
+                SoundManager.getInstance().stopMusic(AssetsName.Sounds.Game.BACKGROUND_MUSIC);
+                SoundManager.getInstance().playSound(AssetsName.Sounds.Game.FAILURE);
+            } else {
+                this.timeToRestart += delta;
+                if(this.timeToRestart >= 2f) {
+                    this.timeToRestart = -1f;
+                    if(HealthManager.getInstance().getHealth() > 0) {
+                        HealthManager.getInstance().decreaseHealth();
+                        // Save user's attempts
+                        GameData.getInstance().increaseAttempts();
+                        this.engine.removeAllSystems();
+                        this.engine.removeAllEntities();
+                        this.ui.dispose();
+                        this.initGame();
+                    } else {
+                        this.game.playerIsInjured = true;
+                        this.game.setScreen(new LoadingScreen(this.game, ScreenType.HOME));
+                    }
+                }
+            }
+        } else {
+            SoundManager.getInstance().playMusic(AssetsName.Sounds.Game.BACKGROUND_MUSIC);
+        }
+
+        if(this.engine.getEntities().size() > 0 && this.engine.getSystems().size() > 0) {
+            this.engine.update(delta);
+        }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        this.ui.resize();
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        this.ui.dispose();
+        SoundManager.getInstance().stopMusic(AssetsName.Sounds.Game.BACKGROUND_MUSIC);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.ui.dispose();
+        SoundManager.getInstance().stopMusic(AssetsName.Sounds.Game.BACKGROUND_MUSIC);
+    }
+
+    private void initGame() {
+        GameStateManager.getInstance().setState(GameState.PLAYING);
         // Create Cat
         PlayerFactory.createCat(game, this.engine, CatTextureType.CAT_IN_GAME, 3, 4);
 
@@ -93,9 +161,6 @@ public class GameScreen extends BaseScreen {
         // Scale effect
         this.engine.addSystem(new ScaleSystem(this.game, this.engine));
 
-        // Reset Game state
-        GameStateManager.getInstance().setState(GameState.PLAYING);
-
         // UI
         this.ui = UIFactory.createUI(this.game, ScreenType.GAME);
 
@@ -105,78 +170,6 @@ public class GameScreen extends BaseScreen {
         multiplexer.addProcessor(touchSystem);
 
         Gdx.input.setInputProcessor(multiplexer);
-
-        // Save user's attempts
-        GameData.getInstance().increaseAttempts();
-
-        // Load Sound
-        SoundManager.getInstance().init(this.game.assetManager);
-
-    }
-
-    @Override
-    public void show() {
-        super.show();
-        SoundManager.getInstance().playMusic(musicName);
-    }
-
-    @Override
-    public void render(float delta) {
-        super.render(delta);
-        this.ui.draw();
-    }
-
-    @Override
-    protected void renderContent(float delta) {
-        if(GameStateManager.getInstance().is(GameState.OVER)) {
-            if(this.timeToRestart < 0f) {
-                this.timeToRestart = 0f;
-                // Play sound effect
-                if(!this.playSoundFailure) {
-                    // Stop Music
-                    SoundManager.getInstance().stopMusic(musicName);
-                    SoundManager.getInstance().playSound(AssetsName.Sounds.Game.FAILURE);
-                    HealthManager.getInstance().decreaseHealth();
-                    this.playSoundFailure = true;
-                }
-            } else {
-                this.timeToRestart += delta;
-                this.playSoundFailure = false;
-                if(this.timeToRestart >= 2f) {
-                    if(HealthManager.getInstance().getHealth() > 0) {
-                        this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
-                    } else {
-                        this.game.setScreen(new LoadingScreen(this.game, ScreenType.HOME));
-                        Gdx.app.log("HEALTH", HealthManager.getInstance().getHealth() + "");
-                    }
-                    //Gdx.app.log("HEALTH", HealthManager.getInstance().getHealth() + "");
-                }
-            }
-        }
-
-        this.engine.update(delta);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-        this.ui.resize();
-    }
-
-    @Override
-    public void hide() {
-        super.hide();
-        AssetLoader.unloadGameScreenAssets(this.game.assetManager);
-        this.ui.dispose();
-        SoundManager.getInstance().stopMusic(musicName);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        AssetLoader.unloadGameScreenAssets(this.game.assetManager);
-        this.ui.dispose();
-        SoundManager.getInstance().stopMusic(musicName);
     }
 
 }

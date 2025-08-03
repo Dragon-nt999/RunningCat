@@ -24,7 +24,9 @@ public class LevelManager {
     }
 
     public void increase() {
-        this.level = (float) (ScoreManager.getInstance().getScore() / 50);
+        if(ScoreManager.getInstance().getScore() > 0 && ScoreManager.getInstance().getScore() % 50 == 0 ) {
+            this.level = (float) (ScoreManager.getInstance().getScore() / 50);
+        }
 
         if((ScoreManager.getInstance().getScore() % 100 == 0)) {
             this.effect = true;

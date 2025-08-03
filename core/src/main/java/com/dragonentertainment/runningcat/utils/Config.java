@@ -42,4 +42,9 @@ public class Config {
      *----------------------------------------------*/
     public static final int NUM_BIRCK_OF_ROW = 6;
 
+    /*-----------------------------------------------
+     * Game score
+     *----------------------------------------------*/
+    public static final int GAME_SCORE_INITIAL = 10;
+
 }

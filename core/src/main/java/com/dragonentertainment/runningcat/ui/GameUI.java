@@ -26,6 +26,9 @@ import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class GameUI extends BaseUI{
     private Label scoreLabel;
+    private float timeElapsed = 0f;
+    private Label tutorialLabel;
+    private Image tutorialBg;
 
     public GameUI(AppGame game) {
         super(game);
@@ -36,11 +39,18 @@ public class GameUI extends BaseUI{
         stage.getViewport().apply(true);
         this.drawScore();
         this.drawBtnPause();
+        this.drawTutorial();
     }
 
     @Override
-    protected void update() {
+    protected void update(float delta) {
         this.scoreLabel.setText(ScoreManager.getInstance().getScore());
+
+        this.timeElapsed += delta;
+        if(this.timeElapsed > 5f) {
+            this.tutorialLabel.setVisible(false);
+            this.tutorialBg.setVisible(false);
+        }
     }
 
     /**
@@ -64,9 +74,8 @@ public class GameUI extends BaseUI{
         labelStyle.font = FontManager.getInstance().getFont(90, Color.valueOf("#8D4200"));
 
         this.scoreLabel =  new Label(ScoreManager.getInstance().getScore() + "", labelStyle);
-        this.scoreLabel.setAlignment(Align.center);
         this.scoreLabel.setPosition(
-            this.scoreLabel.getWidth() * 2,
+            (float) Gdx.graphics.getWidth() / 8,
             scoreBg.getY()
         );
         this.stage.addActor(this.scoreLabel);
@@ -127,4 +136,37 @@ public class GameUI extends BaseUI{
 
         return pauseButton;
     }
+
+    /**
+     * ******************************************************
+     * Tutorial
+     * ******************************************************
+     * */
+    private void drawTutorial() {
+
+        Texture tutorialTexture = this.game.assetManager.get(AssetsName.Game.Ui.TUTORIAL_CONTAINER);
+        this.tutorialBg = new Image(tutorialTexture);
+
+        float w = tutorialTexture.getWidth();
+        float h = tutorialTexture.getHeight();
+
+        this.tutorialBg.setSize(w, h);
+        this.tutorialBg.setPosition((
+            Gdx.graphics.getWidth() - this.tutorialBg.getWidth())/ 2,
+            (float) Gdx.graphics.getHeight() / 1.2f
+        );
+        this.stage.addActor(this.tutorialBg);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = FontManager.getInstance().getFont(40, Color.valueOf("#8D4200"));
+
+        this.tutorialLabel = new Label("Touch anywhere to jump", labelStyle);
+        this.tutorialLabel.setAlignment(Align.center);
+        this.tutorialLabel.setPosition(
+            (Gdx.graphics.getWidth() - this.tutorialLabel.getWidth())/ 2,
+            (float) Gdx.graphics.getHeight() / 1.18f
+        );
+        this.stage.addActor(this.tutorialLabel);
+    }
+
 }

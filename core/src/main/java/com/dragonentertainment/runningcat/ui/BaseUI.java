@@ -19,13 +19,13 @@ public abstract class BaseUI {
     }
 
     protected abstract void init();
-    protected abstract void update();
+    protected abstract void update(float deltaTime);
 
-    public void draw() {
+    public void draw(float delta) {
         this.stage.getViewport().apply(true);
         this.stage.act();
         this.stage.draw();
-        this.update();
+        this.update(delta);
     }
 
     public void resize(){

@@ -17,6 +17,9 @@ import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.screens.LoadingScreen;
 import com.dragonentertainment.runningcat.struct.AssetsName;
 import com.dragonentertainment.runningcat.utils.FontManager;
+import com.dragonentertainment.runningcat.utils.GameData;
+import com.dragonentertainment.runningcat.utils.HealthManager;
+import com.dragonentertainment.runningcat.utils.LevelManager;
 import com.dragonentertainment.runningcat.utils.ScoreManager;
 import com.dragonentertainment.runningcat.utils.SoundManager;
 
@@ -34,7 +37,7 @@ public class HomeUI extends BaseUI{
     }
 
     @Override
-    protected void update() {
+    protected void update(float delta) {
 
     }
     /**
@@ -56,7 +59,7 @@ public class HomeUI extends BaseUI{
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = FontManager.getInstance().getFont(90, Color.valueOf("#8D4200"));
-        Label scoreLabel = new Label(ScoreManager.getInstance().getScore() + "", labelStyle);
+        Label scoreLabel = new Label(GameData.getInstance().getScore() + "", labelStyle);
         Label scoreName = new Label("HIGH SCORE", labelStyle);
 
         scoreName.setAlignment(Align.center);
@@ -99,6 +102,9 @@ public class HomeUI extends BaseUI{
                         Actions.scaleTo(1f, 1f, 0.05f)
                     )
                 );
+                LevelManager.getInstance().setLevel(1);
+                HealthManager.getInstance().reset();
+                ScoreManager.getInstance().resetScore();
                 game.setScreen(new LoadingScreen(game, ScreenType.GAME));
             }
         });

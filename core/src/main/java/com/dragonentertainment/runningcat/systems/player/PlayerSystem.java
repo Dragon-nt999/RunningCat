@@ -24,7 +24,6 @@ public class PlayerSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         RenderTypeComponent type = MappersComponent.type.get(entity);
-
         if(type.type == RenderType.CAT){
             CatStateManager.changeState(this.game, entity);
         } else if(type.type == RenderType.MOUSE){

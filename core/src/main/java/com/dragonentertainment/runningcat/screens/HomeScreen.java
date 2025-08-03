@@ -11,14 +11,11 @@ import com.dragonentertainment.runningcat.systems.RenderSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
 import com.dragonentertainment.runningcat.ui.HomeUI;
-import com.dragonentertainment.runningcat.utils.AssetLoader;
-import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class HomeScreen extends BaseScreen{
     private final PooledEngine engine;
-    private String musicName = AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC;
     public HomeScreen(AppGame game) {
         super(game);
         this.engine = new PooledEngine();
@@ -29,7 +26,7 @@ public class HomeScreen extends BaseScreen{
         // Create Cat
         CatTextureType textureType = CatTextureType.CAT_IN_HOME_IDLE;
 
-        if(GameData.getInstance().catIsInjured()) {
+        if(this.game.playerIsInjured) {
             textureType = CatTextureType.CAT_IN_HOME_INJURED;
         }
         PlayerFactory.createCat(game, this.engine, textureType,
@@ -56,13 +53,13 @@ public class HomeScreen extends BaseScreen{
     @Override
     public void show() {
         super.show();
-        SoundManager.getInstance().playMusic(musicName);
+        SoundManager.getInstance().playMusic(AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-        this.ui.draw();
+        this.ui.draw(delta);
     }
 
     @Override
@@ -79,15 +76,14 @@ public class HomeScreen extends BaseScreen{
     @Override
     public void hide() {
         super.hide();
-        AssetLoader.unloadHomeScreenAssets(this.game.assetManager);
-        SoundManager.getInstance().stopMusic(musicName);
+        SoundManager.getInstance().stopMusic(AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        AssetLoader.unloadHomeScreenAssets(this.game.assetManager);
         this.ui.dispose();
+        SoundManager.getInstance().stopMusic(AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC);
     }
 
 }
