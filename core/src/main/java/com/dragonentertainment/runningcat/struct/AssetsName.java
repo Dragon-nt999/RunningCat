@@ -189,6 +189,10 @@ public class AssetsName {
             public static final String HOME_SCORE_CONTAINER = "home/ui/home_score_container.png";
         }
     }
+    public static class Loading {
+        public static final String LOADING0 = "loading/loading0.png";
+        public static final String LOADING100 = "loading/loading100.png";
+    }
     public static class Sounds {
         public static class Common {
             public static final String TOUCH = "sounds/common/touch.wav";
