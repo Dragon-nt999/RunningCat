@@ -57,6 +57,10 @@ public class HomeScreen extends BaseScreen{
     public void show() {
         super.show();
         SoundManager.getInstance().playMusic(musicName);
+
+        if(this.game.adController != null) {
+            this.game.adController.showBannerAds();
+        }
     }
 
     @Override

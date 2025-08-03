@@ -2,6 +2,7 @@ package com.dragonentertainment.runningcat;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.dragonentertainment.runningcat.ads.AdController;
 import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.screens.LoadingScreen;
 import com.dragonentertainment.runningcat.utils.GameGrid;
@@ -9,6 +10,12 @@ import com.dragonentertainment.runningcat.utils.GameGrid;
 public class AppGame extends Game {
     public AssetManager assetManager;
     private LoadingScreen loadingScreen;
+
+    public final AdController adController;
+
+    public AppGame(AdController adController) {
+        this.adController = adController;
+    }
 
     @Override
     public void create() {
