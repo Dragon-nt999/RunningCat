@@ -27,6 +27,7 @@ import com.dragonentertainment.runningcat.ui.UIFactory;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
+import com.dragonentertainment.runningcat.utils.HealthManager;
 import com.dragonentertainment.runningcat.utils.LevelManager;
 import com.dragonentertainment.runningcat.utils.SoundManager;
 
@@ -34,7 +35,7 @@ public class GameScreen extends BaseScreen {
     private final PooledEngine engine;
     private float timeToRestart = -1;
     private boolean playSoundFailure = false;
-    private String musicName = AssetsName.Sounds.Game.BACKGROUND_MUSIC;
+    private final String musicName = AssetsName.Sounds.Game.BACKGROUND_MUSIC;
 
     public GameScreen(AppGame game) {
         super(game);
@@ -132,17 +133,23 @@ public class GameScreen extends BaseScreen {
                 this.timeToRestart = 0f;
                 // Play sound effect
                 if(!this.playSoundFailure) {
+                    // Stop Music
+                    SoundManager.getInstance().stopMusic(musicName);
                     SoundManager.getInstance().playSound(AssetsName.Sounds.Game.FAILURE);
+                    HealthManager.getInstance().decreaseHealth();
                     this.playSoundFailure = true;
                 }
-
-                // Stop Music
-                SoundManager.getInstance().stopMusic(musicName);
             } else {
                 this.timeToRestart += delta;
                 this.playSoundFailure = false;
                 if(this.timeToRestart >= 2f) {
-                    this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
+                    if(HealthManager.getInstance().getHealth() > 0) {
+                        this.game.setScreen(new LoadingScreen(this.game, ScreenType.GAME));
+                    } else {
+                        this.game.setScreen(new LoadingScreen(this.game, ScreenType.HOME));
+                        Gdx.app.log("HEALTH", HealthManager.getInstance().getHealth() + "");
+                    }
+                    //Gdx.app.log("HEALTH", HealthManager.getInstance().getHealth() + "");
                 }
             }
         }
@@ -160,6 +167,7 @@ public class GameScreen extends BaseScreen {
     public void hide() {
         super.hide();
         AssetLoader.unloadGameScreenAssets(this.game.assetManager);
+        this.ui.dispose();
         SoundManager.getInstance().stopMusic(musicName);
     }
 
@@ -168,6 +176,7 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         AssetLoader.unloadGameScreenAssets(this.game.assetManager);
         this.ui.dispose();
+        SoundManager.getInstance().stopMusic(musicName);
     }
 
 }

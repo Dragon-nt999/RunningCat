@@ -18,6 +18,7 @@ public class ScoreManager {
         if(this.score > GameData.getInstance().getScore()) {
             GameData.getInstance().saveScore(this.score);
         }
+        HealthManager.getInstance().increaseHealth();
     }
 
     public void resetScore() {

@@ -13,7 +13,7 @@ public class AppGame extends Game {
     @Override
     public void create() {
         this.assetManager = new AssetManager();
-        this.loadingScreen = new LoadingScreen(this, ScreenType.HOME);
+        this.loadingScreen = new LoadingScreen(this, ScreenType.GAME);
         this.setScreen(this.loadingScreen);
 
         // Create allPosition on Game Grid
