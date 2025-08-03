@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.dragonentertainment.runningcat.AppGame;
 import com.dragonentertainment.runningcat.enums.ScreenType;
-import com.dragonentertainment.runningcat.utils.AssetLoader;
 import com.dragonentertainment.runningcat.utils.FontManager;
 
 public class LoadingScreen implements Screen {
@@ -24,30 +23,20 @@ public class LoadingScreen implements Screen {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         this.targetScreen = screenType;
-        switch (this.targetScreen) {
-            case HOME:
-                AssetLoader.loadHomeScreenAssets(game.assetManager);
-                break;
-            case GAME:
-                AssetLoader.loadGameScreenAssets(game.assetManager);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
     public void show() {
         // Text Percent loading
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = FontManager.getInstance().getFont(90, Color.WHITE);
+        labelStyle.font = FontManager.getInstance().getFont(90, Color.valueOf("#2760A2"));
         this.percentLoading = new Label("0%", labelStyle);
 
         Label title = new Label("Loading", labelStyle);
         title.setAlignment(Align.center);
         title.setPosition(
             (Gdx.graphics.getWidth() - title.getWidth()) / 2,
-            (Gdx.graphics.getHeight() - title.getHeight()) / 3
+            (Gdx.graphics.getHeight() - title.getHeight()) / 2.5f
         );
 
         this.percentLoading.setAlignment(Align.center);
@@ -61,7 +50,7 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(this.game.assetManager.update()) {
@@ -107,5 +96,6 @@ public class LoadingScreen implements Screen {
     @Override
     public void dispose() {
         this.stage.dispose();
+        this.game.dispose();
     }
 }

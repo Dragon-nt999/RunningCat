@@ -137,6 +137,7 @@ public class AssetsName {
             public static final String BTN_PLAY = "game/ui/btn_play.png";
             public static final String COIN = "game/ui/coin.png";
             public static final String SCORE_CONTAINER = "game/ui/score_container.png";
+            public static final String TUTORIAL_CONTAINER = "game/ui/tutorial_container.png";
         }
     }
     public static class Home {
