@@ -11,6 +11,8 @@ import com.dragonentertainment.runningcat.systems.RenderSystem;
 import com.dragonentertainment.runningcat.systems.player.AnimationSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
 import com.dragonentertainment.runningcat.ui.HomeUI;
+import com.dragonentertainment.runningcat.utils.Config;
+import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameGrid;
 import com.dragonentertainment.runningcat.utils.SoundManager;
 
@@ -54,6 +56,12 @@ public class HomeScreen extends BaseScreen{
     public void show() {
         super.show();
         SoundManager.getInstance().playMusic(AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC);
+
+        // Show banner Ads
+        if(this.game.adController != null &&
+            GameData.getInstance().getAttempts() >= Config.MAX_ATTEMPTS_TO_SHOW_ADS) {
+            this.game.adController.showBannerAds();
+        }
     }
 
     @Override
@@ -77,6 +85,7 @@ public class HomeScreen extends BaseScreen{
     public void hide() {
         super.hide();
         SoundManager.getInstance().stopMusic(AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC);
+        this.game.adController.hideBannerAds();
     }
 
     @Override
@@ -84,6 +93,7 @@ public class HomeScreen extends BaseScreen{
         super.dispose();
         this.ui.dispose();
         SoundManager.getInstance().stopMusic(AssetsName.Sounds.Home.HOME_BACKGROUND_MUSIC);
+        this.game.adController.hideBannerAds();
     }
 
 }

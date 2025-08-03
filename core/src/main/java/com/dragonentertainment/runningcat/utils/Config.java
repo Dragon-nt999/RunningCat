@@ -46,5 +46,6 @@ public class Config {
      * Game score
      *----------------------------------------------*/
     public static final int GAME_SCORE_INITIAL = 10;
+    public static final int MAX_ATTEMPTS_TO_SHOW_ADS = 2;
 
 }

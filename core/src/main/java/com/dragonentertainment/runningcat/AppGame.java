@@ -3,6 +3,7 @@ package com.dragonentertainment.runningcat;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.dragonentertainment.runningcat.ads.AdController;
 import com.dragonentertainment.runningcat.enums.ScreenType;
 import com.dragonentertainment.runningcat.screens.LoadingScreen;
 import com.dragonentertainment.runningcat.utils.AssetLoader;
@@ -13,6 +14,12 @@ public class AppGame extends Game {
     public AssetManager assetManager;
     public boolean playerIsInjured = false;
     private LoadingScreen loadingScreen;
+
+    public AdController adController;
+
+    public AppGame(AdController adController){
+        this.adController = adController;
+    }
 
     @Override
     public void create() {
