@@ -24,6 +24,7 @@ import com.dragonentertainment.runningcat.systems.parallax.ParallaxCreateSystem;
 import com.dragonentertainment.runningcat.systems.player.JumpSystem;
 import com.dragonentertainment.runningcat.systems.player.PlayerSystem;
 import com.dragonentertainment.runningcat.ui.UIFactory;
+import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.HealthManager;
@@ -71,15 +72,17 @@ public class GameScreen extends BaseScreen {
                     this.timeToRestart = -1f;
                     if(HealthManager.getInstance().getHealth() > 0) {
                         HealthManager.getInstance().decreaseHealth();
-                        // Save user's attempts
-                        GameData.getInstance().increaseAttempts();
                         this.engine.removeAllSystems();
                         this.engine.removeAllEntities();
                         this.ui.dispose();
                         this.initGame();
                     } else {
                         this.game.playerIsInjured = true;
-                        this.game.setScreen(new LoadingScreen(this.game, ScreenType.HOME));
+                        if(GameData.getInstance().getAttempts() >= Config.MAX_ATTEMPTS_TO_SHOW_ADS) {
+                            this.game.setScreen(new AdsScreen(this.game));
+                        } else {
+                            this.game.setScreen(new LoadingScreen(this.game, ScreenType.HOME));
+                        }
                     }
                 }
             }

@@ -54,6 +54,7 @@ android {
 repositories {
   // needed for AAPT2, may be needed for other tools
   google()
+  mavenCentral()
 }
 
 configurations { natives }
@@ -75,6 +76,8 @@ dependencies {
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
   natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+
+  implementation 'com.google.android.gms:play-services-ads:22.6.0'
 
 }
 

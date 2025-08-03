@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class GameData {
-    private final static GameData instance = new GameData();
+    private static GameData instance = new GameData();
     private static final String PREF_NAME = "runningcat_game";
     private static final String KEY_SCORE = "score";
     private static final String KEY_ATTEMPTS = "attempts";
-    private static final String KEY_CAT_IS_INJURED = "is_injured";
-    private static int ATTEMPTS = 0;
+    private int attempts = 0;
     private final Preferences prefs;
 
     public GameData() {
@@ -17,6 +16,10 @@ public class GameData {
     }
 
     public static GameData getInstance() {
+        if(instance == null) {
+            instance = new GameData();
+        }
+
         return instance;
     }
 
@@ -30,8 +33,10 @@ public class GameData {
     }
 
     public void increaseAttempts() {
-        ATTEMPTS++;
-        prefs.putInteger(KEY_ATTEMPTS, ATTEMPTS);
+        attempts = prefs.getInteger(KEY_ATTEMPTS, 0);
+        attempts++;
+
+        prefs.putInteger(KEY_ATTEMPTS, attempts);
         prefs.flush();
     }
 

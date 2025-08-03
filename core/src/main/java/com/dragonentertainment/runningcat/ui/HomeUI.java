@@ -102,9 +102,11 @@ public class HomeUI extends BaseUI{
                         Actions.scaleTo(1f, 1f, 0.05f)
                     )
                 );
+                GameData.getInstance().increaseAttempts();
                 LevelManager.getInstance().setLevel(1);
                 HealthManager.getInstance().reset();
                 ScoreManager.getInstance().resetScore();
+                // Save user's attempts
                 game.setScreen(new LoadingScreen(game, ScreenType.GAME));
             }
         });
