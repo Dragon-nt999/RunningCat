@@ -160,7 +160,7 @@ public class GameUI extends BaseUI{
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = FontManager.getInstance().getFont(40, Color.valueOf("#8D4200"));
 
-        this.tutorialLabel = new Label("Touch anywhere to jump", labelStyle);
+        this.tutorialLabel = new Label("Tap anywhere to jump", labelStyle);
         this.tutorialLabel.setAlignment(Align.center);
         this.tutorialLabel.setPosition(
             (Gdx.graphics.getWidth() - this.tutorialLabel.getWidth())/ 2,

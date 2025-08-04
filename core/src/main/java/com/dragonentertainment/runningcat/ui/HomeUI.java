@@ -106,6 +106,7 @@ public class HomeUI extends BaseUI{
                 LevelManager.getInstance().setLevel(1);
                 HealthManager.getInstance().reset();
                 ScoreManager.getInstance().resetScore();
+                LevelManager.getInstance().resetNumBrickPerLevel();
                 // Save user's attempts
                 game.setScreen(new LoadingScreen(game, ScreenType.GAME));
             }
