@@ -28,6 +28,7 @@ import com.dragonentertainment.runningcat.utils.Config;
 import com.dragonentertainment.runningcat.utils.GameData;
 import com.dragonentertainment.runningcat.utils.GameStateManager;
 import com.dragonentertainment.runningcat.utils.HealthManager;
+import com.dragonentertainment.runningcat.utils.LevelManager;
 import com.dragonentertainment.runningcat.utils.SoundManager;
 
 public class GameScreen extends BaseScreen {
@@ -43,6 +44,7 @@ public class GameScreen extends BaseScreen {
         this.background = this.game.assetManager.get(AssetsName.Game.Backgrounds.BGGAME_DAY,
                                                     Texture.class);
         this.initGame();
+
         // Load Sound
         SoundManager.getInstance().init(this.game.assetManager);
     }

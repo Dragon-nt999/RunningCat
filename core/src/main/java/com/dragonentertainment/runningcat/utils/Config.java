@@ -25,7 +25,7 @@ public class Config {
     /*-----------------------------------------------
      * Maximum number of row
      *----------------------------------------------*/
-    public static final int MAX_NUM_ROW = 5;
+    public static final int MAX_NUM_BRICK_ROW = 6;
 
     /*-----------------------------------------------
      * Maximum hight jump
@@ -36,11 +36,6 @@ public class Config {
      * Scale ratio for Entity
      *----------------------------------------------*/
     public static final float SCALE_RATIO = 0.7f;
-
-    /*-----------------------------------------------
-     * Num Of Brick On Row
-     *----------------------------------------------*/
-    public static final int NUM_BIRCK_OF_ROW = 6;
 
     /*-----------------------------------------------
      * Game score

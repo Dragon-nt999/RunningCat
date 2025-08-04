@@ -10,7 +10,7 @@ public class LevelManager {
 
     private final static LevelManager instance = new LevelManager();
     private float level = 1f;
-    private boolean effect = false;
+    private int numBrickPerLevel = Config.MAX_NUM_BRICK_ROW;
 
     public static LevelManager getInstance() {
         return instance;
@@ -29,17 +29,23 @@ public class LevelManager {
         }
 
         if((ScoreManager.getInstance().getScore() % 100 == 0)) {
-            this.effect = true;
+            this.decreasedNumBrickPerLevel();
         }
     }
     public float parseLevelToSpeed() {
         return (float)(this.level / 100);
     }
 
-    public boolean isEffect() {
-        return this.effect;
+    public void decreasedNumBrickPerLevel() {
+        if(this.numBrickPerLevel > 2) {
+            this.numBrickPerLevel--;
+        }
     }
-    public void setEffect(boolean effect) {
-        this.effect = effect;
+
+    public int getNumBrickPerLevel() {
+        return this.numBrickPerLevel;
+    }
+    public void resetNumBrickPerLevel() {
+        this.numBrickPerLevel = Config.MAX_NUM_BRICK_ROW;
     }
 }

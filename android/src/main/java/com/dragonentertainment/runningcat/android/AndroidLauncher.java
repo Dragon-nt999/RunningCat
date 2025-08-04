@@ -31,11 +31,11 @@ public class AndroidLauncher extends AndroidApplication implements AdController 
 
     private AdView bannerAd;
     private InterstitialAd interstitialAd;
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private RelativeLayout layout;
     private AppGame game;
-    public static final String INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712";
-    public static final String BANNER_ID = "ca-app-pub-3940256099942544/9214589741";
+    public static final String INTERSTITIAL_ID = "ca-app-pub-9745457055117981/7398185192";
+    public static final String BANNER_ID = "ca-app-pub-9745457055117981/2716704156";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

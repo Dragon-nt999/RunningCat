@@ -16,7 +16,7 @@ public class RandomMatrixPositions {
     private static int firstCount = Config.FIRST_NUM_BRICKS;
 
     private final static int row = 3;
-    private static int col = Config.NUM_BIRCK_OF_ROW;
+
     public static List<Vector2> getBlockPositions(boolean isRespawn) {
         List<Vector2> results = new ArrayList<>();
 
@@ -50,14 +50,6 @@ public class RandomMatrixPositions {
          *-----------------------------------------------*/
         yPos.add(new Vector2((int)GameGrid.WORLD_WIDTH, row));
 
-        /*-----------------------------------------------
-         * Set num of brick by level
-         *-----------------------------------------------*/
-        if(col > 2 && LevelManager.getInstance().isEffect()) {
-            col--;
-            LevelManager.getInstance().setEffect(false);
-        }
-
         for(Vector2 p : GameGrid.allPositions) {
 
             if(p.y > 0 && p.y % row == 0 && p.y < GameGrid.WORLD_HEIGHT
@@ -80,7 +72,7 @@ public class RandomMatrixPositions {
                  *-----------------------------------------------*/
                 if(lastXByY.containsKey(p.y)) {
                     float lastX = lastXByY.get(p.y);
-                    if(p.x <= lastX + col) continue;
+                    if(p.x <= lastX + LevelManager.getInstance().getNumBrickPerLevel()) continue;
                 }
 
                 /*-----------------------------------------------
@@ -102,15 +94,12 @@ public class RandomMatrixPositions {
                 Vector2 newP = new Vector2(p.x + index, p.y);
                 results.add(newP);
                 index++;
-            }while (index <= col);
+            }while (index <= LevelManager.getInstance().getNumBrickPerLevel());
 
         }
 
         // Reset when restart game
         firstCount = Config.FIRST_NUM_BRICKS;
-
-        //Gdx.app.log("BRICKS", results.toString());
-
         return results;
     }
 }

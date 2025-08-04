@@ -32,8 +32,8 @@ public class AppGame extends Game {
             type = ScreenType.GAME;
         }
 
-        AssetLoader.loadHomeScreenAssets(this.assetManager);
         AssetLoader.loadGameScreenAssets(this.assetManager);
+        AssetLoader.loadHomeScreenAssets(this.assetManager);
 
         this.loadingScreen = new LoadingScreen(this, type);
         this.setScreen(this.loadingScreen);
@@ -47,8 +47,8 @@ public class AppGame extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        AssetLoader.unloadHomeScreenAssets(this.assetManager);
         AssetLoader.unloadGameScreenAssets(this.assetManager);
+        AssetLoader.unloadHomeScreenAssets(this.assetManager);
         this.assetManager.dispose();
         this.loadingScreen.dispose();
     }
