@@ -34,8 +34,8 @@ public class AndroidLauncher extends AndroidApplication implements AdController 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private RelativeLayout layout;
     private AppGame game;
-    public static final String INTERSTITIAL_ID = "ca-app-pub-9745457055117981/7398185192";
-    public static final String BANNER_ID = "ca-app-pub-9745457055117981/2716704156";
+    public static final String INTERSTITIAL_ID = "ca-app-pub-9745457055117981/2044558804";
+    public static final String BANNER_ID = "ca-app-pub-9745457055117981/9288608098";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class AndroidLauncher extends AndroidApplication implements AdController 
                         }
 
                         @Override
-                        public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                             interstitialAd = null;
 
                             Gdx.app.postRunnable(() -> {

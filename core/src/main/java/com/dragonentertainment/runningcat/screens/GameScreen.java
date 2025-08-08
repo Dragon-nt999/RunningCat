@@ -34,6 +34,7 @@ import com.dragonentertainment.runningcat.utils.SoundManager;
 public class GameScreen extends BaseScreen {
     private final PooledEngine engine;
     private float timeToRestart = -1;
+    private boolean transitioning = false;
     public GameScreen(AppGame game) {
         super(game);
 
@@ -52,6 +53,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
+        SoundManager.getInstance().playMusic(AssetsName.Sounds.Game.BACKGROUND_MUSIC);
     }
 
     @Override
@@ -73,11 +75,7 @@ public class GameScreen extends BaseScreen {
                 if(this.timeToRestart >= 2f) {
                     this.timeToRestart = -1f;
                     if(HealthManager.getInstance().getHealth() > 0) {
-                        HealthManager.getInstance().decreaseHealth();
-                        this.engine.removeAllSystems();
-                        this.engine.removeAllEntities();
-                        this.ui.dispose();
-                        this.initGame();
+                        this.resetGame();
                     } else {
                         this.game.playerIsInjured = true;
                         if(GameData.getInstance().getAttempts() >= Config.MAX_ATTEMPTS_TO_SHOW_ADS) {
@@ -88,8 +86,6 @@ public class GameScreen extends BaseScreen {
                     }
                 }
             }
-        } else {
-            SoundManager.getInstance().playMusic(AssetsName.Sounds.Game.BACKGROUND_MUSIC);
         }
 
         if(this.engine.getEntities().size() > 0 && this.engine.getSystems().size() > 0) {
@@ -177,4 +173,13 @@ public class GameScreen extends BaseScreen {
         Gdx.input.setInputProcessor(multiplexer);
     }
 
+    private void resetGame() {
+        HealthManager.getInstance().decreaseHealth();
+        if (!transitioning) {
+            transitioning = true;
+            Gdx.app.postRunnable(() -> {
+                game.setScreen(new GameScreen(game));
+            });
+        }
+    }
 }

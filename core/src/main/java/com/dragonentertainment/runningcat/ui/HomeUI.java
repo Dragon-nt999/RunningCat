@@ -34,6 +34,7 @@ public class HomeUI extends BaseUI{
         stage.getViewport().apply(true);
         this.drawScore();
         this.drawBtnPlay();
+        this.drawLevel();
     }
 
     @Override
@@ -122,10 +123,50 @@ public class HomeUI extends BaseUI{
         float h = playButton.getHeight();
 
         playButton.setSize(w, h);
-        playButton.setPosition((((float) Gdx.graphics.getWidth() / 2) - (w / 2)), (float) Gdx.graphics.getHeight() / 6);
+        playButton.setPosition((((float) Gdx.graphics.getWidth() / 2) - (w / 2)), (float) Gdx.graphics.getHeight() / 14);
         playButton.setTransform(true);
-        playButton.setOrigin(playButton.getWidth() / 2f, playButton.getHeight() / 5);
+        playButton.setOrigin(playButton.getWidth() / 2f, playButton.getHeight() / 2);
 
         return playButton;
     }
+
+    /**
+     * ******************************************************
+     * Level
+     * ******************************************************
+     * */
+    private void drawLevel() {
+        Texture lv1texture = this.game.assetManager.get(AssetsName.Home.Ui.THUMB_LV1);
+        ImageButton.ImageButtonStyle lv1Style = new ImageButton.ImageButtonStyle();
+        lv1Style.imageUp = new TextureRegionDrawable(new TextureRegion(lv1texture));
+
+        ImageButton lv1 = new ImageButton(lv1Style);
+
+        float w = lv1.getWidth();
+        float h = lv1.getHeight();
+
+        lv1.setSize(w, h);
+        lv1.setPosition((((float) Gdx.graphics.getWidth() / 2) - (w / 2)), (float) Gdx.graphics.getHeight() / 6);
+        lv1.setTransform(true);
+        lv1.setOrigin(lv1.getWidth() / 2f, lv1.getHeight() / 2f);
+
+        this.stage.addActor(lv1);
+
+        Texture lv2texture = this.game.assetManager.get(AssetsName.Home.Ui.THUMB_LV2);
+        ImageButton.ImageButtonStyle lv2Style = new ImageButton.ImageButtonStyle();
+        lv2Style.imageUp = new TextureRegionDrawable(new TextureRegion(lv2texture));
+
+        ImageButton lv2 = new ImageButton(lv2Style);
+
+        float w2 = lv2.getWidth();
+        float h2 = lv2.getHeight();
+
+        lv2.setSize(w2, h2);
+        lv2.setPosition((((float) Gdx.graphics.getWidth() - w2) / 1.03f ), (float) Gdx.graphics.getHeight() / 5.2f);
+        lv2.setTransform(true);
+        lv2.setOrigin(lv2.getWidth() / 2f, lv2.getHeight() / 2f);
+
+        this.stage.addActor(lv2);
+    }
+
 }
