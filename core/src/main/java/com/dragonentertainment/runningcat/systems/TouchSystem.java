@@ -67,7 +67,7 @@ public class TouchSystem extends EntitySystem implements InputProcessor
 
         TouchComponent touch = MappersComponent.touch.get(this.cat);
 
-        if(touch.pressDuration == 0) {
+        if(touch.pressDuration == 0 && !GameStateManager.getInstance().is(GameState.PAUSE)) {
             touch.isPressed = true;
             touch.pressStartTime = TimeUtils.millis();
             SoundManager.getInstance().playSound(AssetsName.Sounds.Game.JUMP);

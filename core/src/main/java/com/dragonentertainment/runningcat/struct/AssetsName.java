@@ -188,6 +188,8 @@ public class AssetsName {
         public static class Ui {
             public static final String BTNPLAY = "home/ui/btnPlay.png";
             public static final String HOME_SCORE_CONTAINER = "home/ui/home_score_container.png";
+            public static final String THUMB_LV1 = "home/ui/thumb_lv1.png";
+            public static final String THUMB_LV2 = "home/ui/thumb_lv2.png";
         }
     }
     public static class Loading {
