@@ -81,7 +81,7 @@ public class GameScreen extends BaseScreen {
                         if(GameData.getInstance().getAttempts() >= Config.MAX_ATTEMPTS_TO_SHOW_ADS) {
                             this.game.setScreen(new AdsScreen(this.game));
                         } else {
-                            this.game.setScreen(new LoadingScreen(this.game, ScreenType.HOME));
+                            this.game.setScreen(new HomeScreen(this.game));
                         }
                     }
                 }
