@@ -32,11 +32,11 @@ public class LoadingScreen implements Screen {
         labelStyle.font = FontManager.getInstance().getFont(90, Color.valueOf("#2760A2"));
         this.percentLoading = new Label("0%", labelStyle);
 
-        Label title = new Label("Loading", labelStyle);
-        title.setAlignment(Align.center);
-        title.setPosition(
-            (Gdx.graphics.getWidth() - title.getWidth()) / 2,
-            (Gdx.graphics.getHeight() - title.getHeight()) / 2.5f
+        Label titleLoading = new Label("Loading", labelStyle);
+        titleLoading.setAlignment(Align.center);
+        titleLoading.setPosition(
+            (Gdx.graphics.getWidth() - titleLoading.getWidth()) / 2,
+            (Gdx.graphics.getHeight() - titleLoading.getHeight()) / 2.5f
         );
 
         this.percentLoading.setAlignment(Align.center);
@@ -44,7 +44,17 @@ public class LoadingScreen implements Screen {
             (Gdx.graphics.getWidth() - this.percentLoading.getWidth()) / 2,
             (Gdx.graphics.getHeight() - this.percentLoading.getHeight()) / 2
         );
-        this.stage.addActor(title);
+
+        Label nameGame = new Label("GROUCHY CAT", labelStyle);
+        nameGame.setAlignment(Align.center);
+        nameGame.setScale(1.5f);
+        nameGame.setPosition(
+            (Gdx.graphics.getWidth() - nameGame.getWidth()) / 2,
+            (Gdx.graphics.getHeight() - nameGame.getHeight()) / 1.5f
+        );
+
+        this.stage.addActor(nameGame);
+        this.stage.addActor(titleLoading);
         this.stage.addActor(this.percentLoading);
     }
 
